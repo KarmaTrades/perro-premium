@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perro Premium — Premios artesanales para perros felices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ CONFIG: swap these when Stripe objects exist ============ */
+/* Payment link URLs are set in JS CONFIG below. */
+
+:root{
+  --ivory:#f7f3ec; --bone:#efe9df; --ink:#191511; --taupe:#8a7f70; --gold:#9a7b4f;
+  --serif:'Bodoni Moda',serif; --sans:'Jost',sans-serif;
+  --ease:cubic-bezier(.2,.6,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ivory);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,.display{font-family:var(--serif);font-weight:400;line-height:1.08}
+a{color:inherit;text-decoration:none}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--taupe)}
+.rule{border:none;border-top:1px solid rgba(25,21,17,.18)}
+.btn{display:inline-block;background:transparent;border:1px solid rgba(25,21,17,.5);color:var(--ink);
+  font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;
+  padding:16px 44px;cursor:pointer;transition:background .5s var(--ease),color .5s var(--ease)}
+.btn:hover{background:var(--ink);color:var(--ivory)}
+.btn.gold{border-color:var(--gold);color:var(--gold)}
+.btn.gold:hover{background:var(--gold);color:var(--ivory)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:22px 5vw;background:rgba(247,243,236,.88);backdrop-filter:blur(8px);border-bottom:1px solid rgba(25,21,17,.08)}
+nav .logo{font-family:var(--serif);font-size:22px;cursor:pointer;user-select:none}
+nav ul{display:flex;gap:38px;list-style:none}
+nav ul a,#langBtn{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.75;transition:opacity .4s var(--ease);background:none;border:none;cursor:pointer;font-family:var(--sans);color:var(--ink)}
+nav ul a:hover,#langBtn:hover{opacity:1}
+@media(max-width:720px){nav ul li.hidemobile{display:none}}
+
+section{padding:120px 5vw}
+@media(max-width:720px){section{padding:64px 6vw}}
+.narrow{max-width:72ch;margin:0 auto}
+
+/* hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:140px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);max-width:16ch}
+.hero p.sub{margin-top:28px;max-width:46ch;color:var(--taupe);font-size:1.05rem}
+.hero .eyebrow{margin-bottom:26px}
+.hero .cta{margin-top:44px}
+.paw{font-size:2rem;margin-top:64px;opacity:.35;animation:float 3.4s var(--ease) infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.paw{animation:none}}
+
+/* full-bleed imagery */
+.bleed{margin:0;width:100%;line-height:0}
+.bleed img{width:100%;max-height:78vh;object-fit:cover;filter:saturate(.85)}
+
+/* story strip */
+.strip{background:var(--bone);text-align:center}
+.strip h2{font-size:clamp(1.9rem,4.5vw,3rem);max-width:24ch;margin:0 auto}
+.strip .eyebrow{margin-bottom:22px;display:block}
+
+/* how */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;max-width:1100px;margin:72px auto 0}
+@media(max-width:820px){.steps{grid-template-columns:1fr;gap:44px}}
+.step .num{font-family:var(--serif);font-size:2.6rem;color:var(--gold)}
+.step h3{font-family:var(--sans);font-weight:500;font-size:.95rem;letter-spacing:.02em;margin:14px 0 10px}
+.step p{color:var(--taupe);font-size:.95rem}
+
+/* pricing */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:1100px;margin:80px auto 0;border-top:1px solid rgba(25,21,17,.18)}
+@media(max-width:820px){.tiers{grid-template-columns:1fr}}
+.tier{padding:56px 40px;border-bottom:1px solid rgba(25,21,17,.18);border-right:1px solid rgba(25,21,17,.12);display:flex;flex-direction:column;transition:background .5s var(--ease)}
+.tier:last-child{border-right:none}
+@media(max-width:820px){.tier{border-right:none}}
+.tier:hover{background:var(--bone)}
+.tier .eyebrow{margin-bottom:18px}
+.tier .price{font-family:var(--serif);font-size:2.4rem;margin:6px 0 2px}
+.tier .per{color:var(--taupe);font-size:.85rem;margin-bottom:26px}
+.tier ul{list-style:none;margin-bottom:36px;flex:1}
+.tier ul li{padding:9px 0;border-bottom:1px solid rgba(25,21,17,.08);font-size:.92rem;color:#4a4239}
+.tier .btn{align-self:flex-start}
+.iva{color:var(--taupe);font-size:.8rem;text-align:center;margin-top:28px}
+
+/* faq */
+details{border-bottom:1px solid rgba(25,21,17,.15);padding:20px 0}
+details summary{cursor:pointer;font-weight:400;font-size:1rem;list-style:none;display:flex;justify-content:space-between}
+details summary::after{content:'+';font-family:var(--serif);color:var(--gold)}
+details[open] summary::after{content:'–'}
+details p{margin-top:12px;color:var(--taupe);font-size:.95rem;max-width:65ch}
+
+footer{padding:72px 5vw 48px;text-align:center;border-top:1px solid rgba(25,21,17,.12)}
+footer .logo{font-family:var(--serif);font-size:20px}
+footer p{color:var(--taupe);font-size:.8rem;margin-top:14px}
+footer .hint{margin-top:34px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.4;cursor:default;user-select:none}
+footer .hint span{cursor:pointer;transition:opacity .5s var(--ease)}
+footer .hint span:hover{opacity:.75;color:var(--gold)}
+
+/* ============ 2048 game modal ============ */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(25,21,17,.55);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal .card{background:var(--ivory);max-width:430px;width:100%;padding:40px 36px;text-align:center;border:1px solid rgba(25,21,17,.2)}
+.modal h2{font-size:1.9rem;margin-bottom:6px}
+.modal .sub2{color:var(--taupe);font-size:.85rem;margin-bottom:22px}
+.grid2048{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:var(--bone);padding:8px;margin:0 auto 18px;max-width:340px;touch-action:none}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.25rem;background:var(--ivory);border:1px solid rgba(25,21,17,.08);transition:background .3s var(--ease)}
+.cell.v2{background:#f2ead9}.cell.v4{background:#ecdfc4}.cell.v8{background:#e2cea4;}.cell.v16{background:#d5b87f}
+.cell.v32{background:#c6a05e;color:#fff}.cell.v64{background:#b3874a;color:#fff}
+.cell.v128,.cell.v256,.cell.v512,.cell.v1024,.cell.v2048{background:var(--gold);color:#fff}
+.modal .score{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);margin-bottom:14px}
+.modal .close{position:absolute;top:18px;right:24px;background:none;border:none;font-size:1.6rem;color:var(--ivory);cursor:pointer}
+.promo{background:var(--bone);border:1px dashed var(--gold);padding:14px 18px;margin:14px 0;font-family:var(--serif);font-size:1.3rem;letter-spacing:.08em;user-select:all}
+.small{font-size:.75rem;color:var(--taupe)}
+
+/* dog mode */
+body.dogmode{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='24' font-size='24'%3E🐾%3C/text%3E%3C/svg%3E") 16 16,auto}
+.confetti{position:fixed;top:-40px;z-index:200;font-size:22px;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--ivory);padding:14px 28px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;z-index:150;transition:transform .5s var(--ease);max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo" id="logo">Perro&nbsp;Premium</div>
+  <ul>
+    <li class="hidemobile"><a href="#historia" data-i="nav_story">Historia</a></li>
+    <li class="hidemobile"><a href="#como" data-i="nav_how">Cómo funciona</a></li>
+    <li><a href="#planes" data-i="nav_plans">Planes</a></li>
+    <li><button id="langBtn">EN</button></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow reveal" data-i="hero_eyebrow">Premios artesanales · Entrega mensual</span>
+  <h1 class="reveal" data-i="hero_h1">La felicidad de tu perro, en una caja.</h1>
+  <p class="sub reveal" data-i="hero_sub">Premios naturales horneados en lotes pequeños, seleccionados cada mes y entregados a tu puerta. Perros felices en todo el mundo — ahora en México.</p>
+  <div class="cta reveal"><a class="btn gold" href="#planes" data-i="hero_cta">Elegir mi plan</a></div>
+  <div class="paw" id="pawHero">🐾</div>
+</header>
+
+<figure class="bleed reveal">
+  <img src="img-dog-lick.png" alt="Perro feliz lamiendo la cámara"
+    onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3DY3aeWvX7HIPvUTnsO8o8IbqCX/hf_20260826_191325_9f2d1c44-701f-4933-ba2f-b8a1a391fd76.png'">
+</figure>
+
+<section class="strip" id="historia">
+  <span class="eyebrow reveal" data-i="story_eyebrow">Nuestra historia</span>
+  <h2 class="reveal" data-i="story_h2">Ingredientes que reconoces. Colas que no paran de moverse.</h2>
+  <p class="narrow reveal" style="margin-top:26px;color:var(--taupe)" data-i="story_p">Sin subproductos, sin conservadores artificiales, sin trucos. Solo proteína real y recetas desarrolladas con veterinarios — con etiquetado en español y cumplimiento SENASICA para México.</p>
+</section>
+
+<section id="como">
+  <div style="text-align:center"><span class="eyebrow reveal" data-i="how_eyebrow">Cómo funciona</span></div>
+  <div class="steps">
+    <div class="step reveal"><div class="num">01</div><h3 data-i="how1_h">Elige tu plan</h3><p data-i="how1_p">Tres tamaños según el apetito (y el tamaño) de tu perro.</p></div>
+    <div class="step reveal"><div class="num">02</div><h3 data-i="how2_h">Nosotros seleccionamos</h3><p data-i="how2_p">Cada mes, una caja distinta de premios de temporada.</p></div>
+    <div class="step reveal"><div class="num">03</div><h3 data-i="how3_h">Entrega a tu puerta</h3><p data-i="how3_p">Envío nacional desde nuestra bodega en México. Cancela cuando quieras.</p></div>
+  </div>
+</section>
+
+<figure class="bleed reveal">
+  <img src="img-treats.png" alt="Premios artesanales Perro Premium"
+    onerror="this.onerror=null;this.src='https://d8j0ntlcm91z4.cloudfront.net/user_3DY3aeWvX7HIPvUTnsO8o8IbqCX/hf_20260826_191325_f17741cc-9887-4afe-ae0b-04c6ebf52050.png'">
+</figure>
+
+<section id="planes" style="background:var(--bone)">
+  <div style="text-align:center">
+    <span class="eyebrow reveal" data-i="plans_eyebrow">Planes mensuales</span>
+    <h2 class="reveal" style="font-size:clamp(1.9rem,4vw,2.8rem);margin-top:14px" data-i="plans_h2">Elige el tamaño de la felicidad</h2>
+  </div>
+  <div class="tiers">
+    <div class="tier reveal">
+      <span class="eyebrow" data-i="t1_name">Cachorro</span>
+      <div class="price">$299 <span style="font-size:1rem">MXN</span></div>
+      <div class="per" data-i="t1_per">al mes · perros pequeños</div>
+      <ul>
+        <li data-i="t1_f1">2 variedades de premios</li>
+        <li data-i="t1_f2">≈ 200 g al mes</li>
+        <li data-i="t1_f3">Guía de porciones</li>
+      </ul>
+      <button class="btn" data-plan="cachorro" data-i="t_cta">Suscribirme</button>
+    </div>
+    <div class="tier reveal">
+      <span class="eyebrow" style="color:var(--gold)" data-i="t2_name">Compañero</span>
+      <div class="price">$449 <span style="font-size:1rem">MXN</span></div>
+      <div class="per" data-i="t2_per">al mes · el favorito</div>
+      <ul>
+        <li data-i="t2_f1">4 variedades de premios</li>
+        <li data-i="t2_f2">≈ 450 g al mes</li>
+        <li data-i="t2_f3">1 juguete de temporada</li>
+        <li data-i="t2_f4">Acceso a sabores exclusivos</li>
+      </ul>
+      <button class="btn gold" data-plan="companero" data-i="t_cta">Suscribirme</button>
+    </div>
+    <div class="tier reveal">
+      <span class="eyebrow" data-i="t3_name">Gran Danés</span>
+      <div class="price">$699 <span style="font-size:1rem">MXN</span></div>
+      <div class="per" data-i="t3_per">al mes · perros grandes o multi-perro</div>
+      <ul>
+        <li data-i="t3_f1">6 variedades de premios</li>
+        <li data-i="t3_f2">≈ 900 g al mes</li>
+        <li data-i="t3_f3">Juguete + sorpresa mensual</li>
+        <li data-i="t3_f4">Envío prioritario</li>
+      </ul>
+      <button class="btn" data-plan="grandanes" data-i="t_cta">Suscribirme</button>
+    </div>
+  </div>
+  <p class="iva" data-i="iva">Precios en MXN, IVA incluido. Renovación mensual automática — cancela en un clic desde tu portal. Pago seguro con Stripe.</p>
+</section>
+
+<section>
+  <div class="narrow">
+    <span class="eyebrow reveal" data-i="faq_eyebrow">Preguntas frecuentes</span>
+    <div style="margin-top:34px">
+      <details class="reveal"><summary data-i="q1">¿Puedo cancelar cuando quiera?</summary><p data-i="a1">Sí. Desde tu portal de cliente, en un clic, sin llamadas ni letras chiquitas. (Así lo exige PROFECO — y así nos gusta.)</p></details>
+      <details class="reveal"><summary data-i="q2">¿Los premios son seguros para mi perro?</summary><p data-i="a2">Recetas desarrolladas con veterinarios, ingredientes de grado humano, etiquetado NOM-012 en español y análisis garantizado en cada lote.</p></details>
+      <details class="reveal"><summary data-i="q3">¿Cómo pago?</summary><p data-i="a3">Tarjeta de crédito o débito vía Stripe para la suscripción. Para cajas de regalo únicas también aceptamos OXXO.</p></details>
+      <details class="reveal"><summary data-i="q4">¿Hacen envíos a todo México?</summary><p data-i="a4">Sí, desde nuestra bodega local. Los envíos salen los primeros 5 días de cada mes.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Perro Premium</div>
+  <p data-i="foot_p">© 2026 Perro Premium · hola@perropremium.mx · Términos · Privacidad</p>
+  <div class="hint"><span id="hintSpan" data-i="foot_hint">Los perros curiosos siempre encuentran premios escondidos&hellip; 🦴</span></div>
+</footer>
+
+<!-- 2048 modal -->
+<div class="modal" id="gameModal">
+  <button class="close" id="gameClose">×</button>
+  <div class="card" style="position:relative">
+    <h2>2048<span style="font-size:1rem;color:var(--gold)"> · Treat Edition</span></h2>
+    <div class="sub2" data-i="g_sub">Llega a la croqueta 512 y desbloquea un premio. Flechas o desliza.</div>
+    <div class="score" id="score">Score 0</div>
+    <div class="grid2048" id="grid"></div>
+    <div id="gameMsg"></div>
+    <button class="btn" id="gameRestart" style="padding:10px 26px" data-i="g_restart">Reiniciar</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============ CONFIG ============ */
+const CONFIG = {
+  // Replace with your real Stripe Payment Links once created (see stripe-setup.sh):
+  paymentLinks: {
+    // TEST MODE (reviewers: card 4242 4242 4242 4242, any future date/CVC). LIVE links to restore at launch:
+    //   cachorro:  "https://buy.stripe.com/dRm7sNbbbfe6bJY8LQfQI00",
+    //   companero: "https://buy.stripe.com/3cIfZj1AB6HA8xM5zEfQI01",
+    //   grandanes: "https://buy.stripe.com/00w8wRfrrea2g0ee6afQI02"
+    cachorro:  "https://buy.stripe.com/test_bJe6oI1l6fadg5heaqcbC00",
+    companero: "https://buy.stripe.com/test_28E4gA5Bm0fjaKX0jAcbC01",
+    grandanes: "https://buy.stripe.com/test_5kQ3cw7Ju7HL4mz7M2cbC02"
+  },
+  promoGame:   "PERRO15",  // 15% off — 2048 reward (create as Stripe promotion code)
+  promoKonami: "WOOF10",   // 10% off — konami/dog-mode reward
+  locale: "es-419"
+};
+
+/* ============ i18n ============ */
+const EN = {
+  nav_story:"Story", nav_how:"How it works", nav_plans:"Plans",
+  hero_eyebrow:"Artisanal treats · Monthly delivery",
+  hero_h1:"Your dog's happiness, in a box.",
+  hero_sub:"Small-batch natural treats, curated monthly and delivered to your door. Happy dogs around the world — now in Mexico.",
+  hero_cta:"Choose my plan",
+  story_eyebrow:"Our story", story_h2:"Ingredients you recognize. Tails that won't stop wagging.",
+  story_p:"No by-products, no artificial preservatives, no tricks. Just real protein and vet-developed recipes — with Spanish labeling and SENASICA compliance for Mexico.",
+  how_eyebrow:"How it works",
+  how1_h:"Pick your plan", how1_p:"Three sizes for every appetite (and every dog).",
+  how2_h:"We curate", how2_p:"A different box of seasonal treats every month.",
+  how3_h:"Delivered to your door", how3_p:"Domestic shipping from our warehouse in Mexico. Cancel anytime.",
+  plans_eyebrow:"Monthly plans", plans_h2:"Choose your size of happiness",
+  t1_name:"Puppy", t1_per:"per month · small dogs", t1_f1:"2 treat varieties", t1_f2:"≈ 200 g per month", t1_f3:"Portion guide",
+  t2_name:"Companion", t2_per:"per month · most popular", t2_f1:"4 treat varieties", t2_f2:"≈ 450 g per month", t2_f3:"1 seasonal toy", t2_f4:"Exclusive flavors access",
+  t3_name:"Great Dane", t3_per:"per month · big or multi-dog homes", t3_f1:"6 treat varieties", t3_f2:"≈ 900 g per month", t3_f3:"Toy + monthly surprise", t3_f4:"Priority shipping",
+  t_cta:"Subscribe",
+  iva:"Prices in MXN, VAT included. Auto-renews monthly — cancel in one click from your portal. Secure payment by Stripe.",
+  faq_eyebrow:"FAQ",
+  q1:"Can I cancel anytime?", a1:"Yes. One click from your customer portal — no calls, no fine print.",
+  q2:"Are the treats safe for my dog?", a2:"Vet-developed recipes, human-grade ingredients, NOM-012 Spanish labeling and guaranteed analysis on every batch.",
+  q3:"How do I pay?", a3:"Credit or debit card via Stripe for subscriptions. One-time gift boxes can also be paid at OXXO.",
+  q4:"Do you ship everywhere in Mexico?", a4:"Yes, from our local warehouse. Boxes ship the first 5 days of each month.",
+  foot_p:"© 2026 Perro Premium · hola@perropremium.mx · Terms · Privacy",
+  foot_hint:"Curious dogs always find hidden treats… 🦴",
+  g_sub:"Reach the 512 kibble to unlock a reward. Arrows or swipe.", g_restart:"Restart",
+  toast_dog:"DOG MODE — code WOOF10 · 10% off", toast_hint:"Something is buried near the paw…",
+  g_win:"You found the golden kibble! Your code:", g_win2:"15% off your first month. Applied at checkout.", g_use:"Use code", g_lose:"Out of moves — the treats got stale. Try again!"
+};
+const ES = {}; document.querySelectorAll('[data-i]').forEach(el=>ES[el.dataset.i]=el.innerHTML);
+ES.toast_dog="MODO PERRO — código WOOF10 · 10% de descuento"; ES.toast_hint="Algo está enterrado cerca de la huella…";
+ES.g_win="¡Encontraste la croqueta dorada! Tu código:"; ES.g_win2="15% en tu primer mes. Se aplica al pagar."; ES.g_use="Usar código"; ES.g_lose="Sin movimientos — los premios se enfriaron. ¡Intenta otra vez!";
+let lang='es';
+function setLang(l){lang=l;const D=l==='es'?ES:EN;
+  document.querySelectorAll('[data-i]').forEach(el=>{if(D[el.dataset.i]!==undefined)el.innerHTML=D[el.dataset.i]});
+  document.getElementById('langBtn').textContent=l==='es'?'EN':'ES';document.documentElement.lang=l}
+document.getElementById('langBtn').onclick=()=>setLang(lang==='es'?'en':'es');
+const T=k=>(lang==='es'?ES:EN)[k];
+
+/* ============ reveal on scroll ============ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ============ checkout ============ */
+let pendingPromo=null;
+document.querySelectorAll('[data-plan]').forEach(btn=>btn.onclick=()=>{
+  let url=CONFIG.paymentLinks[btn.dataset.plan];
+  if(!url||url.startsWith("STRIPE_LINK")){toast("Demo: conecta tus Payment Links de Stripe en CONFIG.");return}
+  url+="?locale="+CONFIG.locale+(pendingPromo?"&prefilled_promo_code="+pendingPromo:"");
+  window.open(url,"_blank");
+});
+
+/* ============ toast ============ */
+let toastTimer;
+function toast(msg,ms=4200){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),ms)}
+
+/* ============ EASTER EGG 1: konami / logo taps → dog mode ============ */
+const seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let ki=0;
+addEventListener('keydown',e=>{ki=(e.key===seq[ki])?ki+1:(e.key===seq[0]?1:0);if(ki===seq.length){ki=0;dogMode()}});
+let taps=0,tapTimer;
+document.getElementById('logo').addEventListener('click',()=>{taps++;clearTimeout(tapTimer);tapTimer=setTimeout(()=>taps=0,1600);if(taps>=5){taps=0;dogMode()}});
+function dogMode(){document.body.classList.add('dogmode');confettiRain();pendingPromo=CONFIG.promoKonami;toast(T('toast_dog'),6000)}
+function confettiRain(){const emo=['🐶','🦴','🐾','🎾','❤️'];for(let i=0;i<36;i++){const s=document.createElement('span');s.className='confetti';
+  s.textContent=emo[i%emo.length];s.style.left=Math.random()*100+'vw';s.style.animationDuration=(2.5+Math.random()*2.5)+'s';s.style.animationDelay=(Math.random()*1.2)+'s';
+  document.body.appendChild(s);setTimeout(()=>s.remove(),6500)}}
+
+/* ============ EASTER EGG 2: hero paw + footer hint → 2048 ============ */
+document.getElementById('pawHero').addEventListener('dblclick',openGame);
+document.getElementById('hintSpan').addEventListener('click',openGame);
+
+/* ============ 2048 ============ */
+const WIN=512;let board,score,over,won;
+const gridEl=document.getElementById('grid'),scoreEl=document.getElementById('score'),msgEl=document.getElementById('gameMsg');
+function openGame(){document.getElementById('gameModal').classList.add('open');reset2048()}
+document.getElementById('gameClose').onclick=()=>document.getElementById('gameModal').classList.remove('open');
+document.getElementById('gameRestart').onclick=reset2048;
+function reset2048(){board=Array(16).fill(0);score=0;over=false;won=false;msgEl.innerHTML='';add();add();draw()}
+function add(){const e=board.map((v,i)=>v?null:i).filter(v=>v!==null);if(!e.length)return;board[e[Math.random()*e.length|0]]=Math.random()<.9?2:4}
+function draw(){gridEl.innerHTML='';board.forEach(v=>{const c=document.createElement('div');c.className='cell'+(v?' v'+v:'');c.textContent=v||'';gridEl.appendChild(c)});
+  scoreEl.textContent='Score '+score}
+function slide(row){const a=row.filter(v=>v);for(let i=0;i<a.length-1;i++){if(a[i]===a[i+1]){a[i]*=2;score+=a[i];if(a[i]>=WIN)won=true;a.splice(i+1,1)}}
+  while(a.length<4)a.push(0);return a}
+function move(dir){if(over)return;const old=board.join();
+  for(let r=0;r<4;r++){let row;
+    if(dir==='L')row=board.slice(r*4,r*4+4);
+    else if(dir==='R')row=board.slice(r*4,r*4+4).reverse();
+    else {row=[board[r],board[r+4],board[r+8],board[r+12]];if(dir==='D')row.reverse()}
+    row=slide(row);
+    if(dir==='L')row.forEach((v,i)=>board[r*4+i]=v);
+    else if(dir==='R')row.reverse().forEach((v,i)=>board[r*4+i]=v);
+    else{if(dir==='D')row.reverse();row.forEach((v,i)=>board[r+i*4]=v)}}
+  if(board.join()!==old){add();draw();check()}}
+function check(){
+  if(won){msgEl.innerHTML='<div>'+T('g_win')+'</div><div class="promo">'+CONFIG.promoGame+'</div><div class="small">'+T('g_win2')+'</div>';
+    pendingPromo=CONFIG.promoGame;over=true;confettiRain();return}
+  const can=board.includes(0)||board.some((v,i)=>(i%4<3&&v===board[i+1])||(i<12&&v===board[i+4]));
+  if(!can){over=true;msgEl.innerHTML='<div class="small">'+T('g_lose')+'</div>'}}
+addEventListener('keydown',e=>{if(!document.getElementById('gameModal').classList.contains('open'))return;
+  const m={ArrowLeft:'L',ArrowRight:'R',ArrowUp:'U',ArrowDown:'D'}[e.key];if(m){e.preventDefault();move(m)}});
+let tx,ty;
+gridEl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+gridEl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;
+  move(Math.abs(dx)>Math.abs(dy)?(dx>0?'R':'L'):(dy>0?'D':'U'))});
+
+/* subtle hint after 25s idle on pricing */
+setTimeout(()=>{if(!document.getElementById('gameModal').classList.contains('open'))toast(T('toast_hint'),5000)},25000);
+</script>
+</body>
+</html>
