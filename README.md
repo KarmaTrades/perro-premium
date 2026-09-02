@@ -29,7 +29,7 @@ Otros pendientes marcados en el HTML:
 - FAQ "¿Tienen registro sanitario?": colocar número de registro SENASICA/SADER.
 - Sello FDA del catálogo no se usa en la versión MX; agregar el sello mexicano que aplique.
 - Fotos de clientes / TikTok en la sección de opiniones.
-- Las bolsas vienen del PDF a 234×360 px (escaladas 3×). Para producción pedir renders en alta.
+- Las bolsas (`img-bag-*.webp`) y el beagle son renders generados con IA a partir de las imágenes del catálogo (234×360 px; fuentes en `src-*.png`): diseño, colores, logo y textos principales son fieles, pero la letra chica (bullets, sello redondo) es inventada por el modelo y no debe usarse como referencia. Para producción, pedir los renders originales en alta resolución al diseñador del catálogo.
 
 ## Para publicar
 

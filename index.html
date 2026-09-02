@@ -316,6 +316,87 @@ body.notes .note{display:block}
 .note a{text-decoration:underline;color:var(--blue);font-weight:800}
 .note .src{display:block;color:var(--mute);font-weight:700;margin-top:4px;font-size:.78rem}
 
+
+/* ===================== MOBILE-FIRST PASS ===================== */
+.menubtn{display:none;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);align-items:center;justify-content:center}
+.menubtn svg{width:22px;height:22px}
+.msheet{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:100;background:rgba(62,38,24,.45)}
+.msheet.open{display:block}
+.msheet .panel{position:absolute;left:0;right:0;top:0;background:var(--paper);border-radius:0 0 22px 22px;padding:18px 6vw 22px;box-shadow:0 20px 40px rgba(62,38,24,.25);animation:drop .25s var(--ease)}
+@keyframes drop{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+.msheet .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.msheet .top img{height:36px}
+.msheet ul{list-style:none;display:grid}
+.msheet li a{display:flex;justify-content:space-between;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:1.1rem;color:var(--brown)}
+.msheet li a svg{width:18px;height:18px;color:var(--yellow)}
+.msheet .btn{margin-top:16px;width:100%}
+.swipe-hint{display:none;font-size:.78rem;font-weight:800;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;margin-top:14px}
+.compare td::before{display:none}
+@media(max-width:760px){
+  .nav .wrap{height:64px}
+  .nav .logo img{height:38px}
+  .menubtn{display:inline-flex}
+  .cartbtn{padding:9px 13px}
+  /* hero: picture first, compact */
+  .hero{padding:10px 0 28px}
+  .hero .wrap{display:flex;flex-direction:column;align-items:stretch;gap:0}
+  .hero-art{order:-1;min-height:250px;margin:0 -6vw 6px;overflow:hidden}
+  .hero-art .blob{inset:14% 6% -30% 12%;border-radius:50% 50% 0 0/60% 60% 0 0}
+  .hero-art .dog{height:118%;bottom:-18%;transform:translateX(-48%)}
+  .hero-art .bag{width:24%}
+  .hero-art .b1{left:3%;bottom:-6%}
+  .hero-art .b2{right:3%;bottom:-2%}
+  .hero-art .badge{width:72px;top:6%;right:4%}
+  .hero .eyebrow{font-size:.7rem}
+  .hero h1{font-size:clamp(2rem,9vw,2.5rem);margin:8px 0 10px;max-width:none}
+  .hero .lead{font-size:1rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .hero .ctas{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hero .ctas .btn{padding:0 12px;font-size:.98rem;white-space:normal;text-align:center;min-height:54px}
+  .hero .proof{margin-top:14px;font-size:.85rem;flex-wrap:wrap}
+  /* products: swipeable carousel */
+  #premios .grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:22px -6vw 0;padding:6px 6vw 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  #premios .grid::-webkit-scrollbar{display:none}
+  #premios .card{flex:0 0 78vw;scroll-snap-align:center;scroll-snap-stop:always}
+  .card .art img{height:200px}
+  .swipe-hint{display:block}
+  .toggle{width:100%;justify-content:center}
+  .toggle button{flex:1}
+  /* bundle */
+  .bundle{padding:26px 22px 28px;border-radius:22px}
+  .bundle .ship{position:static;display:inline-block;margin-bottom:12px;transform:none}
+  .bundle .bags{order:-1;margin-bottom:6px}
+  .bundle h2{font-size:1.6rem}
+  .bundle .btn{width:100%}
+  /* comparison table → cards */
+  .compare{overflow:visible;background:transparent;box-shadow:none}
+  .compare table,.compare tbody,.compare tr,.compare td{display:block;min-width:0}
+  .compare thead{display:none}
+  .compare tbody tr{background:var(--paper);border-radius:14px;box-shadow:var(--shadow);margin-bottom:10px;padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .compare td{border:0;padding:0}
+  .compare td:first-child{grid-column:1/-1;font-family:var(--display);font-weight:600;color:var(--brown);font-size:.95rem;padding-bottom:4px;border-bottom:1px solid var(--line)}
+  .compare td.us,.compare td.them{background:transparent;border-radius:10px;padding:8px 10px;font-size:.9rem}
+  .compare td.us{background:rgba(123,175,44,.10)}
+  .compare td.them{background:var(--cream)}
+  .compare td::before{display:block;content:attr(data-label);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:3px}
+  .compare tfoot{display:block}.compare tfoot tr{display:block;background:transparent;box-shadow:none;padding:0}.compare tfoot td{padding:6px 4px;font-size:.75rem}
+  .compare tfoot td::before{display:none}
+  /* reco + steps + b2b spacing */
+  .reco{padding:20px}
+  .reco img{height:120px}
+  .b2b{padding:24px 20px}
+  .b2b .facts{grid-template-columns:repeat(3,1fr);gap:8px}
+  .b2b .facts b{font-size:1.2rem}
+  .news{padding:26px 20px}
+  .news input{min-width:0;width:100%}
+  .news .btn{width:100%}
+  section{padding:48px 0}
+  h2{font-size:1.75rem}
+  .lead{font-size:1.02rem}
+  footer .cols{gap:22px}
+  .notes-switch{display:none}
+  body.notes .notes-switch{display:flex}
+}
+
 /* reveal */
 .rv{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .rv.in{opacity:1;transform:none}
@@ -344,6 +425,7 @@ body.notes .note{display:block}
     </ul>
     <div class="nav-actions">
       <button class="lang" id="langBtn" aria-label="Switch language">EN</button>
+      <button class="menubtn" id="menuBtn" aria-label="Menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
       <button class="cartbtn" id="cartBtn" aria-label="Carrito">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 8h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>
         <span class="n" id="cartN">0</span>
@@ -371,9 +453,9 @@ body.notes .note{display:block}
     </div>
     <div class="hero-art">
       <div class="blob"></div>
-      <img class="dog" src="img-beagle.webp" alt="Perro beagle feliz" width="643" height="900">
-      <img class="bag b1" src="img-bag-patas.webp" alt="Bolsa Chewawa Patas de pollo" width="468" height="720">
-      <img class="bag b2" src="img-bag-jerky.webp" alt="Bolsa Chewawa Jerky de res" width="468" height="720">
+      <img class="dog" src="img-beagle.webp" alt="Perro beagle feliz" width="715" height="1000">
+      <img class="bag b1" src="img-bag-patas.webp" alt="Bolsa Chewawa Patas de pollo" width="684" height="1080">
+      <img class="bag b2" src="img-bag-jerky.webp" alt="Bolsa Chewawa Jerky de res" width="729" height="1080">
       <img class="badge" src="img-badge.webp" alt="Treat your pet right" width="339" height="320">
     </div>
   </div>
@@ -404,6 +486,7 @@ body.notes .note{display:block}
       <button id="modeSub"><span data-i="m_sub">Cada mes</span><span class="save">−15 %</span></button>
     </div>
     <div class="grid" id="grid"></div>
+    <div class="swipe-hint" data-i="swipe">Desliza para ver los 4 →</div>
     <p style="margin-top:22px;font-size:.85rem;color:var(--mute);font-weight:700" data-i="p_note">Precios en MXN con IVA. <span class="demo-tag">demo · precios de referencia</span></p>
   </div>
 </section>
@@ -432,10 +515,10 @@ body.notes .note{display:block}
         <button class="btn btn-cta" style="margin-top:22px" id="addBundle" data-i="b_cta">Agregar Pack Probador</button>
       </div>
       <div class="bags">
-        <img src="img-bag-patas.webp" alt="Patas de pollo" width="468" height="720">
-        <img src="img-bag-sticks.webp" alt="Sticks de res" width="467" height="720">
-        <img src="img-bag-pechuga.webp" alt="Tiras de pechuga" width="468" height="720">
-        <img src="img-bag-jerky.webp" alt="Jerky de res" width="468" height="720">
+        <img src="img-bag-patas.webp" alt="Patas de pollo" width="684" height="1080">
+        <img src="img-bag-sticks.webp" alt="Sticks de res" width="729" height="1080">
+        <img src="img-bag-pechuga.webp" alt="Tiras de pechuga" width="729" height="1080">
+        <img src="img-bag-jerky.webp" alt="Jerky de res" width="729" height="1080">
       </div>
     </div>
   </div>
@@ -620,6 +703,21 @@ body.notes .note{display:block}
 
 <button class="notes-switch" id="notesBtn" aria-pressed="false"><i></i><span data-i="notes_lbl">Notas de diseño</span></button>
 
+
+<div class="msheet" id="msheet">
+  <div class="panel">
+    <div class="top"><img src="img-logo.webp" alt="Chewawa!"><button class="x" id="menuClose" aria-label="Cerrar" style="font-size:1.8rem;line-height:1;padding:4px 10px">×</button></div>
+    <ul>
+      <li><a href="#premios" data-i="mn1">Premios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></a></li>
+      <li><a href="#pack" data-i="mn2">Pack Probador <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></a></li>
+      <li><a href="#porque" data-i="mn3">Por qué Chewawa <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></a></li>
+      <li><a href="#tamano" data-i="mn4">¿Cuánto le doy? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></a></li>
+      <li><a href="#mayoreo" data-i="mn5">Mayoreo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></a></li>
+      <li><a href="#faq" data-i="mn6">Preguntas frecuentes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></a></li>
+    </ul>
+    <a class="btn btn-wa" href="https://wa.me/525661118591" target="_blank" rel="noopener" data-i="mn_wa">Escríbenos por WhatsApp</a>
+  </div>
+</div>
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Carrito">
   <header><h3 data-i="cd_h">Tu carrito</h3><button class="x" id="closeCart" aria-label="Cerrar">×</button></header>
@@ -654,22 +752,22 @@ const CONFIG = {
    Análisis garantizado y guía de porciones: catálogo Chewawa 2025. */
 const PRODUCTS = [
   { id:'patas',   name:'Patas de pollo', en:'Chicken Feet', sub:"Heaven's Crunchies", code:'PT0022', qty:'18 pz', qtyEn:'18 pcs', grams:150, pieces:18, price:199,
-    color:'#E9A93B', tint:'#FBEFD3', img:'img-bag-patas.webp', tag:'Más vendido', tagEn:'Best seller', hot:true,
+    color:'#E9A93B', tint:'#FBEFD3', img:'img-bag-patas.webp', w:684, h:1080, tag:'Más vendido', tagEn:'Best seller', hot:true,
     desc:'Crujientes y con glucosamina natural para las articulaciones. Ideal para razas medianas y grandes.',
     descEn:'Crunchy, with natural glucosamine for joints. Ideal for medium and large breeds.',
     ingr:'Patas de pollo', ingrEn:'Chicken feet', protein:58, fat:3, fiber:1, moisture:12, unit:'piezas', unitEn:'pieces', portions:[[1,2],[2,3],[3,4],[4,5]] },
   { id:'sticks',  name:'Sticks de res', en:'Beef Sticks', sub:'Healthy Crave', code:'PT0042', qty:'96 g', qtyEn:'96 g', grams:96, price:199,
-    color:'#7BAF2C', tint:'#E8F1D6', img:'img-bag-sticks.webp', tag:'Dental', tagEn:'Dental',
+    color:'#7BAF2C', tint:'#E8F1D6', img:'img-bag-sticks.webp', w:729, h:1080, tag:'Dental', tagEn:'Dental',
     desc:'Esófago de res deshidratado. Masticable largo que ayuda a limpiar los dientes sin harinas ni glicerina.',
     descEn:'Dehydrated beef esophagus. A long chew that helps clean teeth — no flours, no glycerin.',
     ingr:'Esófago de res', ingrEn:'Beef esophagus', protein:54, fat:6, fiber:1, moisture:12, unit:'sticks', unitEn:'sticks', portions:[[1,2],[2,3],[3,4],[4,5]] },
   { id:'pechuga', name:'Tiras de pechuga de pollo', en:'Chicken Breast Strips', sub:'Nutri Luxe', code:'PT0021', qty:'255 g', qtyEn:'255 g', grams:255, price:349,
-    color:'#D8463E', tint:'#F8DAD8', img:'img-bag-pechuga.webp', tag:'Entrenamiento', tagEn:'Training',
+    color:'#D8463E', tint:'#F8DAD8', img:'img-bag-pechuga.webp', w:729, h:1080, tag:'Entrenamiento', tagEn:'Training',
     desc:'65 % de proteína y textura suave. El premio que sí quieren ganarse en el entrenamiento. Apto para cachorros.',
     descEn:'65% protein and a soft texture. The reward they actually work for. Puppy-friendly.',
     ingr:'Pechuga de pollo', ingrEn:'Chicken breast', protein:65, fat:3, fiber:1, moisture:12, unit:'tiras', unitEn:'strips', portions:[[1,2],[2,3],[3,4],[4,5]] },
   { id:'jerky',   name:'Jerky de res', en:'Beef Jerky', sub:'Vital Feast', code:'PT0041', qty:'255 g', qtyEn:'255 g', grams:255, price:349,
-    color:'#35A9BC', tint:'#D6EEF2', img:'img-bag-jerky.webp', tag:'Alta proteína', tagEn:'High protein',
+    color:'#35A9BC', tint:'#D6EEF2', img:'img-bag-jerky.webp', w:729, h:1080, tag:'Alta proteína', tagEn:'High protein',
     desc:'Carne de res 100 %, deshidratada lento. Para perros exigentes y perros grandes con hambre de verdad.',
     descEn:'100% beef, slow-dehydrated. For picky eaters and big dogs with real appetite.',
     ingr:'Carne de res', ingrEn:'Beef', protein:55, fat:8, fiber:1, moisture:12, unit:'tiras', unitEn:'strips', portions:[[1,2],[2,3],[3,4],[4,5]] }
@@ -719,7 +817,7 @@ const EN = {
   note10:'Payment and checkout: 75% of Mexican online shoppers pay with debit, 49% with credit and 26% in cash at OXXO-type stores; interest-free installments motivate 70%. Guest checkout: 18–24% abandon when forced to create an account, and the average checkout asks for 11.3 fields when 8 are enough. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://baymard.com/blog/checkout-flow-average-form-fields" target="_blank" rel="noopener">Baymard, checkout flow</a>.</span>',
   ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_ig:'Instagram · TikTok · Facebook', ft_city:'Monterrey, N.L., Mexico',
   ft_legal:'© 2026 Chewawa! Dog Treats · Privacy notice · Terms & conditions · Return policy', ft_demo:'Demo site — not the official store.',
-  mc_t:'From $199', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment · Guest checkout, no account needed',
+  mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 4 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment · Guest checkout, no account needed',
   /* dynamic */
   per100:'per 100 g', per_piece:'per piece', add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
   reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (4 bags)',
@@ -734,6 +832,7 @@ Object.assign(ES, {
   reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Probador (4 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
   toast_added:'Agregado al carrito', toast_checkout:'Demo: conecta CONFIG.checkoutUrl (Stripe / Shopify / Mercado Pago) para activar el pago.', toast_b2b:'Demo: solicitud de mayoreo recibida. Conecta CONFIG.b2bEndpoint.', toast_nl:'Demo: suscripción registrada. Conecta CONFIG.newsletterEndpoint.',
+  c_us:'Chewawa', c_them:'Premio del súper',
   an_protein:'Proteína cruda (mín.)', an_fat:'Grasa cruda (mín.)', an_1ing:'1 ingrediente',
 });
 let lang = 'es';
@@ -744,7 +843,7 @@ function setLang(l){
   document.querySelectorAll('[data-ph]').forEach(el => { if (D[el.dataset.ph] !== undefined) el.placeholder = D[el.dataset.ph]; });
   document.getElementById('langBtn').textContent = l === 'es' ? 'EN' : 'ES';
   document.documentElement.lang = l === 'es' ? 'es-MX' : 'en';
-  renderGrid(); renderSizes(); renderAnalysis(); renderCart();
+  renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare();
 }
 document.getElementById('langBtn').onclick = () => setLang(lang === 'es' ? 'en' : 'es');
 
@@ -759,7 +858,7 @@ function renderGrid(){
   const g = document.getElementById('grid');
   g.innerHTML = PRODUCTS.map(p => `
     <article class="card rv in" style="--accent:${p.color};--tint:${p.tint}">
-      <div class="art"><span class="tag ${p.hot?'hot':''}">${lang==='es'?p.tag:p.tagEn}</span><img src="${p.img}" alt="${pname(p)}" loading="lazy" width="468" height="720"></div>
+      <div class="art"><span class="tag ${p.hot?'hot':''}">${lang==='es'?p.tag:p.tagEn}</span><img src="${p.img}" alt="${pname(p)}" loading="lazy" width="${p.w}" height="${p.h}"></div>
       <div class="body">
         <span class="sub">${p.sub}</span>
         <h3>${pname(p)}</h3>
@@ -860,6 +959,14 @@ const nb = document.getElementById('notesBtn');
 nb.onclick = () => { const on = document.body.classList.toggle('notes'); nb.setAttribute('aria-pressed', on); };
 if (location.hash === '#notas' || location.search.includes('notas')) document.body.classList.add('notes');
 
+
+/* ===================== mobile menu + table labels ===================== */
+const msheet = document.getElementById('msheet');
+document.getElementById('menuBtn').onclick = () => msheet.classList.add('open');
+document.getElementById('menuClose').onclick = () => msheet.classList.remove('open');
+msheet.addEventListener('click', e => { if (e.target === msheet || e.target.closest('a')) msheet.classList.remove('open'); });
+function labelCompare(){ document.querySelectorAll('.compare tbody tr').forEach(tr => { const td = tr.querySelectorAll('td'); if (td[1]) td[1].setAttribute('data-label', T('c_us')); if (td[2]) td[2].setAttribute('data-label', T('c_them')); }); }
+
 /* ===================== reveal + mobile CTA ===================== */
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
@@ -868,7 +975,7 @@ const heroObs = new IntersectionObserver(es => es.forEach(e => mcta.classList.to
 heroObs.observe(document.querySelector('.hero .ctas'));
 
 /* ===================== init ===================== */
-renderGrid(); renderSizes(); renderAnalysis(); renderCart();
+renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare();
 </script>
 </body>
 </html>
