@@ -14,7 +14,7 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 
 | Clave | Qué es | Estado |
 |---|---|---|
-| `PRODUCTS[].price` | Precio por bolsa (MXN, IVA incl.) | **PLACEHOLDER** — referencia de anaquel MX |
+| `PRODUCTS[].price` | Precio por bolsa (MXN, IVA incl.) | **PLACEHOLDER** — referencia de anaquel MX: patas de pollo deshidratadas ~MXN 1,400–1,600/kg (Bregos), Dentastix MXN 407–567/kg y MXN 8.50–11.50 la pieza suelta (Walmart/Scorpion) |
 | `bundle.price` | Precio del Pack Probador | **PLACEHOLDER** |
 | `freeShipFrom` | Umbral de envío gratis | 599 |
 | `subDiscount` | Descuento suscripción | 0.15 |
