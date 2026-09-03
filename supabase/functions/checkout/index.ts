@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
       const p = byId[rawId.replace(/-sub$/, "")];
       if (!p) continue;
       const base = Number(p.price_mxn);
-      const price = isSub ? base * (1 - subDiscount) : base;
+      const price = isSub ? Math.round(base * (1 - subDiscount)) : base;   // pesos enteros, igual que el sitio
       subtotal += price * qty;
       if (isSub) hasSub = true;
       lineItems.push({
