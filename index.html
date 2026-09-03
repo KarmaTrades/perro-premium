@@ -345,7 +345,7 @@ body.notes .note{display:block}
   /* hero: picture first, compact */
   .hero{padding:10px 0 28px}
   .hero .wrap{display:flex;flex-direction:column;align-items:stretch;gap:0}
-  .hero-art{order:-1;min-height:250px;margin:0 -6vw 6px;overflow:hidden}
+  .hero-art{order:-1;min-height:250px;margin:0 -5vw 6px;overflow:hidden}
   .hero-art .blob{inset:14% 6% -30% 12%;border-radius:50% 50% 0 0/60% 60% 0 0}
   .hero-art .dog{height:118%;bottom:-18%;transform:translateX(-48%)}
   .hero-art .bag{width:24%}
@@ -359,7 +359,7 @@ body.notes .note{display:block}
   .hero .ctas .btn{padding:0 12px;font-size:.98rem;white-space:normal;text-align:center;min-height:54px}
   .hero .proof{margin-top:14px;font-size:.85rem;flex-wrap:wrap}
   /* products: swipeable carousel */
-  #premios .grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:22px -6vw 0;padding:6px 6vw 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  #premios .grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:22px -5vw 0;padding:6px 5vw 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   #premios .grid::-webkit-scrollbar{display:none}
   #premios .card{flex:0 0 78vw;scroll-snap-align:center;scroll-snap-stop:always}
   .card .art img{height:200px}
@@ -886,7 +886,8 @@ function inkFor(hex){
 }
 const pname = p => lang === 'es' ? p.name : p.en;
 let mode = 'once';
-const priceOf = p => mode === 'sub' ? p.price * (1 - CONFIG.subDiscount) : p.price;
+const subPrice = p => Math.round(p.price * (1 - CONFIG.subDiscount));   // pesos enteros: lo que se muestra es lo que cobra Stripe
+const priceOf = p => mode === 'sub' ? subPrice(p) : p.price;
 
 /* ===================== product grid ===================== */
 function renderGrid(){
@@ -906,8 +907,8 @@ function renderGrid(){
     </article>`).join('');
   g.querySelectorAll('[data-add]').forEach(b => b.onclick = () => { addToCart(b.dataset.add); b.classList.add('added'); b.textContent = T('added'); setTimeout(()=>{b.classList.remove('added'); b.textContent = T('add');}, 1400); });
 }
-document.getElementById('modeOnce').onclick = () => { mode='once'; document.getElementById('modeOnce').classList.add('on'); document.getElementById('modeSub').classList.remove('on'); renderGrid(); };
-document.getElementById('modeSub').onclick  = () => { mode='sub';  document.getElementById('modeSub').classList.add('on');  document.getElementById('modeOnce').classList.remove('on'); renderGrid(); };
+document.getElementById('modeOnce').onclick = () => { mode='once'; document.getElementById('modeOnce').classList.add('on'); document.getElementById('modeSub').classList.remove('on'); renderGrid(); renderSizes(); };
+document.getElementById('modeSub').onclick  = () => { mode='sub';  document.getElementById('modeSub').classList.add('on');  document.getElementById('modeOnce').classList.remove('on'); renderGrid(); renderSizes(); };
 
 /* ===================== bundle ===================== */
 function renderBundle(){
@@ -935,7 +936,7 @@ function renderSizes(){
       <p style="margin-top:12px;font-weight:800;font-size:.9rem">${T('reco_p')}</p>
       <div class="portions">${PRODUCTS.map(q => `<span><b>${q.portions[size][0]}–${q.portions[size][1]}</b> ${lang==='es'?q.unit:q.unitEn} · ${pname(q)}</span>`).join('')}</div>
     </div>
-    <button class="btn btn-cta" data-add="${p.id}">${T('reco_cta')} · ${mxn(p.price)}</button>`;
+    <button class="btn btn-cta" data-add="${p.id}">${T('reco_cta')} · ${mxn(priceOf(p))}${mode==='sub' ? ' ' + T('each_month') : ''}</button>`;
   document.querySelector('#reco [data-add]').onclick = e => addToCart(e.currentTarget.dataset.add);
 }
 
@@ -954,7 +955,7 @@ function lineInfo(id){
   const p = PRODUCTS.find(x => x.id === id.replace('-sub',''));
   if (!p) { delete cart[id]; persist(); return { name:'—', price:0, img:'', sub:'' }; }
   const isSub = id.endsWith('-sub');
-  return { name: pname(p), price: isSub ? p.price*(1-CONFIG.subDiscount) : p.price, img: p.img, sub: (lang==='es'?p.qty:p.qtyEn) + ' · ' + (isSub ? T('sub') : T('once')) };
+  return { name: pname(p), price: isSub ? subPrice(p) : p.price, img: p.img, sub: (lang==='es'?p.qty:p.qtyEn) + ' · ' + (isSub ? T('sub') : T('once')) };
 }
 function addToCart(id){
   const key = (id !== 'bundle' && mode === 'sub') ? id + '-sub' : id;
