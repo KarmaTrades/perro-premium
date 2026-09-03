@@ -318,6 +318,7 @@ body.notes .note{display:block}
 
 
 /* ===================== MOBILE-FIRST PASS ===================== */
+@media(max-width:760px){html{overflow-x:clip}}   /* los bleeds de -4px (hero-art, carrusel) no deben crear scroll lateral */
 .menubtn{display:none;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);align-items:center;justify-content:center}
 .menubtn svg{width:22px;height:22px}
 .msheet{display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:100;background:rgba(62,38,24,.45)}
@@ -665,7 +666,7 @@ body.notes .note{display:block}
         <p style="margin-top:8px;color:var(--brown-2)" data-i="nl_p">Más tips de entrenamiento con premios y avisos de nuevos sabores. Un correo al mes, cero spam.</p>
       </div>
       <form onsubmit="return newsletter(event)">
-        <input type="email" data-ph="nl_i" placeholder="Tu correo" required>
+        <input type="email" name="email" data-ph="nl_i" placeholder="Tu correo" required autocomplete="email">
         <button class="btn btn-brown" type="submit" data-i="nl_cta">Quiero mi 10 %</button>
         <small style="width:100%" data-i="nl_small">Al suscribirte aceptas nuestro aviso de privacidad.</small>
       </form>
@@ -691,6 +692,7 @@ body.notes .note{display:block}
     <div class="legal">
       <span data-i="ft_legal">© 2026 Chewawa! Dog Treats · Aviso de privacidad · Términos y condiciones · Política de devoluciones</span>
       <span data-i="ft_demo">Sitio de demostración — no es la tienda oficial.</span>
+      <span class="demo-tag" id="dataSrc" title="Fuente de productos, precios y configuración">catálogo integrado</span>
     </div>
   </div>
 </footer>
@@ -744,8 +746,14 @@ const CONFIG = {
   msiFrom: 299,                    // desde cuánto ofrecer 3 MSI
   whatsapp: '525661118591',
   checkoutUrl: '',                 // PLACEHOLDER — Stripe Payment Link / Shopify checkout / Mercado Pago
-  b2bEndpoint: '',                 // PLACEHOLDER — Formspree / Google Form / CRM webhook
-  newsletterEndpoint: ''           // PLACEHOLDER — Klaviyo / Mailchimp
+  /* Backend: Supabase (proyecto "perro-premium"). Al cargar, el sitio lee products / bundles / site_config
+     de ahí y guarda leads de mayoreo, suscripciones al club e intentos de compra. Si no responde
+     (sin internet, vista previa con CSP), usa los datos integrados abajo. La llave "publishable" es
+     pública por diseño: la seguridad vive en las políticas RLS (ver supabase/schema.sql).
+     NUNCA poner aquí la llave secreta (sb_secret_…). */
+  supabase: { url: 'https://scifvxtcqmuyxrsowgeo.supabase.co', key: 'sb_publishable__V4aBWlHBL9seBehaKx1fQ_b9QVuD5D' },
+  b2bEndpoint: '',                 // opcional: webhook extra (Formspree / CRM) además de Supabase
+  newsletterEndpoint: ''           // opcional: Klaviyo / Mailchimp además de Supabase
 };
 
 /* PLACEHOLDER: precios de referencia (MXN, IVA incl.) basados en anaquel MX.
@@ -822,7 +830,8 @@ const EN = {
   per100:'per 100 g', per_piece:'per piece', add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
   reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (4 bags)',
   ship_need:'Add $', ship_need2:' more for free shipping', ship_ok:'You’ve got free shipping 🎉', empty:'Your cart is empty. The treats are waiting.',
-  toast_added:'Added to cart', toast_checkout:'Demo: connect CONFIG.checkoutUrl (Stripe / Shopify / Mercado Pago) to enable checkout.', toast_b2b:'Demo: wholesale request received. Connect CONFIG.b2bEndpoint.', toast_nl:'Demo: subscribed. Connect CONFIG.newsletterEndpoint.',
+  toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', sending:'Sending…',
+  src_live:'live catalog · Supabase', src_local:'built-in catalog',
   an_protein:'Crude protein (min.)', an_fat:'Crude fat (min.)', an_1ing:'1 ingredient',
 };
 const ES = {}; document.querySelectorAll('[data-i]').forEach(el => ES[el.dataset.i] = el.innerHTML);
@@ -831,7 +840,8 @@ Object.assign(ES, {
   per100:'por 100 g', per_piece:'por pieza', add:'Agregar', added:'Agregado ✓', msi:'3 meses sin intereses', each_month:'/ mes', once:'una vez', sub:'cada mes −15 %',
   reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Probador (4 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
-  toast_added:'Agregado al carrito', toast_checkout:'Demo: conecta CONFIG.checkoutUrl (Stripe / Shopify / Mercado Pago) para activar el pago.', toast_b2b:'Demo: solicitud de mayoreo recibida. Conecta CONFIG.b2bEndpoint.', toast_nl:'Demo: suscripción registrada. Conecta CONFIG.newsletterEndpoint.',
+  toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', sending:'Enviando…',
+  src_live:'catálogo en vivo · Supabase', src_local:'catálogo integrado',
   c_us:'Chewawa', c_them:'Premio del súper',
   an_protein:'Proteína cruda (mín.)', an_fat:'Grasa cruda (mín.)', an_1ing:'1 ingrediente',
 });
@@ -843,7 +853,7 @@ function setLang(l){
   document.querySelectorAll('[data-ph]').forEach(el => { if (D[el.dataset.ph] !== undefined) el.placeholder = D[el.dataset.ph]; });
   document.getElementById('langBtn').textContent = l === 'es' ? 'EN' : 'ES';
   document.documentElement.lang = l === 'es' ? 'es-MX' : 'en';
-  renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare();
+  renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare(); renderBundle(); setSource(dataSource);
 }
 document.getElementById('langBtn').onclick = () => setLang(lang === 'es' ? 'en' : 'es');
 
@@ -875,10 +885,13 @@ document.getElementById('modeOnce').onclick = () => { mode='once'; document.getE
 document.getElementById('modeSub').onclick  = () => { mode='sub';  document.getElementById('modeSub').classList.add('on');  document.getElementById('modeOnce').classList.remove('on'); renderGrid(); };
 
 /* ===================== bundle ===================== */
-const bundleWas = PRODUCTS.reduce((s,p)=>s+p.price,0);
-document.getElementById('bundleWas').textContent = mxn(bundleWas);
-document.getElementById('bundlePrice').textContent = mxn(CONFIG.bundle.price);
-document.getElementById('bundleSave').textContent = (lang==='es'?'Ahorras ':'Save ') + Math.round((1-CONFIG.bundle.price/bundleWas)*100) + ' %';
+function renderBundle(){
+  const was = PRODUCTS.reduce((s,p)=>s+p.price,0), pct = Math.round((1-CONFIG.bundle.price/was)*100);
+  ES.b_save = 'Ahorras ' + pct + ' %'; EN.b_save = 'Save ' + pct + '%';
+  document.getElementById('bundleWas').textContent = mxn(was);
+  document.getElementById('bundlePrice').textContent = mxn(CONFIG.bundle.price);
+  document.getElementById('bundleSave').textContent = T('b_save');
+}
 document.getElementById('addBundle').onclick = () => addToCart('bundle');
 
 /* ===================== sizes ===================== */
@@ -887,7 +900,7 @@ function renderSizes(){
   const s = document.getElementById('sizes');
   s.innerHTML = SIZES.map(z => `<button class="size ${z.id===size?'on':''}" data-size="${z.id}">${z.svg}<b>${lang==='es'?z.name:z.en}</b><small>${z.kg}</small></button>`).join('');
   s.querySelectorAll('[data-size]').forEach(b => b.onclick = () => { size = +b.dataset.size; renderSizes(); });
-  const z = SIZES[size], p = PRODUCTS.find(x => x.id === z.reco);
+  const z = SIZES[size], p = PRODUCTS.find(x => x.id === z.reco) || PRODUCTS[0];
   document.getElementById('reco').innerHTML = `
     <img src="${p.img}" alt="${pname(p)}" loading="lazy">
     <div>
@@ -908,12 +921,13 @@ function renderAnalysis(){
 }
 
 /* ===================== cart ===================== */
-let cart = {};
+let cart = {}, lastSubtotal = 0;
 try { cart = JSON.parse(localStorage.getItem('chewawa_cart') || '{}') || {}; } catch(e) { cart = {}; }
 function persist(){ try { localStorage.setItem('chewawa_cart', JSON.stringify(cart)); } catch(e) {} }
 function lineInfo(id){
-  if (id === 'bundle') return { name: T('bundle_n'), price: CONFIG.bundle.price, img: 'img-bag-patas.webp', sub: lang==='es'?'Envío gratis':'Free shipping' };
+  if (id === 'bundle') return { name: (lang==='es' ? CONFIG.bundle.name : CONFIG.bundle.nameEn) || T('bundle_n'), price: CONFIG.bundle.price, img: (PRODUCTS[0]||{}).img || 'img-bag-patas.webp', sub: lang==='es'?'Envío gratis':'Free shipping' };
   const p = PRODUCTS.find(x => x.id === id.replace('-sub',''));
+  if (!p) { delete cart[id]; persist(); return { name:'—', price:0, img:'', sub:'' }; }
   const isSub = id.endsWith('-sub');
   return { name: pname(p), price: isSub ? p.price*(1-CONFIG.subDiscount) : p.price, img: p.img, sub: (lang==='es'?p.qty:p.qtyEn) + ' · ' + (isSub ? T('sub') : T('once')) };
 }
@@ -929,6 +943,7 @@ function renderCart(){
     <div class="item"><img src="${li.img}" alt=""><div><b>${li.name}</b><small>${li.sub}</small><div class="qty"><button data-q="${k}" data-d="-1">−</button><span>${cart[k]}</span><button data-q="${k}" data-d="1">+</button></div></div><span class="p">${mxn(li.price*cart[k])}</span></div>`; }).join('')
     : `<div class="empty">${T('empty')}</div>`;
   items.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { cart[b.dataset.q] += +b.dataset.d; if (cart[b.dataset.q] <= 0) delete cart[b.dataset.q]; persist(); renderCart(); });
+  lastSubtotal = subtotal;
   document.getElementById('cartN').textContent = count;
   document.getElementById('subtotal').textContent = mxn(subtotal);
   const free = hasBundle || subtotal >= CONFIG.freeShipFrom;
@@ -942,14 +957,91 @@ document.getElementById('cartBtn').onclick = openCart;
 document.getElementById('closeCart').onclick = closeCart; overlay.onclick = closeCart;
 addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
 document.getElementById('checkout').onclick = () => {
+  if (!Object.keys(cart).length) { toast(T('empty')); return; }
+  // Registra el intento de compra (qué había en el carrito) aunque el pago no esté conectado todavía.
+  sbPost('checkout_intents', { items: cart, subtotal_mxn: Math.round(lastSubtotal * 100) / 100, mode, lang, user_agent: navigator.userAgent.slice(0, 200) });
   if (!CONFIG.checkoutUrl) { toast(T('toast_checkout'), 5000); return; }
   const q = Object.entries(cart).map(([k,v]) => `${k}:${v}`).join(',');
   window.open(CONFIG.checkoutUrl + (CONFIG.checkoutUrl.includes('?') ? '&' : '?') + 'items=' + encodeURIComponent(q), '_blank');
 };
 
-/* ===================== forms ===================== */
-function leadB2B(e){ e.preventDefault(); if (CONFIG.b2bEndpoint) { fetch(CONFIG.b2bEndpoint, { method:'POST', body:new FormData(e.target) }); } toast(T('toast_b2b'), 5000); e.target.reset(); return false; }
-function newsletter(e){ e.preventDefault(); if (CONFIG.newsletterEndpoint) { fetch(CONFIG.newsletterEndpoint, { method:'POST', body:new FormData(e.target) }); } toast(T('toast_nl'), 5000); e.target.reset(); return false; }
+/* ===================== forms → Supabase (insert-only) ===================== */
+function busy(form, on){ const b = form.querySelector('button[type=submit], button:not([type])'); if (!b) return; if (on) { b.dataset.t = b.innerHTML; b.disabled = true; b.textContent = T('sending'); } else { b.disabled = false; b.innerHTML = b.dataset.t || b.innerHTML; } }
+async function leadB2B(e){
+  e.preventDefault(); const f = e.target, fd = new FormData(f); busy(f, true);
+  const row = { negocio: fd.get('negocio'), ciudad: fd.get('ciudad'), whatsapp: fd.get('whatsapp'), tipo: fd.get('tipo'), lang, source: 'web', user_agent: navigator.userAgent.slice(0, 200) };
+  const r = await sbPost('b2b_leads', row);
+  if (CONFIG.b2bEndpoint) fetch(CONFIG.b2bEndpoint, { method:'POST', body: fd }).catch(()=>{});
+  busy(f, false);
+  if (r && r.ok || CONFIG.b2bEndpoint) { toast(T('toast_b2b'), 5000); f.reset(); } else { toast(T('toast_err'), 5000); }
+  return false;
+}
+async function newsletter(e){
+  e.preventDefault(); const f = e.target, fd = new FormData(f); busy(f, true);
+  const r = await sbPost('newsletter_signups', { email: String(fd.get('email') || '').trim().toLowerCase(), lang, source: 'web', code: CONFIG.firstOrderCode || 'CHEWAWA10' });
+  if (CONFIG.newsletterEndpoint) fetch(CONFIG.newsletterEndpoint, { method:'POST', body: fd }).catch(()=>{});
+  busy(f, false);
+  if (r && r.status === 409) { toast(T('toast_nl_dup'), 5000); f.reset(); }
+  else if (r && r.ok || CONFIG.newsletterEndpoint) { toast(T('toast_nl').replace('CHEWAWA10', CONFIG.firstOrderCode || 'CHEWAWA10'), 5000); f.reset(); }
+  else { toast(T('toast_err'), 5000); }
+  return false;
+}
+
+/* ===================== Supabase: catálogo en vivo ===================== */
+const SB = CONFIG.supabase || {};
+const sbOn = !!(SB.url && SB.key);
+const sbH = () => ({ apikey: SB.key, Authorization: 'Bearer ' + SB.key, 'Content-Type': 'application/json' });
+async function sbGet(path){ const r = await fetch(SB.url + '/rest/v1/' + path, { headers: sbH() }); if (!r.ok) throw new Error('supabase ' + r.status); return r.json(); }
+async function sbPost(table, row){ if (!sbOn) return null; try { return await fetch(SB.url + '/rest/v1/' + table, { method:'POST', headers: { ...sbH(), Prefer: 'return=minimal' }, body: JSON.stringify(row) }); } catch(e) { return null; } }
+let dataSource = 'local';
+function setSource(s){ dataSource = s; const el = document.getElementById('dataSrc'); if (el) el.textContent = T(s === 'live' ? 'src_live' : 'src_local'); }
+const rowToProduct = (r, old) => ({
+  id: r.id, name: r.name_es, en: r.name_en, sub: r.sub_brand || '', code: r.code, qty: r.qty_es, qtyEn: r.qty_en,
+  grams: r.grams, pieces: r.pieces || undefined, price: +r.price_mxn, color: r.color || '#E9A93B', tint: r.tint || '#FBEFD3',
+  img: r.img || (old && old.img) || 'img-bag-patas.webp', w: old ? old.w : 729, h: old ? old.h : 1080,
+  tag: r.tag_es || '', tagEn: r.tag_en || '', hot: !!r.hot, desc: r.desc_es || '', descEn: r.desc_en || '',
+  ingr: r.ingredient_es || '', ingrEn: r.ingredient_en || '', protein: +r.protein, fat: +r.fat, fiber: +r.fiber, moisture: +r.moisture,
+  unit: r.unit_es || '', unitEn: r.unit_en || '', portions: r.portions || (old && old.portions) || [[1,2],[2,3],[3,4],[4,5]]
+});
+function applyConfigText(){
+  const ship = '$' + CONFIG.freeShipFrom.toLocaleString('es-MX');
+  ['ann1'].forEach(k => { ES[k] = ES[k].replace(/\$[\d,]+/, ship); EN[k] = EN[k].replace(/\$[\d,]+/, ship); });
+  if (CONFIG.firstOrderCode) ['h_offer'].forEach(k => { ES[k] = ES[k].replace('CHEWAWA10', CONFIG.firstOrderCode); EN[k] = EN[k].replace('CHEWAWA10', CONFIG.firstOrderCode); });
+}
+async function loadFromSupabase(){
+  if (!sbOn) return;
+  try {
+    const [prods, bundles, cfg] = await Promise.all([
+      sbGet('products?select=*&active=is.true&order=sort'),
+      sbGet('bundles?select=*&active=is.true&order=updated_at.desc&limit=1'),
+      sbGet('site_config?select=key,value')
+    ]);
+    if (!prods.length) return;
+    const local = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+    PRODUCTS.splice(0, PRODUCTS.length, ...prods.map(r => rowToProduct(r, local[r.id])));
+    const c = Object.fromEntries(cfg.map(x => [x.key, x.value]));
+    if (c.free_ship_from != null) CONFIG.freeShipFrom = +c.free_ship_from;
+    if (c.sub_discount != null) CONFIG.subDiscount = +c.sub_discount;
+    if (c.msi_from != null) CONFIG.msiFrom = +c.msi_from;
+    if (c.checkout_url) CONFIG.checkoutUrl = String(c.checkout_url);
+    if (c.whatsapp) CONFIG.whatsapp = String(c.whatsapp);
+    if (c.first_order_code) CONFIG.firstOrderCode = String(c.first_order_code);
+    if (bundles[0]) Object.assign(CONFIG.bundle, { id: bundles[0].id, price: +bundles[0].price_mxn, name: bundles[0].name_es, nameEn: bundles[0].name_en });
+    applyConfigText();
+    setLang(lang); setSource('live');
+  } catch(e) { setSource('local'); }
+}
+async function loadReviews(){
+  if (!sbOn) return;
+  try {
+    const rows = await sbGet('reviews?select=author,city,breed,rating,body,verified&approved=is.true&order=created_at.desc&limit=6');
+    if (!rows.length) return;
+    const esc = s => String(s ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+    document.querySelector('.reviews').innerHTML = rows.map(r => `
+      <div class="review rv in"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div><p>“${esc(r.body)}”</p><div class="who">${esc(r.author)} <small>${[r.city, r.breed, r.verified ? (lang==='es'?'Compra verificada':'Verified purchase') : null].filter(Boolean).map(esc).join(' · ')}</small></div></div>`).join('');
+    const sub = document.querySelector('[data-i="r_sub"]'); if (sub) sub.textContent = lang === 'es' ? 'Reseñas reales de clientes, verificadas por compra.' : 'Real reviews from customers, verified by purchase.';
+  } catch(e) {}
+}
 
 /* ===================== toast ===================== */
 let tt; function toast(msg, ms = 2600){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), ms); }
@@ -975,7 +1067,8 @@ const heroObs = new IntersectionObserver(es => es.forEach(e => mcta.classList.to
 heroObs.observe(document.querySelector('.hero .ctas'));
 
 /* ===================== init ===================== */
-renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare();
+renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare(); renderBundle(); setSource('local');
+loadFromSupabase().then(loadReviews);   // catálogo, precios y config en vivo; si falla, se queda con lo integrado
 </script>
 </body>
 </html>
