@@ -20,9 +20,10 @@
    ===================================================================== */
 :root{
   --cream:#F6F0E4; --cream-2:#EDE4D1; --paper:#FFFDF8;
-  --ink:#3E2618; --brown:#5B3A2A; --brown-2:#7A5340; --mute:#8A7461;
+  --ink:#3E2618; --brown:#5B3A2A; --brown-2:#7A5340; --mute:#6F5B49;   /* mute: 6.3:1 sobre papel, 5.1:1 sobre cream-2 (WCAG AA) */
   --yellow:#E9A93B; --red:#D8463E; --green:#7BAF2C; --blue:#35A9BC;
-  --cta:#D8463E; --cta-hover:#BF3A33; --wa:#25D366;
+  --cta:#C83B33; --cta-hover:#B3352D; --wa:#25D366;   /* texto blanco 5.1:1 */
+  --yellow-ink:#8F620C; --green-ink:#4A7311; --blue-ink:#1C7080; --red-ink:#B3352D;   /* versiones oscuras para texto sobre papel (≥5:1) */
   --line:rgba(62,38,24,.12); --shadow:0 10px 30px rgba(62,38,24,.10);
   --display:'Fredoka','Arial Rounded MT Bold','Nunito',system-ui,sans-serif;
   --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -115,7 +116,7 @@ section{padding:88px 0}
 .toggle{display:inline-flex;background:var(--cream-2);border-radius:999px;padding:5px;margin-top:22px;gap:4px}
 .toggle button{padding:10px 20px;border-radius:999px;font-family:var(--display);font-weight:600;font-size:.95rem;color:var(--brown-2);transition:all .2s}
 .toggle button.on{background:var(--brown);color:var(--cream);box-shadow:var(--shadow)}
-.toggle .save{background:var(--green);color:#fff;border-radius:999px;font-size:.7rem;padding:2px 8px;margin-left:6px;font-weight:800}
+.toggle .save{background:var(--green-ink);color:#fff;border-radius:999px;font-size:.7rem;padding:2px 8px;margin-left:6px;font-weight:800}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.grid{grid-template-columns:1fr}}
@@ -125,9 +126,9 @@ section{padding:88px 0}
 .card .art img{height:230px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 16px rgba(62,38,24,.22));transition:transform .3s var(--ease)}
 .card:hover .art img{transform:scale(1.04) rotate(-1deg)}
 .card .tag{position:absolute;z-index:2;top:14px;left:14px;background:var(--brown);color:var(--cream);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;padding:4px 8px}
-.card .tag.hot{background:var(--red)}
+.card .tag.hot{background:var(--red-ink);color:#fff}
 .card .body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1;gap:8px}
-.card .sub{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--accent)}
+.card .sub{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--accent-ink,var(--accent))}
 .card h3{font-size:1.25rem}
 .card p{font-size:.93rem;color:var(--brown-2)}
 .card .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:.75rem;font-weight:700;color:var(--mute)}
@@ -136,7 +137,7 @@ section{padding:88px 0}
 .card .price b{font-family:var(--display);font-size:1.6rem;color:var(--brown)}
 .card .price s{color:var(--mute);font-size:.95rem}
 .card .price small{color:var(--mute);font-size:.8rem}
-.card .msi{font-size:.78rem;color:var(--blue);font-weight:800}
+.card .msi{font-size:.78rem;color:var(--blue-ink);font-weight:800}
 .card .add{margin-top:10px;width:100%}
 .card .add.added{background:var(--green)}
 
@@ -221,7 +222,7 @@ section{padding:88px 0}
 @media(max-width:900px){.analysis{grid-template-columns:repeat(2,1fr)}}
 .an{background:var(--paper);border-radius:14px;padding:16px;box-shadow:var(--shadow);border-top:5px solid var(--accent)}
 .an b{display:block;font-family:var(--display);font-weight:600;color:var(--brown)}
-.an .big{font-family:var(--display);font-size:2rem;color:var(--accent);line-height:1.1;margin:4px 0}
+.an .big{font-family:var(--display);font-size:2rem;color:var(--accent-ink,var(--accent));line-height:1.1;margin:4px 0}
 .an small{color:var(--mute);font-weight:700;font-size:.78rem}
 
 /* b2b */
@@ -255,7 +256,10 @@ footer{background:var(--brown);color:rgba(246,240,228,.85);padding:60px 0 30px;f
 footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
 @media(max-width:900px){footer .cols{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){footer .cols{grid-template-columns:1fr}}
-footer h4{font-family:var(--display);font-weight:600;color:var(--cream);margin-bottom:12px;font-size:1rem}
+footer h3{font-family:var(--display);font-weight:600;color:var(--cream);margin-bottom:12px;font-size:1rem}
+footer .cols a{display:inline-block;padding:4px 0}
+footer .demo-tag{background:transparent;color:var(--cream-2);border-color:rgba(246,240,228,.45)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 footer ul{list-style:none;display:grid;gap:8px}
 footer a:hover{color:var(--yellow)}
 footer .logo img{height:40px;filter:brightness(0) invert(1);opacity:.9}
@@ -407,7 +411,7 @@ body.notes .note{display:block}
 <body>
 
 <!-- ===== Announcement bar ===== -->
-<div class="announce">
+<div class="announce" role="region" aria-label="Avisos">
   <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg><span data-i="ann1">Envío gratis desde $599 MXN · 2–5 días a todo México</span></span>
   <span class="hide-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span data-i="ann2">Tarjeta · OXXO · Mercado Pago · 3 MSI</span></span>
   <span class="hide-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-3.3-6.5"/><path d="M20 4v5h-5"/></svg><span data-i="ann3">Si no lo devora, te devolvemos tu dinero</span></span>
@@ -436,6 +440,7 @@ body.notes .note{display:block}
 </nav>
 
 <!-- ===== Hero ===== -->
+<main id="contenido">
 <header class="hero" id="top">
   <div class="wrap">
     <div>
@@ -467,10 +472,10 @@ body.notes .note{display:block}
 <!-- ===== Trust strip ===== -->
 <div class="trust">
   <div class="wrap">
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7z"/><path d="M9 12l2 2 4-4"/></svg><span data-i="t1">Ingredientes grado humano<small data-i="t1s">Sin maíz, soya, trigo ni azúcar</small></span></div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12c0-4 3-8 8-8s8 4 8 8-3 8-8 8-8-4-8-8z"/><path d="M8 12h8M12 8v8"/></svg><span data-i="t2">Sin conservadores ni colorantes<small data-i="t2s">Deshidratado lento, no horneado</small></span></div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg><span data-i="t3">Hecho en México<small data-i="t3s">Lotes pequeños, producción local</small></span></div>
-    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7L9 18l-5-5"/></svg><span data-i="t4">Garantía “lo devora o te devolvemos”<small data-i="t4s">30 días, sin preguntas</small></span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7z"/><path d="M9 12l2 2 4-4"/></svg><span data-i="t1">Ingredientes grado humano<small>Sin maíz, soya, trigo ni azúcar</small></span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12c0-4 3-8 8-8s8 4 8 8-3 8-8 8-8-4-8-8z"/><path d="M8 12h8M12 8v8"/></svg><span data-i="t2">Sin conservadores ni colorantes<small>Deshidratado lento, no horneado</small></span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg><span data-i="t3">Hecho en México<small>Lotes pequeños, producción local</small></span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7L9 18l-5-5"/></svg><span data-i="t4">Garantía “lo devora o te devolvemos”<small>30 días, sin preguntas</small></span></div>
   </div>
 </div>
 
@@ -482,7 +487,7 @@ body.notes .note{display:block}
     <span class="eyebrow" data-i="p_eye">Nuestros premios</span>
     <h2 style="margin-top:10px" data-i="p_h2">Cuatro premios. Cuatro ingredientes. Cero letras chiquitas.</h2>
     <p class="lead" data-i="p_sub">Elige comprar una vez o recibirlos cada mes con 15 % de descuento. Cancelas cuando quieras.</p>
-    <div class="toggle" role="tablist">
+    <div class="toggle" role="group" aria-label="Modo de compra">
       <button class="on" id="modeOnce" data-i="m_once">Una vez</button>
       <button id="modeSub"><span data-i="m_sub">Cada mes</span><span class="save">−15 %</span></button>
     </div>
@@ -537,7 +542,7 @@ body.notes .note{display:block}
     </div>
     <div class="compare rv">
       <table>
-        <thead><tr><th data-i="c_h0"></th><th class="us">Chewawa! Sticks de res</th><th data-i="c_h2">Premio dental líder del súper*</th></tr></thead>
+        <thead><tr><th data-i="c_h0"><span class="sr-only">Característica</span></th><th class="us">Chewawa! Sticks de res</th><th data-i="c_h2">Premio dental líder del súper*</th></tr></thead>
         <tbody>
           <tr><td data-i="c_r1">Ingredientes</td><td class="us"><span class="ok">1</span> — <span data-i="c_r1a">esófago de res</span></td><td class="them"><span class="no">30+</span> — <span data-i="c_r1b">harina de arroz, almidón de trigo, glicerina, gelatina…</span></td></tr>
           <tr><td data-i="c_r2">Primer ingrediente</td><td class="us" data-i="c_r2a">Carne</td><td class="them" data-i="c_r2b">Harina de arroz</td></tr>
@@ -629,7 +634,7 @@ body.notes .note{display:block}
         <input type="text" name="negocio" data-ph="bb_i1" placeholder="Nombre del negocio" required>
         <input type="text" name="ciudad" data-ph="bb_i2" placeholder="Ciudad" required>
         <input type="tel" name="whatsapp" data-ph="bb_i3" placeholder="WhatsApp" required>
-        <select name="tipo"><option data-i="bb_o1">Tienda de mascotas</option><option data-i="bb_o2">Veterinaria</option><option data-i="bb_o3">Estética canina</option><option data-i="bb_o4">Distribuidor</option></select>
+        <select name="tipo" aria-label="Tipo de negocio"><option data-i="bb_o1">Tienda de mascotas</option><option data-i="bb_o2">Veterinaria</option><option data-i="bb_o3">Estética canina</option><option data-i="bb_o4">Distribuidor</option></select>
         <button class="btn btn-brown" type="submit" data-i="bb_cta">Quiero precios de mayoreo</button>
         <small style="text-align:center;color:var(--mute);font-weight:700" data-i="bb_small">Te contestamos por WhatsApp en menos de 48 h.</small>
       </form>
@@ -675,6 +680,7 @@ body.notes .note{display:block}
 </section>
 
 <div class="note"><div><b>9</b><span data-i="note9">69 % del tráfico de e-commerce en México es móvil y ~29 % de los compradores digitales ya compran productos para mascotas en línea. 72.4 % de los consumidores es más propenso a comprar si la marca ofrece mensajería, y 92 % de los internautas mexicanos usa WhatsApp: por eso el botón flotante. Velocidad: 0.1 s menos en móvil = +8.4 % de conversión en retail; por eso el sitio es un solo archivo sin frameworks. <span class="src">Fuentes: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://whatsappbusiness.com/resources/resource-library/state-of-business-messaging/" target="_blank" rel="noopener">State of Business Messaging</a> · <a href="https://web.dev/case-studies/milliseconds-make-millions" target="_blank" rel="noopener">Google/Deloitte, Milliseconds Make Millions</a>.</span></span></div></div>
+</main>
 
 <!-- ===== Footer ===== -->
 <footer>
@@ -685,9 +691,9 @@ body.notes .note{display:block}
         <p style="margin-top:14px;max-width:34ch" data-i="ft_p">Premios de un solo ingrediente, hechos en México. Treat your pet right.</p>
         <div class="pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>MERCADO PAGO</span><span>OXXO</span><span>SPEI</span></div>
       </div>
-      <div><h4 data-i="ft_h1">Tienda</h4><ul><li><a href="#premios" data-i="ft_l1">Todos los premios</a></li><li><a href="#pack" data-i="ft_l2">Pack Probador</a></li><li><a href="#premios" data-i="ft_l3">Suscripción mensual</a></li><li><a href="#mayoreo" data-i="ft_l4">Mayoreo y distribuidores</a></li></ul></div>
-      <div><h4 data-i="ft_h2">Ayuda</h4><ul><li><a href="#faq" data-i="ft_l5">Preguntas frecuentes</a></li><li><a href="#faq" data-i="ft_l6">Envíos y devoluciones</a></li><li><a href="#tamano" data-i="ft_l7">Guía de porciones</a></li><li><a href="#" data-i="ft_l8">Facturación</a></li></ul></div>
-      <div><h4 data-i="ft_h3">Contacto</h4><ul><li><a href="https://wa.me/525661118591" target="_blank" rel="noopener">WhatsApp 56 6111 8591</a></li><li><a href="mailto:info@chewawa.dog">info@chewawa.dog</a></li><li><a href="#" data-i="ft_ig">Instagram · TikTok · Facebook</a></li><li><span data-i="ft_city">Monterrey, N.L., México</span></li></ul></div>
+      <div><h3 data-i="ft_h1">Tienda</h3><ul><li><a href="#premios" data-i="ft_l1">Todos los premios</a></li><li><a href="#pack" data-i="ft_l2">Pack Probador</a></li><li><a href="#premios" data-i="ft_l3">Suscripción mensual</a></li><li><a href="#mayoreo" data-i="ft_l4">Mayoreo y distribuidores</a></li></ul></div>
+      <div><h3 data-i="ft_h2">Ayuda</h3><ul><li><a href="#faq" data-i="ft_l5">Preguntas frecuentes</a></li><li><a href="#faq" data-i="ft_l6">Envíos y devoluciones</a></li><li><a href="#tamano" data-i="ft_l7">Guía de porciones</a></li><li><a href="mailto:info@chewawa.dog?subject=Facturaci%C3%B3n%20Chewawa" data-i="ft_l8">Facturación</a></li></ul></div>
+      <div><h3 data-i="ft_h3">Contacto</h3><ul><li><a href="https://wa.me/525661118591" target="_blank" rel="noopener">WhatsApp 56 6111 8591</a></li><li><a href="mailto:info@chewawa.dog">info@chewawa.dog</a></li><li><span data-i="ft_ig" title="Redes sociales: pendiente de definir handles">Instagram · TikTok · Facebook</span></li><li><span data-i="ft_city">Monterrey, N.L., México</span></li></ul></div>
     </div>
     <div class="legal">
       <span data-i="ft_legal">© 2026 Chewawa! Dog Treats · Aviso de privacidad · Términos y condiciones · Política de devoluciones</span>
@@ -697,9 +703,11 @@ body.notes .note{display:block}
 </footer>
 
 <!-- ===== Floating / fixed UI ===== -->
+<aside aria-label="Contacto rápido">
 <a class="wa-float" href="https://wa.me/525661118591?text=Hola%20Chewawa%2C%20tengo%20una%20duda%20sobre%20sus%20premios" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-1 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.5.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 15 3.7 13.5 3.7 12 3.7 7.4 7.4 3.7 12 3.7s8.3 3.7 8.3 8.3-3.7 8.2-8.3 8.2z"/></svg>
 </a>
+</aside>
 <div class="mcta" id="mcta"><span style="font-family:var(--display);font-weight:600;color:var(--brown)" data-i="mc_t">Desde $199</span><a class="btn btn-cta btn-sm" href="#premios" data-i="mc_cta">Ver premios</a></div>
 
 <button class="notes-switch" id="notesBtn" aria-pressed="false"><i></i><span data-i="notes_lbl">Notas de diseño</span></button>
@@ -807,7 +815,7 @@ const EN = {
   b_l1:'Chicken feet + Beef sticks + Chicken breast strips + Beef jerky', b_l2:'Printed “how much do I give?” guide by your dog’s weight', b_l3:'30-day guarantee: if they don’t devour it, money back', b_save:'Save 18%', b_cta:'Add Sampler Pack',
   note4:'A hero bundle with a struck-through anchor price raises average order value and removes the “which one do I buy?” doubt: at HiSmile over 80% of orders are bundles and carts are 4x larger. It crosses the free-shipping threshold by design. <span class="src">Source: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span>',
   w_eye:'Why Chewawa', w_h2:'Read the label of the treat you give today. Then read ours.', w_sub:'Nothing invented: we compare our label with the best-selling dental treat at the supermarket.',
-  c_h0:'', c_h2:'Leading supermarket dental treat*', c_r1:'Ingredients', c_r1a:'beef esophagus', c_r1b:'rice flour, wheat starch, glycerin, gelatin…', c_r2:'First ingredient', c_r2a:'Meat', c_r2b:'Rice flour', c_r3:'Crude protein (min.)', c_r4:'Artificial colorants', c_r4b:'Blue 2, Yellow 5', c_r5:'Preservatives', c_r5b:'potassium sorbate', c_r6:'Grains / sugar / soy', no_:'No', yes_:'Yes', no_2:'No', yes_2:'Yes', no_3:'No', yes_3:'Yes',
+  c_h0:'<span class="sr-only">Feature</span>', c_h2:'Leading supermarket dental treat*', c_r1:'Ingredients', c_r1a:'beef esophagus', c_r1b:'rice flour, wheat starch, glycerin, gelatin…', c_r2:'First ingredient', c_r2a:'Meat', c_r2b:'Rice flour', c_r3:'Crude protein (min.)', c_r4:'Artificial colorants', c_r4b:'Blue 2, Yellow 5', c_r5:'Preservatives', c_r5b:'potassium sorbate', c_r6:'Grains / sugar / soy', no_:'No', yes_:'Yes', no_2:'No', yes_2:'Yes', no_3:'No', yes_3:'Yes',
   c_foot:'*Data from the Pedigree® Dentastix™ Large (Fresh) label as published by PetSmart, 2026. Chewawa: guaranteed analysis from the 2025 catalog. Brands belong to their owners.',
   note5:'Label-to-label comparison is a natural brand’s strongest argument against a mass brand, and it is verifiable: Pedigree dry gets 1 star, “Strongly Not Recommended”, on Dog Food Advisor (corn first, BHA, dyes; US formulas, verify the Mexican label before quoting). Blue Buffalo built a “read the label” brand that General Mills bought for US$8B. Caveat: Blue Buffalo paid US$32M when its own label failed; every Chewawa claim must be provable per batch. <span class="src">Sources: <a href="https://www.dogfoodadvisor.com/dog-food-reviews/pedigree-dog-food-dry/" target="_blank" rel="noopener">Dog Food Advisor</a> · <a href="https://investors.generalmills.com/press-releases/press-release-details/2018/General-Mills-Accelerates-Portfolio-Reshaping-With-Acquisition-of-Blue-Buffalo/default.aspx" target="_blank" rel="noopener">General Mills, 2018</a> · <a href="https://www.dvm360.com/view/blue-buffalo-makes-true-blue-promise-settle-32-million" target="_blank" rel="noopener">dvm360</a>.</span>',
   r_eye:'Reviews', r_h2:'What the humans (and the tails) say', r_sub:'Sample reviews to show the layout. To be replaced with real, purchase-verified reviews.',
@@ -852,6 +860,8 @@ function setLang(l){
   document.querySelectorAll('[data-i]').forEach(el => { if (D[el.dataset.i] !== undefined) el.innerHTML = D[el.dataset.i]; });
   document.querySelectorAll('[data-ph]').forEach(el => { if (D[el.dataset.ph] !== undefined) el.placeholder = D[el.dataset.ph]; });
   document.getElementById('langBtn').textContent = l === 'es' ? 'EN' : 'ES';
+  const sel = document.querySelector('select[name=tipo]'); if (sel) sel.setAttribute('aria-label', l === 'es' ? 'Tipo de negocio' : 'Business type');
+  document.querySelector('.toggle').setAttribute('aria-label', l === 'es' ? 'Modo de compra' : 'Purchase mode');
   document.documentElement.lang = l === 'es' ? 'es-MX' : 'en';
   renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare(); renderBundle(); setSource(dataSource);
 }
@@ -859,6 +869,21 @@ document.getElementById('langBtn').onclick = () => setLang(lang === 'es' ? 'en' 
 
 /* ===================== helpers ===================== */
 const mxn = n => '$' + Math.round(n).toLocaleString('es-MX');
+/* Color de acento "tinta": oscurece el color del SKU hasta que el texto cumpla WCAG AA (≥4.6:1) sobre papel */
+const inkCache = {};
+function inkFor(hex){
+  if (inkCache[hex]) return inkCache[hex];
+  const lum = (r,g,b) => { const f = c => { c/=255; return c <= .03928 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4); }; return .2126*f(r)+.7152*f(g)+.0722*f(b); };
+  const paper = lum(255,253,248);
+  let m = /^#?([0-9a-f]{6})$/i.exec(hex || ''); if (!m) return hex;
+  let r = parseInt(m[1].slice(0,2),16), g = parseInt(m[1].slice(2,4),16), b = parseInt(m[1].slice(4,6),16);
+  let out = hex;
+  for (let i = 0; i < 40; i++) {
+    if ((paper + .05) / (lum(r,g,b) + .05) >= 4.6) { out = '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join(''); break; }
+    r = Math.round(r * .92); g = Math.round(g * .92); b = Math.round(b * .92);
+  }
+  return inkCache[hex] = out;
+}
 const pname = p => lang === 'es' ? p.name : p.en;
 let mode = 'once';
 const priceOf = p => mode === 'sub' ? p.price * (1 - CONFIG.subDiscount) : p.price;
@@ -867,7 +892,7 @@ const priceOf = p => mode === 'sub' ? p.price * (1 - CONFIG.subDiscount) : p.pri
 function renderGrid(){
   const g = document.getElementById('grid');
   g.innerHTML = PRODUCTS.map(p => `
-    <article class="card rv in" style="--accent:${p.color};--tint:${p.tint}">
+    <article class="card rv in" style="--accent:${p.color};--accent-ink:${inkFor(p.color)};--tint:${p.tint}">
       <div class="art"><span class="tag ${p.hot?'hot':''}">${lang==='es'?p.tag:p.tagEn}</span><img src="${p.img}" alt="${pname(p)}" loading="lazy" width="${p.w}" height="${p.h}"></div>
       <div class="body">
         <span class="sub">${p.sub}</span>
@@ -905,7 +930,7 @@ function renderSizes(){
     <img src="${p.img}" alt="${pname(p)}" loading="lazy">
     <div>
       <span class="eyebrow">${T('reco_t')} ${(lang==='es'?z.name:z.en).toLowerCase()} · ${z.kg}</span>
-      <h3 style="margin-top:6px">${pname(p)} <span style="color:${p.color}">· ${p.sub}</span></h3>
+      <h3 style="margin-top:6px">${pname(p)} <span style="color:${inkFor(p.color)}">· ${p.sub}</span></h3>
       <p style="color:var(--brown-2);margin-top:6px">${lang==='es'?p.desc:p.descEn}</p>
       <p style="margin-top:12px;font-weight:800;font-size:.9rem">${T('reco_p')}</p>
       <div class="portions">${PRODUCTS.map(q => `<span><b>${q.portions[size][0]}–${q.portions[size][1]}</b> ${lang==='es'?q.unit:q.unitEn} · ${pname(q)}</span>`).join('')}</div>
@@ -917,7 +942,7 @@ function renderSizes(){
 /* ===================== analysis ===================== */
 function renderAnalysis(){
   document.getElementById('analysis').innerHTML = PRODUCTS.map(p => `
-    <div class="an" style="--accent:${p.color}"><b>${pname(p)}</b><div class="big">${p.protein}%</div><small>${T('an_protein')} · ${T('an_fat')} ${p.fat}% · ${lang==='es'?'Humedad máx.':'Moisture max.'} ${p.moisture}%</small><br><small style="color:${p.color}">${lang==='es'?'Ingrediente: ':'Ingredient: '}${lang==='es'?p.ingr:p.ingrEn}</small></div>`).join('');
+    <div class="an" style="--accent:${p.color};--accent-ink:${inkFor(p.color)}"><b>${pname(p)}</b><div class="big">${p.protein}%</div><small>${T('an_protein')} · ${T('an_fat')} ${p.fat}% · ${lang==='es'?'Humedad máx.':'Moisture max.'} ${p.moisture}%</small><br><small style="color:${inkFor(p.color)}">${lang==='es'?'Ingrediente: ':'Ingredient: '}${lang==='es'?p.ingr:p.ingrEn}</small></div>`).join('');
 }
 
 /* ===================== cart ===================== */
