@@ -139,7 +139,37 @@ insert into public.site_config (key,value) values
 ('prices_are_placeholders','true')
 on conflict (key) do update set value=excluded.value, updated_at=now();
 
+-- ---------- Pagos (Stripe Checkout) · agregado 2026-09-03 ----------
+-- El sitio llama a la Edge Function `checkout`, que crea la sesión de Stripe con los precios
+-- de estas tablas. El webhook `stripe-webhook` guarda el pedido en `orders` (solo service role).
+alter table public.checkout_intents add column if not exists stripe_session_id text;
+alter table public.checkout_intents add column if not exists status text not null default 'created';   -- created | redirected | paid
+
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  stripe_session_id text unique not null,
+  mode text,                        -- payment | subscription
+  livemode boolean not null default false,
+  amount_total_mxn numeric(10,2),
+  currency text,
+  customer_name text, customer_email text, customer_phone text,
+  shipping jsonb,                   -- dirección de envío tal cual la manda Stripe
+  items jsonb,                      -- {product_or_bundle_id: qty} del intento
+  intent_id uuid references public.checkout_intents(id),
+  status text not null default 'pagado',
+  raw jsonb                         -- objeto checkout.session completo (por si acaso)
+);
+alter table public.orders enable row level security;   -- sin políticas públicas: solo service role
+
+insert into public.site_config (key,value) values
+('payments','"stripe"'),            -- "stripe" | "none"
+('stripe_mode','"test"'),           -- "test" mientras sea demo; "live" solo cuando Wero lo decida
+('shipping_mxn','99')               -- PLACEHOLDER: costo de envío bajo el umbral de envío gratis
+on conflict (key) do update set value=excluded.value, updated_at=now();
+
 -- Sanity check
 select 'products' as t, count(*) from public.products
 union all select 'bundles', count(*) from public.bundles
-union all select 'site_config', count(*) from public.site_config;
+union all select 'site_config', count(*) from public.site_config
+union all select 'orders', count(*) from public.orders;
