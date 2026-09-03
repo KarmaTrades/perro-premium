@@ -691,8 +691,7 @@ body.notes .note{display:block}
     </div>
     <div class="legal">
       <span data-i="ft_legal">© 2026 Chewawa! Dog Treats · Aviso de privacidad · Términos y condiciones · Política de devoluciones</span>
-      <span data-i="ft_demo">Sitio de demostración — no es la tienda oficial.</span>
-      <span class="demo-tag" id="dataSrc" title="Fuente de productos, precios y configuración">catálogo integrado</span>
+      <span><span data-i="ft_demo">Sitio de demostración — no es la tienda oficial.</span> <span class="demo-tag" id="dataSrc" title="Fuente de productos, precios y configuración">catálogo integrado</span></span>
     </div>
   </div>
 </footer>
@@ -830,7 +829,7 @@ const EN = {
   per100:'per 100 g', per_piece:'per piece', add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
   reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (4 bags)',
   ship_need:'Add $', ship_need2:' more for free shipping', ship_ok:'You’ve got free shipping 🎉', empty:'Your cart is empty. The treats are waiting.',
-  toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', sending:'Sending…',
+  toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_checkout_off:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl).', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', toast_offline:'Preview without backend: on the live site this is saved to Supabase.', sending:'Sending…',
   src_live:'live catalog · Supabase', src_local:'built-in catalog',
   an_protein:'Crude protein (min.)', an_fat:'Crude fat (min.)', an_1ing:'1 ingredient',
 };
@@ -840,7 +839,7 @@ Object.assign(ES, {
   per100:'por 100 g', per_piece:'por pieza', add:'Agregar', added:'Agregado ✓', msi:'3 meses sin intereses', each_month:'/ mes', once:'una vez', sub:'cada mes −15 %',
   reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Probador (4 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
-  toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', sending:'Enviando…',
+  toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_checkout_off:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl).', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', toast_offline:'Vista previa sin backend: en el sitio real esto se guarda en Supabase.', sending:'Enviando…',
   src_live:'catálogo en vivo · Supabase', src_local:'catálogo integrado',
   c_us:'Chewawa', c_them:'Premio del súper',
   an_protein:'Proteína cruda (mín.)', an_fat:'Grasa cruda (mín.)', an_1ing:'1 ingrediente',
@@ -956,11 +955,11 @@ function closeCart(){ drawer.classList.remove('open'); overlay.classList.remove(
 document.getElementById('cartBtn').onclick = openCart;
 document.getElementById('closeCart').onclick = closeCart; overlay.onclick = closeCart;
 addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
-document.getElementById('checkout').onclick = () => {
+document.getElementById('checkout').onclick = async () => {
   if (!Object.keys(cart).length) { toast(T('empty')); return; }
   // Registra el intento de compra (qué había en el carrito) aunque el pago no esté conectado todavía.
-  sbPost('checkout_intents', { items: cart, subtotal_mxn: Math.round(lastSubtotal * 100) / 100, mode, lang, user_agent: navigator.userAgent.slice(0, 200) });
-  if (!CONFIG.checkoutUrl) { toast(T('toast_checkout'), 5000); return; }
+  const saved = await sbPost('checkout_intents', { items: cart, subtotal_mxn: Math.round(lastSubtotal * 100) / 100, mode, lang, user_agent: navigator.userAgent.slice(0, 200) });
+  if (!CONFIG.checkoutUrl) { toast(T(saved && saved.ok ? 'toast_checkout' : 'toast_checkout_off'), 5000); return; }
   const q = Object.entries(cart).map(([k,v]) => `${k}:${v}`).join(',');
   window.open(CONFIG.checkoutUrl + (CONFIG.checkoutUrl.includes('?') ? '&' : '?') + 'items=' + encodeURIComponent(q), '_blank');
 };
@@ -973,7 +972,7 @@ async function leadB2B(e){
   const r = await sbPost('b2b_leads', row);
   if (CONFIG.b2bEndpoint) fetch(CONFIG.b2bEndpoint, { method:'POST', body: fd }).catch(()=>{});
   busy(f, false);
-  if (r && r.ok || CONFIG.b2bEndpoint) { toast(T('toast_b2b'), 5000); f.reset(); } else { toast(T('toast_err'), 5000); }
+  if (r && r.ok || CONFIG.b2bEndpoint) { toast(T('toast_b2b'), 5000); f.reset(); } else if (r === null) { toast(T('toast_offline'), 5000); f.reset(); } else { toast(T('toast_err'), 5000); }
   return false;
 }
 async function newsletter(e){
@@ -983,6 +982,7 @@ async function newsletter(e){
   busy(f, false);
   if (r && r.status === 409) { toast(T('toast_nl_dup'), 5000); f.reset(); }
   else if (r && r.ok || CONFIG.newsletterEndpoint) { toast(T('toast_nl').replace('CHEWAWA10', CONFIG.firstOrderCode || 'CHEWAWA10'), 5000); f.reset(); }
+  else if (r === null) { toast(T('toast_offline'), 5000); f.reset(); }
   else { toast(T('toast_err'), 5000); }
   return false;
 }
