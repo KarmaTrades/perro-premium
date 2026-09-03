@@ -728,7 +728,7 @@ body.notes .note{display:block}
     <div class="tot"><span data-i="cd_sub">Subtotal</span><span id="subtotal">$0</span></div>
     <button class="btn btn-cta" id="checkout" data-i="cd_cta">Pagar ahora</button>
     <div class="paylist"><span>VISA</span><span>MC</span><span>AMEX</span><span>MERCADO PAGO</span><span>OXXO</span><span>3 MSI</span></div>
-    <small data-i="cd_small">Pago seguro · Compra como invitado, sin crear cuenta</small>
+    <small data-i="cd_small">Pago seguro con Stripe · Tarjeta · Compra como invitado, sin crear cuenta</small>
   </footer>
 </aside>
 <div id="toast" role="status"></div>
@@ -744,7 +744,8 @@ const CONFIG = {
   bundle: { price: 899 },          // PLACEHOLDER — precio Pack Probador
   msiFrom: 299,                    // desde cuánto ofrecer 3 MSI
   whatsapp: '525661118591',
-  checkoutUrl: '',                 // PLACEHOLDER — Stripe Payment Link / Shopify checkout / Mercado Pago
+  payments: 'stripe',              // 'stripe' → Edge Function `checkout` crea la sesión de Stripe Checkout (sandbox mientras site_config.stripe_mode = test)
+  checkoutUrl: '',                 // alternativa: checkout externo (Shopify / Mercado Pago) si payments ≠ 'stripe'
   /* Backend: Supabase (proyecto "perro-premium"). Al cargar, el sitio lee products / bundles / site_config
      de ahí y guarda leads de mayoreo, suscripciones al club e intentos de compra. Si no responde
      (sin internet, vista previa con CSP), usa los datos integrados abajo. La llave "publishable" es
@@ -824,12 +825,12 @@ const EN = {
   note10:'Payment and checkout: 75% of Mexican online shoppers pay with debit, 49% with credit and 26% in cash at OXXO-type stores; interest-free installments motivate 70%. Guest checkout: 18–24% abandon when forced to create an account, and the average checkout asks for 11.3 fields when 8 are enough. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://baymard.com/blog/checkout-flow-average-form-fields" target="_blank" rel="noopener">Baymard, checkout flow</a>.</span>',
   ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_ig:'Instagram · TikTok · Facebook', ft_city:'Monterrey, N.L., Mexico',
   ft_legal:'© 2026 Chewawa! Dog Treats · Privacy notice · Terms & conditions · Return policy', ft_demo:'Demo site — not the official store.',
-  mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 4 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment · Guest checkout, no account needed',
+  mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 4 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Card · Guest checkout, no account needed',
   /* dynamic */
   per100:'per 100 g', per_piece:'per piece', add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
   reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (4 bags)',
   ship_need:'Add $', ship_need2:' more for free shipping', ship_ok:'You’ve got free shipping 🎉', empty:'Your cart is empty. The treats are waiting.',
-  toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_checkout_off:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl).', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', toast_offline:'Preview without backend: on the live site this is saved to Supabase.', sending:'Sending…',
+  toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_checkout_off:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl).', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', toast_offline:'Preview without backend: on the live site this is saved to Supabase.', sending:'Sending…', cd_redirect:'Taking you to secure payment…', pay_ok:'Thank you! Payment received. You’ll get a confirmation email shortly.', pay_cancel:'Payment cancelled — your cart is still here.',
   src_live:'live catalog · Supabase', src_local:'built-in catalog',
   an_protein:'Crude protein (min.)', an_fat:'Crude fat (min.)', an_1ing:'1 ingredient',
 };
@@ -839,7 +840,7 @@ Object.assign(ES, {
   per100:'por 100 g', per_piece:'por pieza', add:'Agregar', added:'Agregado ✓', msi:'3 meses sin intereses', each_month:'/ mes', once:'una vez', sub:'cada mes −15 %',
   reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Probador (4 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
-  toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_checkout_off:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl).', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', toast_offline:'Vista previa sin backend: en el sitio real esto se guarda en Supabase.', sending:'Enviando…',
+  toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_checkout_off:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl).', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', toast_offline:'Vista previa sin backend: en el sitio real esto se guarda en Supabase.', sending:'Enviando…', cd_redirect:'Te llevamos al pago seguro…', pay_ok:'¡Gracias! Pago recibido. En un momento te llega el correo de confirmación.', pay_cancel:'Pago cancelado — tu carrito sigue aquí.',
   src_live:'catálogo en vivo · Supabase', src_local:'catálogo integrado',
   c_us:'Chewawa', c_them:'Premio del súper',
   an_protein:'Proteína cruda (mín.)', an_fat:'Grasa cruda (mín.)', an_1ing:'1 ingrediente',
@@ -957,11 +958,28 @@ document.getElementById('closeCart').onclick = closeCart; overlay.onclick = clos
 addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
 document.getElementById('checkout').onclick = async () => {
   if (!Object.keys(cart).length) { toast(T('empty')); return; }
-  // Registra el intento de compra (qué había en el carrito) aunque el pago no esté conectado todavía.
-  const saved = await sbPost('checkout_intents', { items: cart, subtotal_mxn: Math.round(lastSubtotal * 100) / 100, mode, lang, user_agent: navigator.userAgent.slice(0, 200) });
-  if (!CONFIG.checkoutUrl) { toast(T(saved && saved.ok ? 'toast_checkout' : 'toast_checkout_off'), 5000); return; }
-  const q = Object.entries(cart).map(([k,v]) => `${k}:${v}`).join(',');
-  window.open(CONFIG.checkoutUrl + (CONFIG.checkoutUrl.includes('?') ? '&' : '?') + 'items=' + encodeURIComponent(q), '_blank');
+  const btn = document.getElementById('checkout'); const label = btn.innerHTML;
+  btn.disabled = true; btn.textContent = T('cd_redirect');
+  // 1) Registra el intento (qué había en el carrito) y obtén su id para ligarlo al pago.
+  let intentId = null;
+  const saved = await sbPost('checkout_intents', { items: cart, subtotal_mxn: Math.round(lastSubtotal * 100) / 100, mode, lang, user_agent: navigator.userAgent.slice(0, 200) }, true);
+  if (saved && saved.ok) { try { const rows = await saved.json(); intentId = rows && rows[0] && rows[0].id || null; } catch(e) {} }
+  // 2) Pago: Stripe Checkout (Edge Function `checkout`, precios reales desde Supabase) o un checkout externo.
+  if (CONFIG.payments === 'stripe' && sbOn) {
+    try {
+      const r = await fetch(SB.url + '/functions/v1/checkout', { method:'POST', headers: sbH(), body: JSON.stringify({ items: cart, lang, intent_id: intentId, return_path: location.pathname }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.url) { location.href = j.url; return; }
+      toast((lang === 'es' ? 'No se pudo iniciar el pago: ' : 'Could not start checkout: ') + (j.error || r.status), 6000);
+    } catch(e) { toast(T(saved ? 'toast_err' : 'toast_offline'), 5000); }
+    btn.disabled = false; btn.innerHTML = label; return;
+  }
+  if (CONFIG.checkoutUrl) {
+    const q = Object.entries(cart).map(([k,v]) => `${k}:${v}`).join(',');
+    location.href = CONFIG.checkoutUrl + (CONFIG.checkoutUrl.includes('?') ? '&' : '?') + 'items=' + encodeURIComponent(q); return;
+  }
+  toast(T(saved && saved.ok ? 'toast_checkout' : 'toast_checkout_off'), 5000);
+  btn.disabled = false; btn.innerHTML = label;
 };
 
 /* ===================== forms → Supabase (insert-only) ===================== */
@@ -992,7 +1010,7 @@ const SB = CONFIG.supabase || {};
 const sbOn = !!(SB.url && SB.key);
 const sbH = () => ({ apikey: SB.key, Authorization: 'Bearer ' + SB.key, 'Content-Type': 'application/json' });
 async function sbGet(path){ const r = await fetch(SB.url + '/rest/v1/' + path, { headers: sbH() }); if (!r.ok) throw new Error('supabase ' + r.status); return r.json(); }
-async function sbPost(table, row){ if (!sbOn) return null; try { return await fetch(SB.url + '/rest/v1/' + table, { method:'POST', headers: { ...sbH(), Prefer: 'return=minimal' }, body: JSON.stringify(row) }); } catch(e) { return null; } }
+async function sbPost(table, row, wantRow){ if (!sbOn) return null; try { return await fetch(SB.url + '/rest/v1/' + table, { method:'POST', headers: { ...sbH(), Prefer: wantRow ? 'return=representation' : 'return=minimal' }, body: JSON.stringify(row) }); } catch(e) { return null; } }
 let dataSource = 'local';
 function setSource(s){ dataSource = s; const el = document.getElementById('dataSrc'); if (el) el.textContent = T(s === 'live' ? 'src_live' : 'src_local'); }
 const rowToProduct = (r, old) => ({
@@ -1026,6 +1044,7 @@ async function loadFromSupabase(){
     if (c.checkout_url) CONFIG.checkoutUrl = String(c.checkout_url);
     if (c.whatsapp) CONFIG.whatsapp = String(c.whatsapp);
     if (c.first_order_code) CONFIG.firstOrderCode = String(c.first_order_code);
+    if (c.payments) CONFIG.payments = String(c.payments);
     if (bundles[0]) Object.assign(CONFIG.bundle, { id: bundles[0].id, price: +bundles[0].price_mxn, name: bundles[0].name_es, nameEn: bundles[0].name_en });
     applyConfigText();
     setLang(lang); setSource('live');
@@ -1069,6 +1088,13 @@ heroObs.observe(document.querySelector('.hero .ctas'));
 /* ===================== init ===================== */
 renderGrid(); renderSizes(); renderAnalysis(); renderCart(); labelCompare(); renderBundle(); setSource('local');
 loadFromSupabase().then(loadReviews);   // catálogo, precios y config en vivo; si falla, se queda con lo integrado
+(function payReturn(){
+  const pago = new URLSearchParams(location.search).get('pago');
+  if (!pago) return;
+  if (pago === 'ok') { cart = {}; persist(); renderCart(); toast(T('pay_ok'), 9000); }
+  else if (pago === 'cancelado') { toast(T('pay_cancel'), 6000); openCart(); }
+  try { history.replaceState(null, '', location.pathname); } catch(e) {}
+})();
 </script>
 </body>
 </html>
