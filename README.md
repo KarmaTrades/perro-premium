@@ -52,9 +52,9 @@ Otros pendientes marcados en el HTML:
 - Las bolsas (`img-bag-*.webp`) y el beagle son renders generados con IA a partir de las imágenes del catálogo (234×360 px; fuentes en `src-*.png`): diseño, colores, logo y textos principales son fieles, pero la letra chica (bullets, sello redondo) es inventada por el modelo y no debe usarse como referencia. Para producción, pedir los renders originales en alta resolución al diseñador del catálogo.
 - Avisar a los leads: hoy solo se guardan en `b2b_leads`. Para recibir un WhatsApp/correo por cada lead, agregar un Database Webhook o una Edge Function en Supabase.
 
-## Para publicar
+## Publicación
 
-GitHub Pages sirve la rama `main`. Cuando el demo esté aprobado: `git merge chewawa-mx-demo` en `main` (o cambiar la rama de Pages a `chewawa-mx-demo` en *Settings → Pages*).
+Desde el 3 de septiembre de 2026, GitHub Pages sirve **esta rama** (`chewawa-mx-demo`) en https://karmatrades.github.io/perro-premium/ (*Settings → Pages → Branch*). Cada commit a la rama se publica solo en ~1 minuto. `main` conserva el concepto anterior "Perro Premium" sin cambios; para volver a él basta con regresar la rama de Pages a `main`.
 
 ## Análisis garantizado y porciones
 
