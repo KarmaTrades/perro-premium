@@ -168,6 +168,19 @@ insert into public.site_config (key,value) values
 ('shipping_mxn','99')               -- PLACEHOLDER: costo de envío bajo el umbral de envío gratis
 on conflict (key) do update set value=excluded.value, updated_at=now();
 
+-- ---------- 5.º SKU: Pulmón de res (placeholder) · agregado 2026-09-07 ----------
+-- Pedido por los cofundadores (nota de voz 3-sep): "faltó el pulmón, que es morado".
+-- No está en el catálogo 2025: precio, gramos y análisis son PLACEHOLDER hasta que el equipo mande los datos.
+insert into public.products (id,sort,name_es,name_en,sub_brand,code,qty_es,qty_en,grams,pieces,price_mxn,color,tint,img,tag_es,tag_en,hot,desc_es,desc_en,ingredient_es,ingredient_en,protein,fat,fiber,moisture,unit_es,unit_en,portions) values
+('pulmon',5,'Pulmón de res','Beef Lung','Por confirmar','PT00XX','100 g','100 g',100,null,249,'#7B4FA3','#EBE1F4','img-bag-pulmon.webp','Nuevo · por confirmar','New · to be confirmed',false,
+ 'Pulmón de res deshidratado: ligero, aireado y fácil de partir. Bajo en grasa, ideal para premiar sin llenar.','Dehydrated beef lung: light, airy and easy to break. Low in fat, ideal for rewarding without filling them up.',
+ 'Pulmón de res','Beef lung',60,5,1,12,'trozos','pieces','[[1,2],[2,3],[3,4],[4,5]]')
+on conflict (id) do nothing;
+
+-- Pack Probador pasa a 5 bolsas (precio PLACEHOLDER: suma 1,345 → ~18 % menos)
+update public.bundles set name_es='Pack Probador (5 bolsas)', name_en='Sampler Pack (5 bags)', price_mxn=1099,
+  product_ids=array['patas','sticks','pechuga','jerky','pulmon'], updated_at=now() where id='pack-probador';
+
 -- Sanity check
 select 'products' as t, count(*) from public.products
 union all select 'bundles', count(*) from public.bundles
