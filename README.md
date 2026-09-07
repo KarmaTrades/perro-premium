@@ -5,7 +5,7 @@ Rama `chewawa-mx-demo`. Es una **demostración** de cómo puede verse la tienda 
 ## Qué hay aquí
 
 - `index.html` — todo el sitio en un solo archivo (HTML + CSS + JS, sin frameworks). Español (MX) por defecto, botón **EN** para inglés.
-- `img-*.webp` — 12 imágenes sacadas del catálogo 2025 (bolsas, beagle, logo, sello, fotos de ingrediente). 516 KB en total.
+- `img-*.webp` — 13 imágenes: bolsas (5), beagle, logo, sello, fotos de ingrediente. Las bolsas y el beagle son renders IA (ver pendientes).
 - `supabase/schema.sql` — el backend: tablas, políticas de seguridad (RLS) y datos iniciales del proyecto Supabase **perro-premium**. Idempotente: se puede volver a correr sin romper nada.
 - `supabase/functions/checkout/` y `supabase/functions/stripe-webhook/` — las dos Edge Functions de pagos (copia de lo desplegado en Supabase).
 - Abre `index.html?notas` (o activa el switch **Notas de diseño** abajo a la izquierda) para ver, sección por sección, la evidencia con números que justifica cada decisión de diseño.
@@ -54,7 +54,7 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 | Clave | Qué es | Estado |
 |---|---|---|
 | `products.price_mxn` (Supabase) | Precio por bolsa (MXN, IVA incl.) | **PLACEHOLDER** — referencia de anaquel MX: patas de pollo deshidratadas ~MXN 1,400–1,600/kg (Bregos), Dentastix MXN 407–567/kg y MXN 8.50–11.50 la pieza suelta (Walmart/Scorpion) |
-| `bundles.price_mxn` (Supabase) | Precio del Pack Probador | **PLACEHOLDER** |
+| `bundles.price_mxn` (Supabase) | Precio del Pack Probador (5 bolsas) | **PLACEHOLDER** 1,099 |
 | `site_config.free_ship_from` | Umbral de envío gratis | 599 |
 | `site_config.sub_discount` | Descuento suscripción | 0.15 |
 | `site_config.payments` | `"stripe"` (Checkout vía Edge Function) o `"none"` | stripe (sandbox) |
@@ -65,6 +65,7 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 
 Otros pendientes marcados en el HTML:
 
+- **Pulmón de res (5.º SKU)**: agregado el 7-sep a petición de los cofundadores; no está en el catálogo 2025, así que sub-marca, código, gramos (100 g), precio (249), análisis (60 % proteína / 5 % grasa) y la bolsa morada (`img-bag-pulmon.webp`, render IA con texto "Purple Bites · Beef Lung") son **PLACEHOLDER** hasta recibir los datos reales. El Pack Probador ya incluye las 5 bolsas (precio placeholder 1,099).
 - Reseñas: las tres tarjetas dicen **ejemplo**. Cargar reseñas reales verificadas por compra en la tabla `reviews` con `approved = true` (nunca inventadas).
 - FAQ "¿Tienen registro sanitario?": colocar número de registro SENASICA/SADER.
 - Sello FDA del catálogo no se usa en la versión MX; agregar el sello mexicano que aplique.

@@ -117,7 +117,8 @@ section{padding:88px 0}
 .toggle button{padding:10px 20px;border-radius:999px;font-family:var(--display);font-weight:600;font-size:.95rem;color:var(--brown-2);transition:all .2s}
 .toggle button.on{background:var(--brown);color:var(--cream);box-shadow:var(--shadow)}
 .toggle .save{background:var(--green-ink);color:#fff;border-radius:999px;font-size:.7rem;padding:2px 8px;margin-left:6px;font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:40px}
+@media(max-width:1180px){.grid{grid-template-columns:repeat(3,1fr);gap:22px}}
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.grid{grid-template-columns:1fr}}
 .card{background:var(--paper);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s var(--ease)}
@@ -151,10 +152,11 @@ section{padding:88px 0}
 .bundle ul{list-style:none;margin:18px 0 26px;display:grid;gap:10px}
 .bundle li{display:flex;gap:10px;align-items:center}
 .bundle li svg{width:20px;height:20px;color:var(--green);flex:none}
-.bundle .bags{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-items:end}
+.bundle .bags{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;align-items:end}
 .bundle .bags img{filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));transform-origin:bottom}
 .bundle .bags img:nth-child(2){transform:translateY(-10px)}
 .bundle .bags img:nth-child(3){transform:translateY(-4px)}
+.bundle .bags img:nth-child(4){transform:translateY(-8px)}
 .bundle .pricebox{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .bundle .pricebox b{font-family:var(--display);font-size:2.4rem;color:var(--yellow)}
 .bundle .pricebox s{opacity:.6}
@@ -218,7 +220,8 @@ section{padding:88px 0}
 .step .num{font-family:var(--display);font-weight:600;color:var(--yellow);font-size:2rem;line-height:1}
 .step h3{margin:6px 0 8px}
 .step p{font-size:.95rem;color:var(--brown-2)}
-.analysis{margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.analysis{margin-top:34px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:1100px){.analysis{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){.analysis{grid-template-columns:repeat(2,1fr)}}
 .an{background:var(--paper);border-radius:14px;padding:16px;box-shadow:var(--shadow);border-top:5px solid var(--accent)}
 .an b{display:block;font-family:var(--display);font-weight:600;color:var(--brown)}
@@ -446,7 +449,7 @@ body.notes .note{display:block}
     <div>
       <span class="eyebrow" data-i="h_eye">100% natural · 1 solo ingrediente · Hecho en México</span>
       <h1 data-i="h_h1">Premios con <em>un</em> ingrediente. Nada más.</h1>
-      <p class="lead" data-i="h_sub">Patas de pollo, sticks de res, pechuga y jerky, deshidratados lento con ingredientes grado humano. Sin granos, sin conservadores, sin colorantes. Lo que dice la bolsa es lo único que hay adentro.</p>
+      <p class="lead" data-i="h_sub">Patas de pollo, sticks de res, pechuga, jerky y pulmón, deshidratados lento con ingredientes grado humano. Sin granos, sin conservadores, sin colorantes. Lo que dice la bolsa es lo único que hay adentro.</p>
       <div class="ctas">
         <a class="btn btn-cta" href="#premios" data-i="h_cta1">Ver premios</a>
         <a class="btn btn-ghost" href="#pack" data-i="h_cta2">Armar Pack Probador</a>
@@ -485,14 +488,14 @@ body.notes .note{display:block}
 <section id="premios">
   <div class="wrap center">
     <span class="eyebrow" data-i="p_eye">Nuestros premios</span>
-    <h2 style="margin-top:10px" data-i="p_h2">Cuatro premios. Cuatro ingredientes. Cero letras chiquitas.</h2>
+    <h2 style="margin-top:10px" data-i="p_h2">Cinco premios. Cinco ingredientes. Cero letras chiquitas.</h2>
     <p class="lead" data-i="p_sub">Elige comprar una vez o recibirlos cada mes con 15 % de descuento. Cancelas cuando quieras.</p>
     <div class="toggle" role="group" aria-label="Modo de compra">
       <button class="on" id="modeOnce" data-i="m_once">Una vez</button>
       <button id="modeSub"><span data-i="m_sub">Cada mes</span><span class="save">−15 %</span></button>
     </div>
     <div class="grid" id="grid"></div>
-    <div class="swipe-hint" data-i="swipe">Desliza para ver los 4 →</div>
+    <div class="swipe-hint" data-i="swipe">Desliza para ver los 5 →</div>
     <p style="margin-top:22px;font-size:.85rem;color:var(--mute);font-weight:700" data-i="p_note">Precios en MXN con IVA. <span class="demo-tag">demo · precios de referencia</span></p>
   </div>
 </section>
@@ -506,25 +509,26 @@ body.notes .note{display:block}
       <span class="ship" data-i="b_ship">Envío gratis incluido</span>
       <div>
         <span class="eyebrow" data-i="b_eye">Lo más vendido · Pack Probador</span>
-        <h2 style="margin-top:10px" data-i="b_h2">Los 4 premios. <em>Un solo paquete.</em> Descubre cuál es su favorito.</h2>
+        <h2 style="margin-top:10px" data-i="b_h2">Los 5 premios. <em>Un solo paquete.</em> Descubre cuál es su favorito.</h2>
         <p style="margin-top:12px" data-i="b_p">Perfecto para empezar: una bolsa de cada premio, guía de porciones por tamaño y envío gratis a todo México.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l1">Patas de pollo + Sticks de res + Tiras de pechuga + Jerky de res</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l1">Patas de pollo + Sticks de res + Tiras de pechuga + Jerky de res + Pulmón de res</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l2">Guía impresa “¿cuánto le doy?” según el peso de tu perro</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l3">Garantía 30 días: si no lo devora, te devolvemos tu dinero</span></li>
         </ul>
         <div class="pricebox">
-          <b id="bundlePrice">$899</b>
-          <s id="bundleWas">$1,096</s>
+          <b id="bundlePrice">$1,099</b>
+          <s id="bundleWas">$1,345</s>
           <span class="pill" id="bundleSave" data-i="b_save">Ahorras 18 %</span>
         </div>
         <button class="btn btn-cta" style="margin-top:22px" id="addBundle" data-i="b_cta">Agregar Pack Probador</button>
       </div>
-      <div class="bags">
+      <div class="bags" id="bundleBags">
         <img src="img-bag-patas.webp" alt="Patas de pollo" width="684" height="1080">
         <img src="img-bag-sticks.webp" alt="Sticks de res" width="729" height="1080">
         <img src="img-bag-pechuga.webp" alt="Tiras de pechuga" width="729" height="1080">
         <img src="img-bag-jerky.webp" alt="Jerky de res" width="729" height="1080">
+        <img src="img-bag-pulmon.webp" alt="Pulmón de res" width="689" height="1080">
       </div>
     </div>
   </div>
@@ -749,7 +753,7 @@ const CONFIG = {
   currency: 'MXN',
   freeShipFrom: 599,               // umbral de envío gratis (MXN)
   subDiscount: 0.15,               // descuento suscripción
-  bundle: { price: 899 },          // PLACEHOLDER — precio Pack Probador
+  bundle: { price: 1099 },         // PLACEHOLDER — precio Pack Probador (5 bolsas)
   msiFrom: 299,                    // desde cuánto ofrecer 3 MSI
   whatsapp: '525661118591',
   payments: 'stripe',              // 'stripe' → Edge Function `checkout` crea la sesión de Stripe Checkout (sandbox mientras site_config.stripe_mode = test)
@@ -786,7 +790,13 @@ const PRODUCTS = [
     color:'#35A9BC', tint:'#D6EEF2', img:'img-bag-jerky.webp', w:729, h:1080, tag:'Alta proteína', tagEn:'High protein',
     desc:'Carne de res 100 %, deshidratada lento. Para perros exigentes y perros grandes con hambre de verdad.',
     descEn:'100% beef, slow-dehydrated. For picky eaters and big dogs with real appetite.',
-    ingr:'Carne de res', ingrEn:'Beef', protein:55, fat:8, fiber:1, moisture:12, unit:'tiras', unitEn:'strips', portions:[[1,2],[2,3],[3,4],[4,5]] }
+    ingr:'Carne de res', ingrEn:'Beef', protein:55, fat:8, fiber:1, moisture:12, unit:'tiras', unitEn:'strips', portions:[[1,2],[2,3],[3,4],[4,5]] },
+  /* 5.º SKU pedido por los cofundadores (nota de voz 3-sep-2026). No está en el catálogo 2025: precio, gramos y análisis son PLACEHOLDER. */
+  { id:'pulmon',  name:'Pulmón de res', en:'Beef Lung', sub:'Por confirmar', code:'PT00XX', qty:'100 g', qtyEn:'100 g', grams:100, price:249,
+    color:'#7B4FA3', tint:'#EBE1F4', img:'img-bag-pulmon.webp', w:689, h:1080, tag:'Nuevo · por confirmar', tagEn:'New · to be confirmed',
+    desc:'Pulmón de res deshidratado: ligero, aireado y fácil de partir. Bajo en grasa, ideal para premiar sin llenar.',
+    descEn:'Dehydrated beef lung: light, airy and easy to break. Low in fat, ideal for rewarding without filling them up.',
+    ingr:'Pulmón de res', ingrEn:'Beef lung', protein:60, fat:5, fiber:1, moisture:12, unit:'trozos', unitEn:'pieces', portions:[[1,2],[2,3],[3,4],[4,5]] }
 ];
 const SIZES = [
   { id:0, name:'Chico', en:'Small', kg:'3–5 kg', reco:'pechuga',
@@ -804,15 +814,15 @@ const EN = {
   ann1:'Free shipping from $599 MXN · 2–5 days anywhere in Mexico', ann2:'Card · OXXO · Mercado Pago · 3 interest-free payments', ann3:'If they don’t devour it, money back',
   n1:'Treats', n2:'Sampler Pack', n3:'Why Chewawa', n4:'How much?', n5:'Wholesale',
   h_eye:'100% natural · Single ingredient · Made in Mexico', h_h1:'Treats with <em>one</em> ingredient. Nothing else.',
-  h_sub:'Chicken feet, beef sticks, chicken breast and beef jerky, slow-dehydrated from human-grade ingredients. No grains, no preservatives, no colorants. What the bag says is the only thing inside.',
+  h_sub:'Chicken feet, beef sticks, chicken breast, beef jerky and beef lung, slow-dehydrated from human-grade ingredients. No grains, no preservatives, no colorants. What the bag says is the only thing inside.',
   h_cta1:'Shop treats', h_cta2:'Build a Sampler Pack', h_offer:'First order: 10% off with code <span style="background:var(--cream-2);padding:2px 8px;border-radius:6px;letter-spacing:.06em">CHEWAWA10</span>', h_p1:'4.9/5', h_p2:'verified reviews', demo:'demo · sample data',
   note1:'One message and one primary button above the fold: people spend 57% of viewing time above the fold and 74% in the first two screenfuls. The “one ingredient” promise is what Pedigree cannot copy: Dentastix lists 30+ ingredients and 8% protein, and Mars covers premium with other brands (Royal Canin, Eukanuba, Orijen/Acana), not with Pedigree. <span class="src">Sources: <a href="https://www.nngroup.com/articles/scrolling-and-attention/" target="_blank" rel="noopener">NN/g, Scrolling and Attention</a> · Dentastix label (PetSmart) · <a href="https://www.pedigree.com/about-us" target="_blank" rel="noopener">pedigree.com/about-us</a>.</span>',
   t1:'Human-grade ingredients<small>No corn, soy, wheat or sugar</small>', t2:'No preservatives or colorants<small>Slow-dehydrated, not baked</small>', t3:'Made in Mexico<small>Small batches, local production</small>', t4:'“Devour it or money back” guarantee<small>30 days, no questions</small>',
   note2:'The trust strip answers the four doubts that stall a purchase (what’s in it, is it safe, where is it from, what if they hate it). The free-shipping threshold is not decoration: in Mexico shipping cost is the #1 abandonment driver (74%) and free shipping motivates 84% of buyers; average cart abandonment is 70.22%. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO, Estudio de Venta Online 2025</a> · <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute</a>.</span>',
-  p_eye:'Our treats', p_h2:'Four treats. Four ingredients. Zero fine print.', p_sub:'Buy once or get them monthly at 15% off. Cancel anytime.', m_once:'One time', m_sub:'Monthly', p_note:'Prices in MXN incl. VAT. <span class="demo-tag">demo · reference prices</span>',
+  p_eye:'Our treats', p_h2:'Five treats. Five ingredients. Zero fine print.', p_sub:'Buy once or get them monthly at 15% off. Cancel anytime.', m_once:'One time', m_sub:'Monthly', p_note:'Prices in MXN incl. VAT. <span class="demo-tag">demo · reference prices</span>',
   note3:'Price, weight, price per 100 g, a concrete benefit and “Add” on every card without leaving the page. 42% of users try to gauge real product size from photos, so pieces and grams stay visible. Chicken feet are shown per piece (≈ $11) because that is the corner-store comparison point: a single Dentastix costs MXN 8.50–11.50. The “Monthly −15%” toggle is the engine of pet e-commerce: Autoship was 83.3% of Chewy’s 2025 sales (US$10.5B). <span class="src">Sources: <a href="https://baymard.com/learn/ux-statistics" target="_blank" rel="noopener">Baymard UX statistics</a> · <a href="https://www.scorpion.com.mx/proveedores/pedigree.html" target="_blank" rel="noopener">Tienda Scorpion (mayoreo Pedigree)</a> · <a href="https://investor.chewy.com/news-and-events/news/news-details/2026/Chewy-Announces-Fiscal-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx" target="_blank" rel="noopener">Chewy FY2025 results</a>.</span>',
-  b_ship:'Free shipping included', b_eye:'Best seller · Sampler Pack', b_h2:'All 4 treats. <em>One pack.</em> Find out which one is their favorite.', b_p:'The perfect start: one bag of each treat, a portion guide by dog size, and free shipping anywhere in Mexico.',
-  b_l1:'Chicken feet + Beef sticks + Chicken breast strips + Beef jerky', b_l2:'Printed “how much do I give?” guide by your dog’s weight', b_l3:'30-day guarantee: if they don’t devour it, money back', b_save:'Save 18%', b_cta:'Add Sampler Pack',
+  b_ship:'Free shipping included', b_eye:'Best seller · Sampler Pack', b_h2:'All 5 treats. <em>One pack.</em> Find out which one is their favorite.', b_p:'The perfect start: one bag of each treat, a portion guide by dog size, and free shipping anywhere in Mexico.',
+  b_l1:'Chicken feet + Beef sticks + Chicken breast strips + Beef jerky + Beef lung', b_l2:'Printed “how much do I give?” guide by your dog’s weight', b_l3:'30-day guarantee: if they don’t devour it, money back', b_save:'Save 18%', b_cta:'Add Sampler Pack',
   note4:'A hero bundle with a struck-through anchor price raises average order value and removes the “which one do I buy?” doubt: at HiSmile over 80% of orders are bundles and carts are 4x larger. It crosses the free-shipping threshold by design. <span class="src">Source: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span>',
   w_eye:'Why Chewawa', w_h2:'Read the label of the treat you give today. Then read ours.', w_sub:'Nothing invented: we compare our label with the best-selling dental treat at the supermarket.',
   c_h0:'<span class="sr-only">Feature</span>', c_h2:'Leading supermarket dental treat*', c_r1:'Ingredients', c_r1a:'beef esophagus', c_r1b:'rice flour, wheat starch, glycerin, gelatin…', c_r2:'First ingredient', c_r2a:'Meat', c_r2b:'Rice flour', c_r3:'Crude protein (min.)', c_r4:'Artificial colorants', c_r4b:'Blue 2, Yellow 5', c_r5:'Preservatives', c_r5b:'potassium sorbate', c_r6:'Grains / sugar / soy', no_:'No', yes_:'Yes', no_2:'No', yes_2:'Yes', no_3:'No', yes_3:'Yes',
@@ -833,10 +843,10 @@ const EN = {
   note10:'Payment and checkout: 75% of Mexican online shoppers pay with debit, 49% with credit and 26% in cash at OXXO-type stores; interest-free installments motivate 70%. Guest checkout: 18–24% abandon when forced to create an account, and the average checkout asks for 11.3 fields when 8 are enough. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://baymard.com/blog/checkout-flow-average-form-fields" target="_blank" rel="noopener">Baymard, checkout flow</a>.</span>',
   ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_ig:'Instagram · TikTok · Facebook', ft_city:'Monterrey, N.L., Mexico',
   ft_legal:'© 2026 Chewawa! Dog Treats · Privacy notice · Terms & conditions · Return policy', ft_demo:'Demo site — not the official store.',
-  mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 4 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Card · Guest checkout, no account needed',
+  mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 5 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Card · Guest checkout, no account needed',
   /* dynamic */
   per100:'per 100 g', per_piece:'per piece', add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
-  reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (4 bags)',
+  reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (5 bags)',
   ship_need:'Add $', ship_need2:' more for free shipping', ship_ok:'You’ve got free shipping 🎉', empty:'Your cart is empty. The treats are waiting.',
   toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_checkout_off:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl).', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', toast_offline:'Preview without backend: on the live site this is saved to Supabase.', sending:'Sending…', cd_redirect:'Taking you to secure payment…', pay_ok:'Thank you! Payment received. You’ll get a confirmation email shortly.', pay_cancel:'Payment cancelled — your cart is still here.',
   src_live:'live catalog · Supabase', src_local:'built-in catalog',
@@ -846,7 +856,7 @@ const ES = {}; document.querySelectorAll('[data-i]').forEach(el => ES[el.dataset
 document.querySelectorAll('[data-ph]').forEach(el => ES[el.dataset.ph] = el.placeholder);
 Object.assign(ES, {
   per100:'por 100 g', per_piece:'por pieza', add:'Agregar', added:'Agregado ✓', msi:'3 meses sin intereses', each_month:'/ mes', once:'una vez', sub:'cada mes −15 %',
-  reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Probador (4 bolsas)',
+  reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Probador (5 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
   toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_checkout_off:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl).', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', toast_offline:'Vista previa sin backend: en el sitio real esto se guarda en Supabase.', sending:'Enviando…', cd_redirect:'Te llevamos al pago seguro…', pay_ok:'¡Gracias! Pago recibido. En un momento te llega el correo de confirmación.', pay_cancel:'Pago cancelado — tu carrito sigue aquí.',
   src_live:'catálogo en vivo · Supabase', src_local:'catálogo integrado',
@@ -911,12 +921,27 @@ document.getElementById('modeOnce').onclick = () => { mode='once'; document.getE
 document.getElementById('modeSub').onclick  = () => { mode='sub';  document.getElementById('modeSub').classList.add('on');  document.getElementById('modeOnce').classList.remove('on'); renderGrid(); renderSizes(); };
 
 /* ===================== bundle ===================== */
+const NUM_ES = ['', 'Un', 'Dos', 'Tres', 'Cuatro', 'Cinco', 'Seis', 'Siete', 'Ocho'], NUM_EN = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+function bundleItems(){ const ids = CONFIG.bundle.ids || PRODUCTS.map(p => p.id); return ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean); }
 function renderBundle(){
-  const was = PRODUCTS.reduce((s,p)=>s+p.price,0), pct = Math.round((1-CONFIG.bundle.price/was)*100);
+  const items = bundleItems(), n = items.length, nAll = PRODUCTS.length;
+  const was = items.reduce((s,p)=>s+p.price,0), pct = Math.max(0, Math.round((1-CONFIG.bundle.price/was)*100));
+  // Copy that counts the catalog, so it stays right when a product is added or removed in Supabase
+  ES.p_h2 = `${NUM_ES[nAll] || nAll} premios. ${NUM_ES[nAll] || nAll} ingredientes. Cero letras chiquitas.`;
+  EN.p_h2 = `${NUM_EN[nAll] || nAll} treats. ${NUM_EN[nAll] || nAll} ingredients. Zero fine print.`;
+  ES.swipe = `Desliza para ver los ${nAll} →`; EN.swipe = `Swipe to see all ${nAll} →`;
+  ES.b_h2 = `Los ${n} premios. <em>Un solo paquete.</em> Descubre cuál es su favorito.`;
+  EN.b_h2 = `All ${n} treats. <em>One pack.</em> Find out which one is their favorite.`;
+  ES.b_l1 = items.map(p => p.name).join(' + '); EN.b_l1 = items.map(p => p.en).join(' + ');
+  ES.bundle_n = CONFIG.bundle.name || `Pack Probador (${n} bolsas)`; EN.bundle_n = CONFIG.bundle.nameEn || `Sampler Pack (${n} bags)`;
   ES.b_save = 'Ahorras ' + pct + ' %'; EN.b_save = 'Save ' + pct + '%';
+  const D = lang === 'es' ? ES : EN;
+  ['p_h2','swipe','b_h2','b_l1','b_save'].forEach(k => { const el = document.querySelector(`[data-i="${k}"]`); if (el) el.innerHTML = D[k]; });
   document.getElementById('bundleWas').textContent = mxn(was);
   document.getElementById('bundlePrice').textContent = mxn(CONFIG.bundle.price);
-  document.getElementById('bundleSave').textContent = T('b_save');
+  const bags = document.getElementById('bundleBags');
+  bags.innerHTML = items.map(p => `<img src="${p.img}" alt="${pname(p)}" width="${p.w}" height="${p.h}">`).join('');
+  bags.style.gridTemplateColumns = `repeat(${n},1fr)`;
 }
 document.getElementById('addBundle').onclick = () => addToCart('bundle');
 
@@ -1071,7 +1096,7 @@ async function loadFromSupabase(){
     if (c.whatsapp) CONFIG.whatsapp = String(c.whatsapp);
     if (c.first_order_code) CONFIG.firstOrderCode = String(c.first_order_code);
     if (c.payments) CONFIG.payments = String(c.payments);
-    if (bundles[0]) Object.assign(CONFIG.bundle, { id: bundles[0].id, price: +bundles[0].price_mxn, name: bundles[0].name_es, nameEn: bundles[0].name_en });
+    if (bundles[0]) Object.assign(CONFIG.bundle, { id: bundles[0].id, price: +bundles[0].price_mxn, name: bundles[0].name_es, nameEn: bundles[0].name_en, ids: Array.isArray(bundles[0].product_ids) ? bundles[0].product_ids : null });
     applyConfigText();
     setLang(lang); setSource('live');
   } catch(e) { setSource('local'); }
