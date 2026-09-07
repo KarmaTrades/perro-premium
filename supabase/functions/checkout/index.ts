@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
           quantity: qty,
           price_data: {
             currency: "mxn", unit_amount: Math.round(price * 100),
-            product_data: { name: T(bundle.name_es as string, bundle.name_en as string), description: T("Las 4 bolsas · envío gratis", "All 4 bags · free shipping"), metadata: { chewawa_id: "bundle" } },
+            product_data: { name: T(bundle.name_es as string, bundle.name_en as string), description: T("Una bolsa de cada premio · envío gratis", "One bag of each treat · free shipping"), metadata: { chewawa_id: "bundle" } },
           },
         });
         continue;
