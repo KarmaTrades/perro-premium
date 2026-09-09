@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%235B3A2A'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23F6F0E4' font-family='Arial' font-weight='bold'%3EC!%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Bebas+Neue&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
 /* =====================================================================
    CHEWAWA! · DEMO MÉXICO
@@ -159,9 +159,48 @@ section{padding:88px 0}
 .bundle .bags img:nth-child(4){transform:translateY(-8px)}
 .bundle .pricebox{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .bundle .pricebox b{font-family:var(--display);font-size:2.4rem;color:var(--yellow)}
-.bundle .pricebox s{opacity:.6}
-.bundle .pricebox .pill{background:var(--green);color:#fff;border-radius:999px;padding:4px 12px;font-weight:800;font-size:.85rem}
+.bundle .pricebox s{opacity:.82}   /* 6.4:1 sobre el bloque (antes .6 = 4.2:1) */
+.bundle .pricebox .pill{background:var(--green-ink);color:#fff;border-radius:999px;padding:4px 12px;font-weight:800;font-size:.85rem}
 .bundle .ship{position:absolute;top:22px;right:22px;background:var(--yellow);color:var(--ink);font-family:var(--display);font-weight:600;border-radius:999px;padding:8px 14px;font-size:.85rem;transform:rotate(3deg)}
+
+/* brand moment · "Take one treat at a time!" (rediseño del hero de chewawa.dog: mismo texto, elementos nuevos) */
+.momento{padding:0;background:#7245A0;overflow:hidden}   /* crema #FFF3DC sobre #7245A0 = 6.2:1 (WCAG AA) */
+.moment{position:relative;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr) minmax(0,.85fr);align-items:center;min-height:560px;padding:64px 0 0;color:#FFF3DC}
+.moment::before,.moment::after{content:'';position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,243,220,.18),rgba(255,243,220,0) 62%)}
+.moment::before{width:520px;height:520px;left:-14%;bottom:-32%}
+.moment::after{width:420px;height:420px;right:-10%;top:-18%}
+.m-dog{position:relative;z-index:1;justify-self:start;align-self:end;width:clamp(300px,135%,540px);max-width:none;height:auto;margin:0 0 -9% -7vw;transform:rotate(-6deg);filter:drop-shadow(0 26px 30px rgba(38,14,70,.45))}
+.m-text{position:relative;z-index:2;text-align:center;padding:0 12px 56px}
+.m-logo{width:min(230px,62%);height:auto;margin:0 auto 22px;filter:brightness(0) invert(1) sepia(.4) saturate(.7) brightness(1.06)}
+.m-h{font-family:'Bebas Neue','Oswald','Arial Narrow',Impact,sans-serif;font-weight:400;font-size:clamp(3.4rem,7vw,6.6rem);line-height:.9;letter-spacing:.03em;color:#FFF3DC;text-transform:uppercase;display:grid;gap:.05em;justify-items:center;margin:0;text-shadow:0 4px 0 rgba(38,14,70,.28)}
+.m-h>span{display:inline-flex;align-items:center;gap:.16em;white-space:nowrap}
+.m-h em{font-style:normal;display:inline-block;transform:skewX(-10deg);padding-right:.08em}
+.dd{height:.8em;width:auto;overflow:visible;flex:none}
+.dd path{fill:none;stroke:#FFF3DC;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s var(--ease)}
+.moment.in .dd path{stroke-dashoffset:0}
+.moment.in .d2 path{transition-delay:.35s}
+.moment.in .d3 path{transition-delay:.7s}
+.bubble{font-family:'Caveat','Segoe Print','Bradley Hand',cursive;font-weight:700;font-size:.36em;letter-spacing:0;text-transform:none;line-height:1;color:#6A3F94;background:#FFF3DC;border-radius:999px;padding:.4em .75em .45em;position:relative;transform:rotate(-8deg) translateY(-.12em);box-shadow:0 8px 18px rgba(38,14,70,.3);text-shadow:none}
+.bubble::after{content:'';position:absolute;right:-7px;bottom:7px;width:16px;height:16px;background:#FFF3DC;clip-path:polygon(0 0,100% 45%,15% 100%)}
+.m-bag{position:relative;z-index:1;justify-self:end;align-self:center;width:clamp(180px,78%,300px);height:auto;margin:0 -1vw 30px 0;filter:drop-shadow(0 26px 30px rgba(38,14,70,.45));animation:mfloat 5.5s var(--ease) infinite}
+@keyframes mfloat{0%,100%{transform:translateY(0) rotate(7deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+.m-spark{position:absolute;width:26px;height:26px;fill:var(--yellow);pointer-events:none;animation:twinkle 3.2s ease-in-out infinite}
+.m-spark.s1{left:33%;top:8%;width:20px;height:20px;fill:#FFF3DC;animation-delay:.6s}
+.m-spark.s2{right:34%;top:22%}
+.m-spark.s3{right:8%;bottom:14%;width:18px;height:18px;fill:#FFF3DC;animation-delay:1.4s}
+@keyframes twinkle{0%,100%{opacity:.55;transform:scale(.85) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(20deg)}}
+@media(max-width:900px){
+  .moment{grid-template-columns:1fr 1fr;grid-template-areas:"text text" "dog bag";min-height:0;padding:40px 0 0;gap:0 10px}
+  .m-text{grid-area:text;padding:0 0 22px}
+  .m-logo{width:min(180px,50%);margin-bottom:16px}
+  .m-h{font-size:clamp(2.7rem,12.5vw,4.6rem)}
+  .m-dog{grid-area:dog;width:min(64vw,320px);margin:0 0 -10% -12vw;transform:rotate(-5deg)}
+  .m-bag{grid-area:bag;width:min(38vw,180px);margin:0 -1vw 22px 0;align-self:end}
+  .m-spark.s2{right:10%;top:12%}
+  .moment::before{width:340px;height:340px;left:-30%;bottom:-20%}
+  .moment::after{width:280px;height:280px;right:-25%;top:-10%}
+}
+@media(prefers-reduced-motion:reduce){.m-bag,.m-spark{animation:none}.dd path{stroke-dashoffset:0;transition:none}}
 
 /* comparison */
 .compare{background:var(--paper);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-top:40px;overflow-x:auto}
@@ -171,8 +210,8 @@ section{padding:88px 0}
 .compare th.us{background:rgba(123,175,44,.12)}
 .compare td.us{background:rgba(123,175,44,.08);font-weight:700}
 .compare td.them{color:var(--brown-2)}
-.compare .ok{color:var(--green);font-weight:800}
-.compare .no{color:var(--red);font-weight:800}
+.compare .ok{color:var(--green-ink);font-weight:800}
+.compare .no{color:var(--red-ink);font-weight:800}
 .compare tfoot td{font-size:.8rem;color:var(--mute);border:0}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
 @media(max-width:900px){.split{grid-template-columns:1fr}}
@@ -217,7 +256,7 @@ section{padding:88px 0}
 .step{background:var(--paper);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
 .step .ph{height:200px;background:var(--cream-2) center/cover}
 .step .txt{padding:22px}
-.step .num{font-family:var(--display);font-weight:600;color:var(--yellow);font-size:2rem;line-height:1}
+.step .num{font-family:var(--display);font-weight:600;color:var(--yellow-ink);font-size:2rem;line-height:1}
 .step h3{margin:6px 0 8px}
 .step p{font-size:.95rem;color:var(--brown-2)}
 .analysis{margin-top:34px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
@@ -284,7 +323,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(246,240
 .drawer.open{transform:none}
 .drawer header{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}
 .drawer header h3{font-size:1.3rem}
-.drawer .x{font-size:1.6rem;line-height:1;padding:4px 8px}
+.drawer .x{font-size:1.6rem;line-height:1;padding:4px 8px;min-width:40px;min-height:40px;display:inline-flex;align-items:center;justify-content:center}
 .ship-bar{padding:14px 22px;background:var(--cream);font-size:.88rem;font-weight:700}
 .ship-bar .bar{height:8px;background:var(--cream-2);border-radius:999px;margin-top:8px;overflow:hidden}
 .ship-bar .bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .4s var(--ease)}
@@ -535,6 +574,30 @@ body.notes .note{display:block}
 </section>
 
 <div class="note"><div><b>4</b><span data-i="note4">Un bundle “héroe” con precio ancla tachado sube el ticket promedio y elimina la duda de “¿cuál le compro?”: en HiSmile más del 80 % de los pedidos son bundles y el carrito es 4x más grande. Cruza el umbral de envío gratis por diseño. <span class="src">Fuente: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span></span></div></div>
+
+<!-- ===== Brand moment: "Take one treat at a time!" (mismo texto que el hero de chewawa.dog, elementos rediseñados) ===== -->
+<section id="momento" class="momento" aria-labelledby="momentoTitle">
+  <div class="wrap">
+    <div class="moment rv" lang="en">
+      <img class="m-dog" src="img-dog-top.webp" alt="" width="686" height="967" loading="lazy" decoding="async">
+      <div class="m-text">
+        <img class="m-logo" src="img-logo.webp" alt="" width="400" height="142" loading="lazy" decoding="async">
+        <h2 id="momentoTitle" class="m-h">
+          <span>Take one</span>
+          <span><svg class="dd d1" viewBox="0 0 120 70" aria-hidden="true" focusable="false"><path pathLength="1" d="M16 12 C 0 30, 18 54, 42 42 S 32 6, 52 28 C 62 44, 80 46, 104 42"/><path pathLength="1" d="M92 30 L106 42 L92 54"/></svg><em>Treat</em></span>
+          <span><span class="bubble" aria-hidden="true">special treats!</span>At<svg class="dd d2" viewBox="0 0 170 80" aria-hidden="true" focusable="false"><path pathLength="1" d="M8 44 C 18 10, 52 8, 62 36 S 92 68, 112 40 S 146 10, 158 34"/><path pathLength="1" d="M150 20 L160 36 L142 42"/></svg></span>
+          <span>A<svg class="dd d3" viewBox="0 0 100 60" aria-hidden="true" focusable="false"><path pathLength="1" d="M10 34 C 28 -4, 74 -4, 60 30 S 18 58, 44 46 C 60 38, 76 36, 92 36"/><path pathLength="1" d="M80 24 L94 36 L80 48"/></svg>Time!</span>
+        </h2>
+      </div>
+      <img class="m-bag" src="img-bag-sticks.webp" alt="" width="729" height="1080" loading="lazy" decoding="async">
+      <svg class="m-spark s1" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg>
+      <svg class="m-spark s2" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg>
+      <svg class="m-spark s3" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z"/></svg>
+    </div>
+  </div>
+</section>
+
+<div class="note" style="margin-top:18px"><div><b>11</b><span data-i="note11">Este bloque es el hero actual de chewawa.dog con el mismo texto (“Take one treat at a time!”, “special treats!”) y elementos nuevos: tipografía condensada, garabatos dibujados en SVG que se trazan al entrar en pantalla, foto cenital nueva y una bolsa real del catálogo. Va después del Pack para dar un respiro con voz de marca antes de la comparación. El morado se oscureció a #7245A0 para que el texto crema cumpla contraste WCAG AA (6.2:1); el lavanda original daba 2.4:1. El lema se deja en inglés en ambos idiomas porque es marca registrada visual, no copy. <span class="src">Fuente: <a href="https://chewawa.dog" target="_blank" rel="noopener">chewawa.dog</a> (hero) · <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">WCAG 2.2, 1.4.3 Contrast (Minimum)</a>.</span></span></div></div>
 
 <!-- ===== Why / comparison ===== -->
 <section id="porque" style="background:var(--cream-2)">
@@ -841,6 +904,7 @@ const EN = {
   nl_eye:'Chewawa Club', nl_h2:'10% off your first order', nl_p:'Plus treat-training tips and new-flavor alerts. One email a month, zero spam.', nl_i:'Your email', nl_cta:'Get my 10%', nl_small:'By subscribing you accept our privacy notice.',
   note9:'69% of e-commerce traffic in Mexico is mobile and ~29% of digital buyers already buy pet products online. 72.4% of consumers are more likely to buy from a brand that offers messaging, and 92% of Mexican internet users use WhatsApp, hence the floating button. Speed: 0.1 s faster on mobile = +8.4% retail conversion, which is why the site is one file with no frameworks. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://whatsappbusiness.com/resources/resource-library/state-of-business-messaging/" target="_blank" rel="noopener">State of Business Messaging</a> · <a href="https://web.dev/case-studies/milliseconds-make-millions" target="_blank" rel="noopener">Google/Deloitte, Milliseconds Make Millions</a>.</span>',
   note10:'Payment and checkout: 75% of Mexican online shoppers pay with debit, 49% with credit and 26% in cash at OXXO-type stores; interest-free installments motivate 70%. Guest checkout: 18–24% abandon when forced to create an account, and the average checkout asks for 11.3 fields when 8 are enough. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://baymard.com/blog/checkout-flow-average-form-fields" target="_blank" rel="noopener">Baymard, checkout flow</a>.</span>',
+  note11:'This block is the current chewawa.dog hero with the same words (“Take one treat at a time!”, “special treats!”) and new elements: condensed type, hand-drawn SVG doodles that draw themselves on scroll, a new top-down photo and a real bag from the catalog. It sits after the Pack as a brand-voice breather before the comparison. The purple was deepened to #7245A0 so the cream text meets WCAG AA contrast (6.2:1); the original lavender gave 2.4:1. The slogan stays in English in both languages because it is a visual brand mark, not copy. <span class="src">Sources: <a href="https://chewawa.dog" target="_blank" rel="noopener">chewawa.dog</a> (hero) · <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">WCAG 2.2, 1.4.3 Contrast (Minimum)</a>.</span>',
   ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_ig:'Instagram · TikTok · Facebook', ft_city:'Monterrey, N.L., Mexico',
   ft_legal:'© 2026 Chewawa! Dog Treats · Privacy notice · Terms & conditions · Return policy', ft_demo:'Demo site — not the official store.',
   mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 5 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Card · Guest checkout, no account needed',
