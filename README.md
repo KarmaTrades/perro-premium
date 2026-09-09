@@ -70,7 +70,7 @@ Otros pendientes marcados en el HTML:
 - FAQ "¿Tienen registro sanitario?": colocar número de registro SENASICA/SADER.
 - Sello FDA del catálogo no se usa en la versión MX; agregar el sello mexicano que aplique.
 - Fotos de clientes / TikTok en la sección de opiniones.
-- `img-dog-top.webp` (perro cenital del bloque “Take one treat at a time!”) es un render generado con IA (Higgsfield, nano_banana_pro) recortado con rembg; sustituir por una foto real cuando la haya.
+- `img-dog-top.webp` (golden retriever cenital del bloque “Take one treat at a time!”) es un render generado con IA (Higgsfield, nano_banana_pro) recortado con rembg; sustituir por una foto real cuando la haya. `img-bag-sticks.webp` se regeneró el 9-sep con el mismo modelo usando la bolsa anterior como referencia (más nítida, sin bordes sucios); las otras cuatro bolsas siguen siendo los renders originales.
 - Las bolsas (`img-bag-*.webp`) y el beagle son renders generados con IA a partir de las imágenes del catálogo (234×360 px; fuentes en `src-*.png`): diseño, colores, logo y textos principales son fieles, pero la letra chica (bullets, sello redondo) es inventada por el modelo y no debe usarse como referencia. Para producción, pedir los renders originales en alta resolución al diseñador del catálogo.
 - Avisar a los leads: hoy solo se guardan en `b2b_leads`. Para recibir un WhatsApp/correo por cada lead, agregar un Database Webhook o una Edge Function en Supabase (los pedidos sí llegan a Telegram).
 - OXXO / Mercado Pago: el anuncio del sitio los promete; en Stripe MX se activan OXXO y SPEI desde *Settings → Payment methods* cuando la cuenta esté en live. Mercado Pago no pasa por Stripe.
