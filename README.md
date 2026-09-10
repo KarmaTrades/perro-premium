@@ -19,7 +19,9 @@ Al cargar, el sitio lee de Supabase y, si no responde (sin internet o en la vist
 | Tabla | Qué guarda | Quién puede qué (con la llave pública) |
 |---|---|---|
 | `products` | Los 4 SKUs: nombres ES/EN, precio, gramos/piezas, color, imagen, análisis garantizado, porciones por talla | leer (solo `active = true`) |
-| `bundles` | Pack Probador: precio y qué productos incluye | leer (solo activos) |
+| `bundles` | Pack Descubre: precio y qué productos incluye | leer (solo activos) |
+| `product_variants` | Presentaciones (tamaños) por producto: etiqueta, gramos/piezas, precio, código; `is_default` = la que muestra la tarjeta. Con 2+ filas activas aparecen los chips de tamaño en la tarjeta y el carrito usa la llave `producto@key`. | leer (solo activas) |
+| `hall_of_fame` | Salón de la Fama: nombre del perro, humano, ciudad, foto (URL del bucket público `fama` o archivo del sitio) y `approved` | leer (solo aprobados) |
 | `site_config` | `free_ship_from`, `sub_discount`, `msi_from`, `whatsapp`, `first_order_code`, `first_order_discount`, `checkout_url`, `prices_are_placeholders` | leer |
 | `reviews` | Reseñas reales; el sitio reemplaza las tarjetas de ejemplo cuando hay reseñas con `approved = true` | leer (solo aprobadas) |
 | `b2b_leads` | Formulario de mayoreo (negocio, ciudad, WhatsApp, tipo) | **solo insertar** — nadie puede leerlas desde el sitio |
@@ -42,7 +44,7 @@ Flujo: **Pagar ahora** → el sitio guarda el intento en `checkout_intents` → 
 | Función `checkout` | Supabase → Edge Functions (Verify JWT: OFF; valida sola su entrada) | desplegada y probada |
 | Función `stripe-webhook` | Supabase → Edge Functions; endpoint registrado en Stripe Workbench → Webhooks (3 eventos) | desplegada y probada con `stripe trigger` |
 | Código **CHEWAWA10** | Stripe → cupón 10 % (una vez) + código de promoción, solo primera compra | creado en sandbox |
-| Envío | `site_config.shipping_mxn` (99, **PLACEHOLDER**) bajo el umbral `free_ship_from`; gratis con Pack Probador o desde $599 | inline en la función |
+| Envío | `site_config.shipping_mxn` (99, **PLACEHOLDER**) bajo el umbral `free_ship_from`; gratis con Pack Descubre o desde $599 | inline en la función |
 | Tarjetas de prueba | 4242 4242 4242 4242, cualquier fecha futura y CVC | sandbox |
 
 Para **pasar a cobros reales** (cuando Wero lo decida): 1) en Stripe, salir del sandbox y crear el endpoint de webhook live apuntando a `https://scifvxtcqmuyxrsowgeo.supabase.co/functions/v1/stripe-webhook`; 2) en Supabase → Secrets, reemplazar `STRIPE_SECRET_KEY` y `STRIPE_WEBHOOK_SECRET` por los valores live; 3) crear el cupón/código CHEWAWA10 en live; 4) `site_config.stripe_mode` = `"live"` (mientras diga `"test"`, la función se niega a usar una llave que no sea de prueba). Para **apagar pagos** sin tocar código: `site_config.payments` = `"none"`.
@@ -54,7 +56,7 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 | Clave | Qué es | Estado |
 |---|---|---|
 | `products.price_mxn` (Supabase) | Precio por bolsa (MXN, IVA incl.) | **PLACEHOLDER** — referencia de anaquel MX: patas de pollo deshidratadas ~MXN 1,400–1,600/kg (Bregos), Dentastix MXN 407–567/kg y MXN 8.50–11.50 la pieza suelta (Walmart/Scorpion) |
-| `bundles.price_mxn` (Supabase) | Precio del Pack Probador (5 bolsas) | **PLACEHOLDER** 1,099 |
+| `bundles.price_mxn` (Supabase) | Precio del Pack Descubre (5 bolsas) | **PLACEHOLDER** 1,099 |
 | `site_config.free_ship_from` | Umbral de envío gratis | 599 |
 | `site_config.sub_discount` | Descuento suscripción | 0.15 |
 | `site_config.payments` | `"stripe"` (Checkout vía Edge Function) o `"none"` | stripe (sandbox) |
@@ -65,11 +67,12 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 
 Otros pendientes marcados en el HTML:
 
-- **Pulmón de res (5.º SKU)**: agregado el 7-sep a petición de los cofundadores; no está en el catálogo 2025, así que sub-marca, código, gramos (100 g), precio (249), análisis (60 % proteína / 5 % grasa) y la bolsa morada (`img-bag-pulmon.webp`, render IA con texto "Purple Bites · Beef Lung") son **PLACEHOLDER** hasta recibir los datos reales. El Pack Probador ya incluye las 5 bolsas (precio placeholder 1,099).
+- **Pulmón de res (5.º SKU)**: agregado el 7-sep a petición de los cofundadores. El 10-sep se tomaron los datos reales de la foto de la bolsa (Slack, #marketing-y-sitio): sub-marca **Soft Bliss**, 84 g (3.0 oz), 60 % proteína, claims “bajo en calorías y grasa, rico en vitaminas B y minerales”. Siguen **PLACEHOLDER**: código (PT00XX), precio (249), grasa/fibra/humedad del análisis, y el precio del Pack Descubre (1,099).
 - Reseñas: las tres tarjetas dicen **ejemplo**. Cargar reseñas reales verificadas por compra en la tabla `reviews` con `approved = true` (nunca inventadas).
 - FAQ "¿Tienen registro sanitario?": colocar número de registro SENASICA/SADER.
 - Sello FDA del catálogo no se usa en la versión MX; agregar el sello mexicano que aplique.
 - Fotos de clientes / TikTok en la sección de opiniones.
+- `img-bag-patas.webp` y `img-bag-pulmon.webp` se regeneraron el 10-sep a partir de las fotos reales de las bolsas (Slack, `ref/`): etiquetas en español reales (“Patitas de Pollo · 10 patas”, “Soft Bliss · Pulmón de Res · 84 g”); la letra chica sigue siendo inventada por el modelo.
 - `img-dog-top.webp` (golden retriever cenital del bloque “Take one treat at a time!”) es un render generado con IA (Higgsfield, nano_banana_pro) recortado con rembg; sustituir por una foto real cuando la haya. `img-bag-sticks.webp` se regeneró el 9-sep con el mismo modelo usando la bolsa anterior como referencia (más nítida, sin bordes sucios); las otras cuatro bolsas siguen siendo los renders originales.
 - Las bolsas (`img-bag-*.webp`) y el beagle son renders generados con IA a partir de las imágenes del catálogo (234×360 px; fuentes en `src-*.png`): diseño, colores, logo y textos principales son fieles, pero la letra chica (bullets, sello redondo) es inventada por el modelo y no debe usarse como referencia. Para producción, pedir los renders originales en alta resolución al diseñador del catálogo.
 - Avisar a los leads: hoy solo se guardan en `b2b_leads`. Para recibir un WhatsApp/correo por cada lead, agregar un Database Webhook o una Edge Function en Supabase (los pedidos sí llegan a Telegram).
