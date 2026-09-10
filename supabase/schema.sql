@@ -186,3 +186,68 @@ select 'products' as t, count(*) from public.products
 union all select 'bundles', count(*) from public.bundles
 union all select 'site_config', count(*) from public.site_config
 union all select 'orders', count(*) from public.orders;
+
+-- ---------- 10-sep-2026 · feedback de cofundadores ----------
+-- 1) "Pack Probador" → "Pack Descubre" (la palabra "probador" sonaba rara a los usuarios)
+update public.bundles set name_es = replace(name_es, 'Pack Probador', 'Pack Descubre'), updated_at = now() where name_es like 'Pack Probador%';
+
+-- 2) Presentaciones (tamaños) por producto. Cada producto puede tener 1..n; el sitio muestra chips cuando hay 2+.
+--    La fila is_default define precio/etiqueta base de la tarjeta y del Pack Descubre.
+create table if not exists public.product_variants (
+  id bigint generated always as identity primary key,
+  product_id text not null references public.products(id) on delete cascade,
+  key text not null,                       -- corto y estable: 's' | 'm' | 'l' (o '84g'); va en la llave del carrito "sticks@l"
+  sort int not null default 1,
+  label_es text not null, label_en text not null,   -- "96 g", "10 piezas"
+  grams int, pieces int,
+  price_mxn numeric(10,2) not null,
+  code text,
+  is_default boolean not null default false,
+  active boolean not null default true,
+  created_at timestamptz not null default now(),
+  unique (product_id, key)
+);
+alter table public.product_variants enable row level security;
+drop policy if exists "public read active variants" on public.product_variants;
+create policy "public read active variants" on public.product_variants for select using (active);
+-- Semilla: la presentación actual de cada producto como única (y por defecto). Al agregar más filas aparecen los chips.
+insert into public.product_variants (product_id, key, sort, label_es, label_en, grams, pieces, price_mxn, code, is_default)
+select id, 'std', 1, qty_es, qty_en, grams, pieces, price_mxn, code, true from public.products
+on conflict (product_id, key) do nothing;
+
+-- 3) Pulmón de res: datos reales de la bolsa (foto 7-sep): sub-marca Soft Bliss, 84 g (3.0 oz), 60 % proteína. Precio y código siguen PLACEHOLDER.
+update public.products set sub_brand = 'Soft Bliss', qty_es = '84 g', qty_en = '84 g', grams = 84,
+  tag_es = 'Nuevo', tag_en = 'New',
+  desc_es = 'Pulmón de res deshidratado: ligero, aireado y fácil de partir. Bajo en calorías y grasa, rico en vitaminas B y minerales.',
+  desc_en = 'Dehydrated beef lung: light, airy and easy to break. Low in calories and fat, rich in B vitamins and minerals.',
+  updated_at = now() where id = 'pulmon';
+update public.product_variants set label_es = '84 g', label_en = '84 g', grams = 84 where product_id = 'pulmon' and key = 'std';
+
+-- 4) Salón de la Fama: perros reales con su humano. Fotos en el bucket público "fama" (o rutas relativas del sitio).
+create table if not exists public.hall_of_fame (
+  id bigint generated always as identity primary key,
+  dog_name text not null,
+  human_name text,
+  city text,
+  photo text not null,                      -- URL pública del bucket "fama" o nombre de archivo del sitio (img-fame-*.webp)
+  caption text,
+  approved boolean not null default false,  -- solo lo aprobado se muestra
+  sort int not null default 100,
+  created_at timestamptz not null default now(),
+  unique (photo)
+);
+alter table public.hall_of_fame enable row level security;
+drop policy if exists "public read approved fame" on public.hall_of_fame;
+create policy "public read approved fame" on public.hall_of_fame for select using (approved);
+insert into storage.buckets (id, name, public) values ('fama', 'fama', true) on conflict (id) do nothing;
+drop policy if exists "public read fama" on storage.objects;
+create policy "public read fama" on storage.objects for select using (bucket_id = 'fama');
+insert into public.hall_of_fame (dog_name, human_name, photo, approved, sort) values
+  ('Duque', null, 'img-fame-duque.webp', true, 1),
+  ('Moka', 'Laura', 'img-fame-moka.webp', true, 2),
+  ('Totó', 'Fernanda', 'img-fame-toto.webp', true, 3)
+on conflict do nothing;
+
+-- 5) Patitas de pollo: la bolsa real (foto 7-sep) dice "Patitas de Pollo" y "Contenido Neto 10 patas" (el catálogo 2025 decía 18 pz)
+update public.products set name_es = 'Patitas de pollo', qty_es = '10 patas', qty_en = '10 feet', pieces = 10, updated_at = now() where id = 'patas';
+update public.product_variants set label_es = '10 patas', label_en = '10 feet', pieces = 10 where product_id = 'patas' and key = 'std';
