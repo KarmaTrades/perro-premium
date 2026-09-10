@@ -72,10 +72,11 @@ Deno.serve(async (req) => {
     const siteOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : DEFAULT_ORIGIN;
 
     // ---- catálogo y configuración reales ----
-    const [products, bundles, cfgRows] = await Promise.all([
+    const [products, bundles, cfgRows, variants] = await Promise.all([
       sb("products?select=id,name_es,name_en,qty_es,qty_en,price_mxn,img&active=is.true", SB_ANON),
       sb("bundles?select=id,name_es,name_en,price_mxn&active=is.true&order=updated_at.desc&limit=1", SB_ANON),
       sb("site_config?select=key,value", SB_ANON),
+      sb("product_variants?select=product_id,key,label_es,label_en,price_mxn,is_default&active=is.true", SB_ANON).catch(() => []),   // presentaciones (opcional)
     ]);
     const cfg = Object.fromEntries((cfgRows as { key: string; value: unknown }[]).map((r) => [r.key, r.value]));
     if (cfg.payments !== "stripe") return new Response(JSON.stringify({ error: "payments disabled" }), { status: 503, headers: H });
@@ -90,6 +91,14 @@ Deno.serve(async (req) => {
     const freeShipFrom = Number(cfg.free_ship_from ?? 599);
     const shippingMxn = Number(cfg.shipping_mxn ?? 99);
     const byId = Object.fromEntries((products as Record<string, unknown>[]).map((p) => [p.id as string, p]));
+    // presentaciones: "sticks@l" → variante l; sin "@" → la variante por defecto (o el producto tal cual si no hay variantes)
+    const varsOf: Record<string, Record<string, unknown>[]> = {};
+    for (const v of variants as Record<string, unknown>[]) (varsOf[v.product_id as string] ??= []).push(v);
+    const pickVariant = (pid: string, key: string | undefined) => {
+      const vs = varsOf[pid] ?? [];
+      if (key) return vs.find((v) => v.key === key) ?? null;
+      return vs.find((v) => v.is_default) ?? vs[0] ?? null;
+    };
     const bundle = (bundles as Record<string, unknown>[])[0];
     const T = (es: string, en: string) => (lang === "es" ? es : en);
 
@@ -113,10 +122,15 @@ Deno.serve(async (req) => {
         });
         continue;
       }
-      const isSub = rawId.endsWith("-sub");
-      const p = byId[rawId.replace(/-sub$/, "")];
+      const m = rawId.match(/^([a-z0-9]+)(?:@([a-z0-9]+))?(-sub)?$/i);
+      if (!m) continue;
+      const isSub = !!m[3];
+      const p = byId[m[1]];
       if (!p) continue;
-      const base = Number(p.price_mxn);
+      const v = pickVariant(m[1], m[2]);
+      if (m[2] && !v) continue;                                             // tamaño inexistente: se ignora la línea
+      const base = Number(v ? v.price_mxn : p.price_mxn);
+      const qtyLabel = v ? T(v.label_es as string, v.label_en as string) : T(p.qty_es as string, p.qty_en as string);
       const price = isSub ? Math.round(base * (1 - subDiscount)) : base;   // pesos enteros, igual que el sitio
       subtotal += price * qty;
       if (isSub) hasSub = true;
@@ -126,7 +140,7 @@ Deno.serve(async (req) => {
           currency: "mxn", unit_amount: Math.round(price * 100),
           ...(isSub ? { recurring: { interval: "month" } } : {}),
           product_data: {
-            name: `${T(p.name_es as string, p.name_en as string)} · ${T(p.qty_es as string, p.qty_en as string)}${isSub ? T(" · cada mes", " · monthly") : ""}`,
+            name: `${T(p.name_es as string, p.name_en as string)} · ${qtyLabel}${isSub ? T(" · cada mes", " · monthly") : ""}`,
             images: [`${siteOrigin}${returnPath.replace(/[^/]*$/, "")}${p.img}`],
             metadata: { chewawa_id: rawId },
           },
