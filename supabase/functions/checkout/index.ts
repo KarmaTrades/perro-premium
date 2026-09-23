@@ -2,8 +2,11 @@
 // Recibe el carrito del sitio, toma los precios REALES de Supabase (nunca del navegador),
 // crea una Stripe Checkout Session en MXN y devuelve la URL a la que hay que mandar al cliente.
 //
-// POST { items: { "patas": 1, "pechuga-sub": 1, "bundle": 1 }, lang: "es", intent_id: "<uuid>", return_path: "/perro-premium/" }
+// POST { items: { "patas": 1, "sticks@l": 1, "pechuga-sub": 1, "bundle@m": 1 }, lang: "es", intent_id: "<uuid>", return_path: "/perro-premium/",
+//        shipping: { quote_id: "<uuid de shipping_quotes>", rate_id: "<id de tarifa Skydropx>" } | null }
 // → { url: "https://checkout.stripe.com/c/pay/cs_test_…", id: "cs_test_…" }
+// Envío: si llega una cotización válida (fila en shipping_quotes, no vencida) se cobra ESA tarifa (monto leído de la base,
+// nunca del navegador); si no, la tarifa estándar site_config.shipping_mxn. Pack Descubre o subtotal ≥ umbral → envío gratis.
 //
 // Secretos que usa (ya existen en el proyecto): STRIPE_SECRET_KEY. Los SUPABASE_* los inyecta Supabase.
 // Seguridad: mientras site_config.stripe_mode = "test", se niega a trabajar con una llave que no sea de prueba.
@@ -68,15 +71,18 @@ Deno.serve(async (req) => {
     const items: Record<string, number> = body.items && typeof body.items === "object" ? body.items : {};
     const lang = body.lang === "en" ? "en" : "es";
     const intentId = typeof body.intent_id === "string" && /^[0-9a-f-]{36}$/i.test(body.intent_id) ? body.intent_id : null;
-    const returnPath = typeof body.return_path === "string" && /^\/[\w\-./]*$/.test(body.return_path) ? body.return_path : DEFAULT_PATH;
+    const returnPath = typeof body.return_path === "string" && body.return_path.length <= 200 && /^\/(?!\/)[\w\-./]*$/.test(body.return_path) ? body.return_path : DEFAULT_PATH;
+    const shipReq = body.shipping && typeof body.shipping === "object" ? body.shipping : null;
+    const quoteId = shipReq && typeof shipReq.quote_id === "string" && /^[0-9a-f-]{36}$/i.test(shipReq.quote_id) ? shipReq.quote_id : null;
+    const rateId = shipReq && typeof shipReq.rate_id === "string" && /^[\w-]{1,64}$/.test(shipReq.rate_id) ? shipReq.rate_id : null;
     const siteOrigin = origin && ALLOWED_ORIGINS.includes(origin) ? origin : DEFAULT_ORIGIN;
 
     // ---- catálogo y configuración reales ----
     const [products, bundles, cfgRows, variants] = await Promise.all([
-      sb("products?select=id,name_es,name_en,qty_es,qty_en,price_mxn,img&active=is.true", SB_ANON),
-      sb("bundles?select=id,name_es,name_en,price_mxn&active=is.true&order=updated_at.desc&limit=1", SB_ANON),
+      sb("products?select=id,name_es,name_en,qty_es,qty_en,price_mxn,img,grams&active=is.true", SB_ANON),
+      sb("bundles?select=id,name_es,name_en,price_mxn,size_key,sort,product_ids&active=is.true&order=sort,updated_at.desc", SB_ANON),
       sb("site_config?select=key,value", SB_ANON),
-      sb("product_variants?select=product_id,key,label_es,label_en,price_mxn,is_default&active=is.true", SB_ANON).catch(() => []),   // presentaciones (opcional)
+      sb("product_variants?select=product_id,key,label_es,label_en,price_mxn,grams,is_default&active=is.true", SB_ANON).catch(() => []),   // presentaciones (opcional)
     ]);
     const cfg = Object.fromEntries((cfgRows as { key: string; value: unknown }[]).map((r) => [r.key, r.value]));
     if (cfg.payments !== "stripe") return new Response(JSON.stringify({ error: "payments disabled" }), { status: 503, headers: H });
@@ -90,17 +96,43 @@ Deno.serve(async (req) => {
     const subDiscount = Number(cfg.sub_discount ?? 0.15);
     const freeShipFrom = Number(cfg.free_ship_from ?? 599);
     const shippingMxn = Number(cfg.shipping_mxn ?? 99);
-    const byId = Object.fromEntries((products as Record<string, unknown>[]).map((p) => [p.id as string, p]));
+    // Mapas sin prototipo: una llave "constructor" / "toString" en el carrito no debe encontrar nada
+    const byId: Record<string, Record<string, unknown>> = Object.create(null);
+    for (const p of products as Record<string, unknown>[]) byId[p.id as string] = p;
     // presentaciones: "sticks@l" → variante l; sin "@" → la variante por defecto (o el producto tal cual si no hay variantes)
-    const varsOf: Record<string, Record<string, unknown>[]> = {};
+    const varsOf: Record<string, Record<string, unknown>[]> = Object.create(null);
     for (const v of variants as Record<string, unknown>[]) (varsOf[v.product_id as string] ??= []).push(v);
     const pickVariant = (pid: string, key: string | undefined) => {
       const vs = varsOf[pid] ?? [];
       if (key) return vs.find((v) => v.key === key) ?? null;
       return vs.find((v) => v.is_default) ?? vs[0] ?? null;
     };
-    const bundle = (bundles as Record<string, unknown>[])[0];
+    // peso del carrito (misma regla que `shipping-quote`) para atar la cotización al carrito que se paga
+    const gramsFor = (pid: string, key?: string): number | null => {
+      const vs = varsOf[pid] ?? [];
+      const v = key ? vs.find((x) => x.key === key) : (vs.find((x) => x.is_default) ?? vs[0]);
+      if (key && vs.length && !v) return null;
+      return Number(v?.grams) || Number(byId[pid]?.grams) || 0;
+    };
+    let cartGrams = 0;
+    // Pack Descubre por tamaño: "bundle@m" → fila con size_key m; "bundle" (carritos viejos) → m o la primera
+    const bundleRows = bundles as Record<string, unknown>[];
+    const pickBundle = (key: string | undefined) => bundleRows.find((b) => String(b.size_key ?? "m") === (key ?? "m")) ?? (key ? null : bundleRows[0] ?? null);
+    const cents = (n: number) => Math.round(n * 100) / 100;
     const T = (es: string, en: string) => (lang === "es" ? es : en);
+
+    // ---- envío cotizado (Skydropx) leído de la base, si el sitio mandó quote_id + rate_id ----
+    let quoted: { carrier: string; service: string; days: number | null; amount: number; cp: string; weight_g: number } | null = null;
+    if (quoteId && rateId && SB_SERVICE) {
+      try {
+        const rows = await sb(`shipping_quotes?id=eq.${quoteId}&select=rates,expires_at,cp,weight_g,sandbox`, SB_SERVICE) as { rates: Record<string, unknown>[]; expires_at: string; cp: string; weight_g: number; sandbox: boolean }[];
+        const row = rows?.[0];
+        if (row && new Date(row.expires_at).getTime() > Date.now() && !(row.sandbox && cfg.stripe_mode === "live")) {   // cotización de sandbox nunca en cobros reales
+          const r = (row.rates ?? []).find((x) => String(x.rate_id) === rateId);
+          if (r && Number(r.amount) > 0 && String(r.currency ?? "MXN") === "MXN") quoted = { carrier: String(r.carrier ?? ""), service: String(r.service ?? ""), days: Number(r.days) || null, amount: cents(Number(r.amount)), cp: String(row.cp), weight_g: Number(row.weight_g) };
+        }
+      } catch (e) { console.error("shipping quote lookup", e); }
+    }
 
     // ---- líneas ----
     const lineItems: unknown[] = [];
@@ -108,16 +140,20 @@ Deno.serve(async (req) => {
     for (const [rawId, rawQty] of Object.entries(items)) {
       const qty = Math.min(20, Math.max(0, Math.floor(Number(rawQty) || 0)));
       if (!qty) continue;
-      if (rawId === "bundle") {
-        if (!bundle) continue;
+      const bm = rawId.match(/^bundle(?:@([a-z0-9]+))?$/i);
+      if (bm) {
+        const bundle = pickBundle(bm[1]);
+        if (!bundle) continue;                                                // tamaño de pack inexistente: se ignora la línea
         hasBundle = true;
+        const bids = Array.isArray(bundle.product_ids) && bundle.product_ids.length ? bundle.product_ids as string[] : Object.keys(byId);
+        cartGrams += qty * bids.reduce((s, pid) => s + (gramsFor(pid, String(bundle.size_key ?? "m")) ?? gramsFor(pid) ?? 0), 0);
         const price = Number(bundle.price_mxn);
         subtotal += price * qty;
         lineItems.push({
           quantity: qty,
           price_data: {
             currency: "mxn", unit_amount: Math.round(price * 100),
-            product_data: { name: T(bundle.name_es as string, bundle.name_en as string), description: T("Una bolsa de cada premio · envío gratis", "One bag of each treat · free shipping"), metadata: { chewawa_id: "bundle" } },
+            product_data: { name: T(bundle.name_es as string, bundle.name_en as string), description: T("Una bolsa de cada premio · envío gratis", "One bag of each treat · free shipping"), metadata: { chewawa_id: rawId } },
           },
         });
         continue;
@@ -129,9 +165,10 @@ Deno.serve(async (req) => {
       if (!p) continue;
       const v = pickVariant(m[1], m[2]);
       if (m[2] && !v) continue;                                             // tamaño inexistente: se ignora la línea
+      cartGrams += qty * (gramsFor(m[1], m[2]) ?? 0);
       const base = Number(v ? v.price_mxn : p.price_mxn);
       const qtyLabel = v ? T(v.label_es as string, v.label_en as string) : T(p.qty_es as string, p.qty_en as string);
-      const price = isSub ? Math.round(base * (1 - subDiscount)) : base;   // pesos enteros, igual que el sitio
+      const price = isSub ? cents(base * (1 - subDiscount)) : base;       // redondeo a centavos, misma fórmula que el sitio
       subtotal += price * qty;
       if (isSub) hasSub = true;
       lineItems.push({
@@ -148,10 +185,20 @@ Deno.serve(async (req) => {
       });
     }
     if (!lineItems.length) return new Response(JSON.stringify({ error: "empty cart" }), { status: 400, headers: H });
+    if (quoted) {   // la cotización vale solo para el peso con el que se pidió (+ empaque); si el carrito cambió, tarifa estándar
+      const packaging = Number(cfg.ship_packaging_g ?? 80);
+      if (Math.abs(Math.round(cartGrams + packaging) - quoted.weight_g) > 5) { console.warn("quote weight mismatch", quoted.weight_g, cartGrams + packaging); quoted = null; }
+    }
 
     const mode = hasSub ? "subscription" : "payment";
     const freeShip = hasBundle || subtotal >= freeShipFrom;
     const returnBase = `${siteOrigin}${returnPath}`;
+    const shipAmount = freeShip ? 0 : (quoted ? quoted.amount : shippingMxn);
+    const shipName = freeShip ? T("Envío gratis", "Free shipping")
+      : quoted ? `${quoted.carrier}${quoted.service ? " · " + quoted.service : ""}${quoted.days ? T(` (${quoted.days} día${quoted.days > 1 ? "s" : ""} hábil${quoted.days > 1 ? "es" : ""})`, ` (${quoted.days} business day${quoted.days > 1 ? "s" : ""})`) : ""}`.slice(0, 100).toWellFormed()
+      : T("Envío estándar (2–5 días)", "Standard shipping (2–5 days)");
+    const shipDays = quoted?.days ? { minimum: { unit: "business_day", value: Math.max(1, quoted.days) }, maximum: { unit: "business_day", value: Math.max(1, quoted.days) + 2 } }
+      : { minimum: { unit: "business_day", value: 2 }, maximum: { unit: "business_day", value: 5 } };
 
     const session: Record<string, unknown> = {
       mode,
@@ -163,21 +210,21 @@ Deno.serve(async (req) => {
       billing_address_collection: "auto",
       shipping_address_collection: { allowed_countries: ["MX"] },
       phone_number_collection: { enabled: "true" },
-      metadata: { source: "chewawa-mx-demo", lang, intent_id: intentId ?? "", items: JSON.stringify(items).slice(0, 490) },
+      metadata: { source: "chewawa-mx-demo", lang, intent_id: intentId ?? "", items: JSON.stringify(items).slice(0, 490).toWellFormed(), shipping: `${shipName} · ${shipAmount}`.slice(0, 200).toWellFormed(), ...(quoted ? { quote_id: quoteId, rate_id: rateId, quote_cp: quoted.cp } : {}) },
       ...(intentId ? { client_reference_id: intentId } : {}),
     };
     if (mode === "payment") {
       session.customer_creation = "always";
       session.shipping_options = [{
         shipping_rate_data: {
-          type: "fixed_amount", display_name: freeShip ? T("Envío gratis", "Free shipping") : T("Envío estándar (2–5 días)", "Standard shipping (2–5 days)"),
-          fixed_amount: { amount: freeShip ? 0 : Math.round(shippingMxn * 100), currency: "mxn" },
-          delivery_estimate: { minimum: { unit: "business_day", value: 2 }, maximum: { unit: "business_day", value: 5 } },
+          type: "fixed_amount", display_name: shipName,
+          fixed_amount: { amount: Math.round(shipAmount * 100), currency: "mxn" },
+          delivery_estimate: shipDays,
         },
       }];
     } else if (!freeShip) {
       // En modo suscripción el envío va como cargo único en la primera factura.
-      lineItems.push({ quantity: 1, price_data: { currency: "mxn", unit_amount: Math.round(shippingMxn * 100), product_data: { name: T("Envío (primer pedido)", "Shipping (first order)") } } });
+      lineItems.push({ quantity: 1, price_data: { currency: "mxn", unit_amount: Math.round(shipAmount * 100), product_data: { name: `${T("Envío (primer pedido)", "Shipping (first order)")} · ${shipName}`.slice(0, 100).toWellFormed() } } });
       session.subscription_data = { metadata: { source: "chewawa-mx-demo" } };
     }
 
@@ -194,7 +241,7 @@ Deno.serve(async (req) => {
 
     // Marca el intento como redirigido (service role; si no hay llave, se omite sin romper nada)
     if (intentId && SB_SERVICE) {
-      sb(`checkout_intents?id=eq.${intentId}`, SB_SERVICE, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ status: "redirected", stripe_session_id: s.id }) }).catch((e) => console.error("intent patch", e));
+      sb(`checkout_intents?id=eq.${intentId}&status=eq.created`, SB_SERVICE, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ status: "redirected", stripe_session_id: s.id }) }).catch((e) => console.error("intent patch", e));   // solo intentos nuevos: no se puede re-marcar uno ajeno
     }
 
     return new Response(JSON.stringify({ url: s.url, id: s.id, mode, livemode: s.livemode === true }), { headers: H });
