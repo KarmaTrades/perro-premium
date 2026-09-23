@@ -6,7 +6,8 @@
 //        shipping: { quote_id: "<uuid de shipping_quotes>", rate_id: "<id de tarifa Skydropx>" } | null }
 // → { url: "https://checkout.stripe.com/c/pay/cs_test_…", id: "cs_test_…" }
 // Envío: si llega una cotización válida (fila en shipping_quotes, no vencida) se cobra ESA tarifa (monto leído de la base,
-// nunca del navegador); si no, la tarifa estándar site_config.shipping_mxn. Pack Descubre o subtotal ≥ umbral → envío gratis.
+// nunca del navegador); si no, la tarifa estándar site_config.shipping_mxn. Envío gratis SOLO si el negocio lo activa:
+// site_config.free_ship_from > 0 (umbral) o bundles.free_shipping = true (pack). Desde el 23-sep ambos están apagados: el cliente paga el envío cotizado.
 //
 // Secretos que usa (ya existen en el proyecto): STRIPE_SECRET_KEY. Los SUPABASE_* los inyecta Supabase.
 // Seguridad: mientras site_config.stripe_mode = "test", se niega a trabajar con una llave que no sea de prueba.
@@ -80,7 +81,7 @@ Deno.serve(async (req) => {
     // ---- catálogo y configuración reales ----
     const [products, bundles, cfgRows, variants] = await Promise.all([
       sb("products?select=id,name_es,name_en,qty_es,qty_en,price_mxn,img,grams&active=is.true", SB_ANON),
-      sb("bundles?select=id,name_es,name_en,price_mxn,size_key,sort,product_ids&active=is.true&order=sort,updated_at.desc", SB_ANON),
+      sb("bundles?select=id,name_es,name_en,price_mxn,size_key,sort,product_ids,free_shipping&active=is.true&order=sort,updated_at.desc", SB_ANON),
       sb("site_config?select=key,value", SB_ANON),
       sb("product_variants?select=product_id,key,label_es,label_en,price_mxn,grams,is_default&active=is.true", SB_ANON).catch(() => []),   // presentaciones (opcional)
     ]);
@@ -94,7 +95,7 @@ Deno.serve(async (req) => {
     }
 
     const subDiscount = Number(cfg.sub_discount ?? 0.15);
-    const freeShipFrom = Number(cfg.free_ship_from ?? 599);
+    const freeShipFrom = Number(cfg.free_ship_from ?? 0);          // 0 = sin umbral de envío gratis
     const shippingMxn = Number(cfg.shipping_mxn ?? 99);
     // Mapas sin prototipo: una llave "constructor" / "toString" en el carrito no debe encontrar nada
     const byId: Record<string, Record<string, unknown>> = Object.create(null);
@@ -136,7 +137,7 @@ Deno.serve(async (req) => {
 
     // ---- líneas ----
     const lineItems: unknown[] = [];
-    let subtotal = 0, hasSub = false, hasBundle = false;
+    let subtotal = 0, hasSub = false, hasBundle = false, bundleFree = false;
     for (const [rawId, rawQty] of Object.entries(items)) {
       const qty = Math.min(20, Math.max(0, Math.floor(Number(rawQty) || 0)));
       if (!qty) continue;
@@ -144,7 +145,7 @@ Deno.serve(async (req) => {
       if (bm) {
         const bundle = pickBundle(bm[1]);
         if (!bundle) continue;                                                // tamaño de pack inexistente: se ignora la línea
-        hasBundle = true;
+        hasBundle = true; if (bundle.free_shipping === true) bundleFree = true;
         const bids = Array.isArray(bundle.product_ids) && bundle.product_ids.length ? bundle.product_ids as string[] : Object.keys(byId);
         cartGrams += qty * bids.reduce((s, pid) => s + (gramsFor(pid, String(bundle.size_key ?? "m")) ?? gramsFor(pid) ?? 0), 0);
         const price = Number(bundle.price_mxn);
@@ -153,7 +154,7 @@ Deno.serve(async (req) => {
           quantity: qty,
           price_data: {
             currency: "mxn", unit_amount: Math.round(price * 100),
-            product_data: { name: T(bundle.name_es as string, bundle.name_en as string), description: T("Una bolsa de cada premio · envío gratis", "One bag of each treat · free shipping"), metadata: { chewawa_id: rawId } },
+            product_data: { name: T(bundle.name_es as string, bundle.name_en as string), description: T("Una bolsa de cada premio", "One bag of each treat"), metadata: { chewawa_id: rawId } },
           },
         });
         continue;
@@ -191,7 +192,7 @@ Deno.serve(async (req) => {
     }
 
     const mode = hasSub ? "subscription" : "payment";
-    const freeShip = hasBundle || subtotal >= freeShipFrom;
+    const freeShip = (hasBundle && bundleFree) || (freeShipFrom > 0 && subtotal >= freeShipFrom);
     const returnBase = `${siteOrigin}${returnPath}`;
     const shipAmount = freeShip ? 0 : (quoted ? quoted.amount : shippingMxn);
     const shipName = freeShip ? T("Envío gratis", "Free shipping")
