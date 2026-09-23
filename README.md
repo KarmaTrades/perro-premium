@@ -29,7 +29,7 @@ Al cargar, el sitio lee de Supabase y, si no responde (sin internet o en la vist
 | `newsletter_signups` | Club Chewawa (correo único, sin distinguir mayúsculas) | **solo insertar** |
 | `checkout_intents` | Cada clic en "Pagar ahora": carrito, subtotal, modo (una vez / mensual) | **solo insertar** |
 
-Para **cambiar un precio, el umbral de envío gratis o el código de descuento**: Supabase → Table Editor → `products` / `site_config`, edita y listo; el sitio lo toma al recargar. Para **ver leads y suscriptores**: Table Editor → `b2b_leads` / `newsletter_signups` (requiere estar logueado en el dashboard).
+Para **cambiar un precio, reactivar envío gratis o cambiar el código de descuento**: Supabase → Table Editor → `products` / `site_config`, edita y listo; el sitio lo toma al recargar. Para **ver leads y suscriptores**: Table Editor → `b2b_leads` / `newsletter_signups` (requiere estar logueado en el dashboard).
 
 Seguridad: `index.html` solo contiene la llave **publishable** (`sb_publishable_…`), que es pública por diseño; todo lo que protege los datos son las políticas RLS de `schema.sql`. La llave **secret** (`sb_secret_…`) nunca va en el sitio ni en el repo.
 
@@ -63,7 +63,8 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 | `site_config.payments` | `"stripe"` (Checkout vía Edge Function) o `"none"` | stripe (sandbox) |
 | `site_config.stripe_mode` | `"test"` / `"live"` | **test** |
 | `site_config.shipping_mxn` | Envío estándar cuando no hay cotización Skydropx | 99 **PLACEHOLDER** |
-| `site_config.ship_origin` | C.P. (y estado/ciudad) desde donde salen los pedidos, para cotizar | 76000 Querétaro **PLACEHOLDER** (¿planta Querétaro o bodega Monterrey?) |
+| `site_config.ship_origin` | C.P. (y estado/ciudad) desde donde salen los pedidos, para cotizar | Monterrey 64000 (23-sep; confirmar el C.P. exacto) |
+| `site_config.free_ship_from` / `bundles.free_shipping` | Envío gratis por umbral / en el pack | **0 / false** desde el 23-sep: el cliente paga la tarifa cotizada. Volver a activar aquí si cambia la política |
 | `site_config.whatsapp` | Número con lada (52…) | 525661118591 (del sitio actual) |
 | `CONFIG.b2bEndpoint` / `newsletterEndpoint` | Webhooks opcionales (CRM, Klaviyo) además de Supabase | vacíos |
 
@@ -87,3 +88,11 @@ Desde el 3 de septiembre de 2026, GitHub Pages sirve **esta rama** (`chewawa-mx-
 ## Análisis garantizado y porciones
 
 Los porcentajes de proteína/grasa y la guía de porciones por peso vienen tal cual del **Catálogo Chewawa 2025**. La comparación con Dentastix usa la etiqueta publicada por PetSmart (2026).
+
+## Listo para publicar (23-sep-2026)
+
+- Sin marcas de demo: se quitaron el pie “Sitio de demostración”, la etiqueta de fuente del catálogo, el “4.9/5 · demo” del hero (ahora “Hecho en México · planta con Certificado BPM”) y el interruptor de notas de diseño (siguen disponibles con `?notas`). Las reseñas de ejemplo permanecen ocultas hasta que existan filas con `approved = true` en `reviews`.
+- Solo afirmaciones verdaderas: pago con tarjeta (Visa, Mastercard, AMEX) vía Stripe; envío cotizado con Skydropx (el cliente lo paga); mayoreo con los términos reales de la lista (mínimos 100 / 500 bolsas, 50 % de anticipo, planta Querétaro) sin precios de distribuidor; garantía 30 días “lo devora o te devolvemos” (decisión de Wero, 23-sep).
+- Páginas legales: `aviso-privacidad.html` y `terminos.html` (con política de devoluciones), enlazadas desde el pie. **Revisar con un abogado antes de vender de verdad**; no soy abogado.
+- SEO/social: `img-og.jpg` (1200×630), `og:url`, `canonical` y `theme-color` apuntan a la URL de GitHub Pages; al mover a chewawa.dog, cambiar esas cuatro líneas del `<head>`.
+- Sigue en **sandbox de Stripe** hasta correr la lista de go-live de arriba.

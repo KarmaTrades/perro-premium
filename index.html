@@ -7,7 +7,13 @@
 <meta name="description" content="Premios para perro 100% naturales, de un solo ingrediente y grado humano, hechos en México. Patitas de pollo, palitos de res, tiras de pechuga, jerky y pulmón. Envío a todo México.">
 <meta property="og:title" content="Chewawa! Premios naturales de un solo ingrediente">
 <meta property="og:description" content="Sin granos, sin conservadores, sin colorantes. Solo carne. Hecho en México.">
-<meta property="og:image" content="img-bag-patas.webp">
+<meta property="og:image" content="https://karmatrades.github.io/perro-premium/img-og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="https://karmatrades.github.io/perro-premium/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://karmatrades.github.io/perro-premium/">
+<meta name="theme-color" content="#1E2F5A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%235B3A2A'/%3E%3Ctext x='32' y='42' font-size='30' text-anchor='middle' fill='%23F6F0E4' font-family='Arial' font-weight='bold'%3EC!%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +22,7 @@
 /* =====================================================================
    CHEWAWA! · DEMO MÉXICO
    Todo lo que se cambia en producción está en el bloque CONFIG del JS
-   (precios, links de pago, WhatsApp, umbral de envío gratis).
+   (precios, links de pago, WhatsApp, envío).
    ===================================================================== */
 :root{
   --cream:#F6F0E4; --cream-2:#EDE4D1; --paper:#FFFDF8;
@@ -30,6 +36,7 @@
   --r:18px; --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--cream);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 img{max-width:100%;height:auto;display:block}
@@ -238,6 +245,7 @@ section{padding:88px 0}
 .review .demo-tag{position:absolute;top:14px;right:14px}
 /* salón de la fama */
 .fame{margin-top:48px}
+#reviewsGrid[hidden]+.fame{margin-top:0}
 .fame .head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 28px;flex-wrap:wrap}
 .fame h3{font-size:clamp(1.5rem,2.6vw,2rem);margin-top:8px}
 .fame .head p{max-width:46ch;font-size:1rem}
@@ -339,6 +347,7 @@ footer .logo img{height:40px;filter:brightness(0) invert(1);opacity:.9}
 footer .pay{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 footer .pay span{background:rgba(246,240,228,.12);border-radius:6px;padding:4px 10px;font-size:.75rem;font-weight:800;letter-spacing:.04em}
 footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(246,240,228,.15);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.8rem;opacity:.75}
+footer .legal a{display:inline-block;padding:8px 2px;text-decoration:underline;text-underline-offset:3px}
 
 /* WhatsApp float + mobile CTA */
 .wa-float{position:fixed;right:18px;bottom:18px;z-index:70;width:58px;height:58px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(37,211,102,.4)}
@@ -355,9 +364,6 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(246,240
 .drawer header{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}
 .drawer header h3{font-size:1.3rem}
 .drawer .x{font-size:1.6rem;line-height:1;padding:4px 8px;min-width:40px;min-height:40px;display:inline-flex;align-items:center;justify-content:center}
-.ship-bar{padding:14px 22px;background:var(--cream);font-size:.88rem;font-weight:700}
-.ship-bar .bar{height:8px;background:var(--cream-2);border-radius:999px;margin-top:8px;overflow:hidden}
-.ship-bar .bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .4s var(--ease)}
 /* cotización de envío (Skydropx) */
 .ship-q{padding:12px 22px 4px;border-bottom:1px solid var(--line)}
 .ship-q label{display:block;font-size:.8rem;font-weight:800;color:var(--brown-2);margin-bottom:6px}
@@ -376,7 +382,7 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(246,240
 .item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .item img{height:64px;width:64px;object-fit:contain}
 .item b{display:block;font-size:.95rem}
-.item small{color:var(--mute);font-weight:700}
+.item small{display:block;color:var(--mute);font-weight:700}
 .qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;margin-top:6px}
 .qty button{width:32px;height:32px;font-weight:800;font-size:1.1rem}
 .qty span{min-width:24px;text-align:center;font-weight:800}
@@ -394,9 +400,10 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(246,240
 @media(max-width:760px){#toast{bottom:150px}}
 
 /* design notes (demo only) */
-.notes-switch{position:fixed;left:18px;bottom:18px;z-index:70;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:10px 14px;font-size:.8rem;font-weight:800;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+.notes-switch{position:fixed;left:18px;bottom:18px;z-index:70;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:10px 14px;font-size:.8rem;font-weight:800;display:none;align-items:center;gap:8px;box-shadow:var(--shadow)}
 .notes-switch i{width:34px;height:20px;border-radius:999px;background:var(--cream-2);position:relative;transition:background .2s}
 .notes-switch i::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+body.notes .notes-switch{display:flex}
 body.notes .notes-switch i{background:var(--green)}
 body.notes .notes-switch i::after{transform:translateX(14px)}
 @media(max-width:760px){.notes-switch{display:none}}
@@ -499,8 +506,8 @@ body.notes .note{display:block}
 
 <!-- ===== Announcement bar ===== -->
 <div class="announce" role="region" aria-label="Avisos">
-  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg><span data-i="ann1">Envío gratis desde $599 MXN · 2–5 días a todo México</span></span>
-  <span class="hide-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span data-i="ann2">Tarjeta · OXXO · Mercado Pago · 3 MSI</span></span>
+  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg><span data-i="ann1">Envío a todo México con Skydropx · cotízalo en tu carrito</span></span>
+  <span class="hide-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span data-i="ann2">Pago seguro con tarjeta · Visa, Mastercard, AMEX</span></span>
   <span class="hide-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-3.3-6.5"/><path d="M20 4v5h-5"/></svg><span data-i="ann3">Si no lo devora, te devolvemos tu dinero</span></span>
 </div>
 
@@ -540,8 +547,8 @@ body.notes .note{display:block}
       </div>
       <p style="margin-top:14px;font-size:.9rem;font-weight:800;color:var(--brown-2)" data-i="h_offer">Primer pedido: 10 % de descuento con el código <span style="background:var(--cream-2);padding:2px 8px;border-radius:6px;letter-spacing:.06em">CHEWAWA10</span></p>
       <div class="proof">
-        <span class="stars">★★★★★</span>
-        <span><b data-i="h_p1">4.9/5</b> · <span data-i="h_p2">reseñas verificadas</span> <span class="demo-tag" data-i="demo">demo · dato de ejemplo</span></span>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false" style="color:var(--green-ink);flex:none"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span><b data-i="h_p1">Hecho en México</b> · <span data-i="h_p2">planta con Certificado BPM (SENASICA)</span></span>
       </div>
     </div>
     <div class="hero-art">
@@ -566,7 +573,7 @@ body.notes .note{display:block}
   </div>
 </div>
 
-<div class="note" style="margin-top:18px"><div><b>2</b><span data-i="note2">La barra de confianza contesta las 4 dudas que frenan la compra (¿qué trae?, ¿es seguro?, ¿de dónde viene?, ¿y si no le gusta?). El umbral de envío gratis no es adorno: en México el costo de envío es la razón #1 de abandono (74 %) y el envío gratis motiva al 84 % de los compradores; el abandono promedio de carrito es 70.22 %. <span class="src">Fuentes: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO, Estudio de Venta Online 2025</a> · <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute</a>.</span></span></div></div>
+<div class="note" style="margin-top:18px"><div><b>2</b><span data-i="note2">La barra de confianza contesta las 4 dudas que frenan la compra (¿qué trae?, ¿es seguro?, ¿de dónde viene?, ¿y si no le gusta?). Por eso el envío se cotiza y se muestra en el carrito antes de pagar (Skydropx, decisión del 23-sep: el cliente paga el envío según su C.P.): en México el costo de envío es la razón #1 de abandono (74 %) y las sorpresas al final matan la venta; el abandono promedio de carrito es 70.22 %. <span class="src">Fuentes: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO, Estudio de Venta Online 2025</a> · <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute</a>.</span></span></div></div>
 
 <!-- ===== Products ===== -->
 <section id="premios">
@@ -580,7 +587,7 @@ body.notes .note{display:block}
     </div>
     <div class="grid" id="grid"></div>
     <div class="swipe-hint" data-i="swipe">Desliza para ver los 5 →</div>
-    <p style="margin-top:22px;font-size:.85rem;color:var(--mute);font-weight:700" data-i="p_note">Precios en MXN con IVA incluido. <span class="demo-tag">lista online · sep 2026</span></p>
+    <p style="margin-top:22px;font-size:.85rem;color:var(--mute);font-weight:700" data-i="p_note">Precios en MXN con IVA incluido.</p>
   </div>
 </section>
 
@@ -590,14 +597,14 @@ body.notes .note{display:block}
 <section id="pack" style="padding-top:0">
   <div class="wrap">
     <div class="bundle rv">
-      <span class="ship" data-i="b_ship">Envío gratis incluido</span>
+      <span class="ship" data-i="b_ship">Una bolsa de cada premio</span>
       <div>
         <span class="eyebrow" data-i="b_eye">Lo más vendido · Pack Descubre</span>
         <h2 style="margin-top:10px" data-i="b_h2">Los 5 premios. <em>Un solo paquete.</em> Descubre cuál es su favorito.</h2>
-        <p style="margin-top:12px" data-i="b_p">Perfecto para empezar: una bolsa de cada premio, guía de porciones por tamaño y envío gratis a todo México.</p>
+        <p style="margin-top:12px" data-i="b_p">Perfecto para empezar: una bolsa de cada premio, guía de porciones por tamaño y mejor precio que comprando las bolsas sueltas.</p>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l1">Patitas de pollo 10 piezas + Palitos de res 80 g + Tiras de pechuga 100 g + Jerky de res 100 g + Pulmón de res 84 g</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l2">Guía impresa “¿cuánto le doy?” según el peso de tu perro</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l2">Guía “¿cuánto le doy?” según el peso de tu perro</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l3">Garantía 30 días: si no lo devora, te devolvemos tu dinero</span></li>
         </ul>
         <div class="sizes-c b-sizes" id="bundleSizes" role="group" aria-label="Tamaño del pack"></div>
@@ -619,7 +626,7 @@ body.notes .note{display:block}
   </div>
 </section>
 
-<div class="note"><div><b>4</b><span data-i="note4">Un bundle “héroe” con precio ancla tachado sube el ticket promedio y elimina la duda de “¿cuál le compro?”: en HiSmile más del 80 % de los pedidos son bundles y el carrito es 4x más grande. Cruza el umbral de envío gratis por diseño. <span class="src">Fuente: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span></span></div></div>
+<div class="note"><div><b>4</b><span data-i="note4">Un bundle “héroe” con precio ancla tachado sube el ticket promedio y elimina la duda de “¿cuál le compro?”: en HiSmile más del 80 % de los pedidos son bundles y el carrito es 4x más grande. <span class="src">Fuente: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span></span></div></div>
 
 <!-- ===== Brand moment: "Take one treat at a time!" (mismo texto que el hero de chewawa.dog, elementos rediseñados) ===== -->
 <section id="momento" class="momento" aria-labelledby="momentoTitle">
@@ -675,12 +682,12 @@ body.notes .note{display:block}
 <!-- ===== Reviews ===== -->
 <section id="opiniones">
   <div class="wrap">
-    <div class="center">
+    <div class="center" id="reviewsHead" hidden>
       <span class="eyebrow" data-i="r_eye">Opiniones</span>
       <h2 style="margin-top:10px" data-i="r_h2">Lo que dicen los humanos (y las colas)</h2>
-      <p class="lead" data-i="r_sub">Reseñas de ejemplo para mostrar el diseño. Se reemplazan con reseñas reales verificadas por compra.</p>
+      <p class="lead" data-i="r_sub">Reseñas reales de clientes, verificadas por compra.</p>
     </div>
-    <div class="reviews">
+    <div class="reviews" id="reviewsGrid" hidden>
       <div class="review rv"><span class="demo-tag" data-i="demo2">ejemplo</span><div class="stars">★★★★★</div><p data-i="r1">“[Reseña real de cliente verificado — patas de pollo]”</p><div class="who" data-i="r1w">Nombre del cliente <small>Ciudad · Raza del perro · Compra verificada</small></div></div>
       <div class="review rv"><span class="demo-tag" data-i="demo3">ejemplo</span><div class="stars">★★★★★</div><p data-i="r2">“[Reseña real de cliente verificado — Pack Descubre]”</p><div class="who" data-i="r2w">Nombre del cliente <small>Ciudad · Raza del perro · Compra verificada</small></div></div>
       <div class="review rv"><span class="demo-tag" data-i="demo4">ejemplo</span><div class="stars">★★★★★</div><p data-i="r3">“[Reseña real de veterinario o estética canina]”</p><div class="who" data-i="r3w">Nombre · Clínica <small>Ciudad · Aliado Chewawa</small></div></div>
@@ -747,11 +754,11 @@ body.notes .note{display:block}
       <div>
         <span class="eyebrow" data-i="bb_eye">Tiendas, veterinarias y estéticas</span>
         <h2 style="margin-top:10px" data-i="bb_h2">Vende Chewawa en tu negocio</h2>
-        <p class="lead" style="margin-top:12px" data-i="bb_p">Márgenes sanos, exhibidor incluido y reposición por WhatsApp. Sin mínimos absurdos: empieza con una caja.</p>
+        <p class="lead" style="margin-top:12px" data-i="bb_p">Precio de distribuidor, reposición por WhatsApp y producto hecho en nuestra planta de Querétaro. Pídenos la lista de precios.</p>
         <div class="facts">
-          <div><b>12</b><small data-i="bb_f1">bolsas por caja</small></div>
-          <div><b>1,008</b><small data-i="bb_f2">bolsas por tarima</small></div>
-          <div><b>48 h</b><small data-i="bb_f3">respuesta a pedidos</small></div>
+          <div><b>100</b><small data-i="bb_f1">bolsas grandes · pedido mínimo</small></div>
+          <div><b>500</b><small data-i="bb_f2">bolsas medianas o chicas · pedido mínimo</small></div>
+          <div><b>50 %</b><small data-i="bb_f3">anticipo en los primeros pedidos</small></div>
         </div>
       </div>
       <form onsubmit="return leadB2B(event)">
@@ -775,8 +782,8 @@ body.notes .note{display:block}
     <div class="faq">
       <details class="rv"><summary data-i="q1">¿Es seguro para cachorros y perros senior?</summary><p data-i="a1">Sí, desde los 4 meses. Para cachorros y seniors recomendamos empezar con tiras de pechuga (más suaves) y supervisar siempre mientras mastican. Consulta a tu veterinario si tu perro tiene alguna condición.</p></details>
       <details class="rv"><summary data-i="q2">¿Cuánto tiempo dura una bolsa?</summary><p data-i="a2">Sellada, 12 meses. Una vez abierta, ciérrala bien y consúmela en 30 días. No necesita refrigeración porque no tiene humedad ni conservadores.</p></details>
-      <details class="rv"><summary data-i="q3">¿Cómo pago y cuándo llega?</summary><p data-i="a3">Tarjeta de crédito o débito, Mercado Pago, OXXO Pay y transferencia. Compras desde $299 tienen 3 meses sin intereses con tarjetas participantes. Enviamos en 24 h y llega en 2 a 5 días hábiles a todo México.</p></details>
-      <details class="rv"><summary data-i="q4">¿Puedo cancelar la suscripción?</summary><p data-i="a4">Cuando quieras, en un clic desde tu portal, sin llamadas. Así lo exige PROFECO y así nos gusta.</p></details>
+      <details class="rv"><summary data-i="q3">¿Cómo pago y cuándo llega?</summary><p data-i="a3">Tarjeta de crédito o débito (Visa, Mastercard, American Express) con pago seguro por Stripe. El envío se cotiza con tu código postal en el carrito y eliges la paquetería antes de pagar. Enviamos desde Monterrey; el plazo depende de la paquetería que elijas, normalmente de 2 a 5 días hábiles.</p></details>
+      <details class="rv"><summary data-i="q4">¿Puedo cancelar la suscripción?</summary><p data-i="a4">Cuando quieras: mándanos un WhatsApp y la cancelamos ese mismo día, sin llamadas ni preguntas.</p></details>
       <details class="rv"><summary data-i="q5">¿Y si a mi perro no le gusta?</summary><p data-i="a5">Te devolvemos tu dinero dentro de los primeros 30 días. Solo mándanos un WhatsApp con tu número de pedido.</p></details>
       <details class="rv"><summary data-i="q6">¿Tienen registro sanitario?</summary><p data-i="a6">Sí. Nuestra planta cuenta con Aviso de Funcionamiento, Dictamen de Verificación Anual (cumplimos las NOM aplicables) y Certificado de Buenas Prácticas de Manufactura (BPM), emitidos por SENASICA. Cada lote incluye análisis garantizado y etiquetado conforme a la NOM-012-SAG/ZOO-2020. Si quieres ver los documentos, escríbenos por WhatsApp y te los mandamos.</p></details>
     </div>
@@ -813,15 +820,14 @@ body.notes .note{display:block}
       <div>
         <div class="logo"><img src="img-logo.webp" alt="Chewawa!"></div>
         <p style="margin-top:14px;max-width:34ch" data-i="ft_p">Premios de un solo ingrediente, hechos en México. Treat your pet right.</p>
-        <div class="pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>MERCADO PAGO</span><span>OXXO</span><span>SPEI</span></div>
+        <div class="pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>STRIPE</span></div>
       </div>
       <div><h3 data-i="ft_h1">Tienda</h3><ul><li><a href="#premios" data-i="ft_l1">Todos los premios</a></li><li><a href="#pack" data-i="ft_l2">Pack Descubre</a></li><li><a href="#premios" data-i="ft_l3">Suscripción mensual</a></li><li><a href="#mayoreo" data-i="ft_l4">Mayoreo y distribuidores</a></li></ul></div>
       <div><h3 data-i="ft_h2">Ayuda</h3><ul><li><a href="#faq" data-i="ft_l5">Preguntas frecuentes</a></li><li><a href="#faq" data-i="ft_l6">Envíos y devoluciones</a></li><li><a href="#tamano" data-i="ft_l7">Guía de porciones</a></li><li><a href="mailto:info@chewawa.dog?subject=Facturaci%C3%B3n%20Chewawa" data-i="ft_l8">Facturación</a></li></ul></div>
-      <div><h3 data-i="ft_h3">Contacto</h3><ul><li><a href="https://wa.me/525661118591" target="_blank" rel="noopener">WhatsApp 56 6111 8591</a></li><li><a href="mailto:info@chewawa.dog">info@chewawa.dog</a></li><li><span data-i="ft_ig" title="Redes sociales: pendiente de definir handles">Instagram · TikTok · Facebook</span></li><li><span data-i="ft_city">Monterrey, N.L., México</span></li></ul></div>
+      <div><h3 data-i="ft_h3">Contacto</h3><ul><li><a href="https://wa.me/525661118591" target="_blank" rel="noopener">WhatsApp 56 6111 8591</a></li><li><a href="mailto:info@chewawa.dog">info@chewawa.dog</a></li><li><span data-i="ft_city">Monterrey, N.L., México</span></li></ul></div>
     </div>
     <div class="legal">
-      <span data-i="ft_legal">© 2026 Chewawa! Dog Treats · Aviso de privacidad · Términos y condiciones · Política de devoluciones</span>
-      <span><span data-i="ft_demo">Sitio de demostración — no es la tienda oficial.</span> <span class="demo-tag" id="dataSrc" title="Fuente de productos, precios y configuración">catálogo integrado</span></span>
+      <span data-i="ft_legal">© 2026 Chewawa! Dog Treats · <a href="aviso-privacidad.html">Aviso de privacidad</a> · <a href="terminos.html">Términos y condiciones</a> · <a href="terminos.html#devoluciones">Devoluciones</a></span>
     </div>
   </div>
 </footer>
@@ -854,20 +860,21 @@ body.notes .note{display:block}
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Carrito">
   <header><h3 data-i="cd_h">Tu carrito</h3><button class="x" id="closeCart" aria-label="Cerrar">×</button></header>
-  <div class="ship-bar"><span id="shipMsg"></span><div class="bar"><i id="shipFill" style="width:0%"></i></div></div>
   <div class="ship-q" id="shipQ" hidden>
     <form id="cpForm" novalidate>
       <label for="cpInput" data-i="sq_l">Cotiza tu envío con Skydropx</label>
       <div class="row"><input id="cpInput" name="cp" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="C.P. (5 dígitos)" aria-label="Código postal"><button type="submit" class="btn btn-cta btn-sm" data-i="sq_btn">Cotizar</button></div>
     </form>
     <div id="shipRates" aria-live="polite"></div>
+    <p class="sq-msg" id="shipHint" data-i="sq_hint">Sin cotización, al pagar se aplica el envío estándar.</p>
   </div>
   <div class="items" id="items"></div>
   <footer>
     <div class="tot"><span data-i="cd_sub">Subtotal</span><span id="subtotal">$0</span></div>
     <div class="ship-line"><span data-i="cd_ship">Envío</span><span id="shipAmt">—</span></div>
+    <div class="tot" style="font-size:1.05rem"><span data-i="cd_total">Total estimado</span><span id="cartTotal">$0</span></div>
     <button class="btn btn-cta" id="checkout" data-i="cd_cta">Pagar ahora</button>
-    <div class="paylist"><span>VISA</span><span>MC</span><span>AMEX</span><span>MERCADO PAGO</span><span>OXXO</span><span>3 MSI</span></div>
+    <div class="paylist"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>STRIPE</span></div>
     <small data-i="cd_small">Pago seguro con Stripe · Precios con IVA incluido · Compra como invitado, sin crear cuenta</small>
   </footer>
 </aside>
@@ -879,7 +886,8 @@ body.notes .note{display:block}
    ===================================================================== */
 const CONFIG = {
   currency: 'MXN',
-  freeShipFrom: 599,               // umbral de envío gratis (MXN)
+  freeShipFrom: 0,                 // umbral de envío gratis (MXN); 0 = sin envío gratis: el cliente paga la tarifa cotizada (decisión 23-sep)
+  bundleFreeShip: false,           // true si el Pack Descubre incluye envío (bundles.free_shipping)
   subDiscount: 0.15,               // descuento suscripción
   /* Pack Descubre en 3 tamaños (una bolsa de cada premio, todas del mismo tamaño). Los precios son PROPUESTA
      (≈10 % bajo la suma de las 5 bolsas de la lista sep-2026) y se editan en la tabla `bundles` (size_key s|m|l). */
@@ -964,47 +972,47 @@ const SIZES = [
 
 /* ===================== i18n ===================== */
 const EN = {
-  ann1:'Free shipping from $599 MXN · 2–5 days anywhere in Mexico', ann2:'Card · OXXO · Mercado Pago · 3 interest-free payments', ann3:'If they don’t devour it, money back',
+  ann1:'Shipping anywhere in Mexico via Skydropx · quote it in your cart', ann2:'Secure card payment · Visa, Mastercard, AMEX', ann3:'If they don’t devour it, money back',
   n1:'Treats', n2:'Sampler Pack', n3:'Why Chewawa', n4:'How much?', n5:'Wholesale',
   h_eye:'100% natural · Single ingredient · Made in Mexico', h_h1:'Treats with <em>one</em> ingredient. Nothing else.',
   h_sub:'Chicken feet, beef sticks, chicken breast, beef jerky and beef lung, slow-dehydrated from human-grade ingredients. No grains, no preservatives, no colorants. What the bag says is the only thing inside.',
-  h_cta1:'Shop treats', h_cta2:'Build a Sampler Pack', h_offer:'First order: 10% off with code <span style="background:var(--cream-2);padding:2px 8px;border-radius:6px;letter-spacing:.06em">CHEWAWA10</span>', h_p1:'4.9/5', h_p2:'verified reviews', demo:'demo · sample data',
+  h_cta1:'Shop treats', h_cta2:'Build a Sampler Pack', h_offer:'First order: 10% off with code <span style="background:var(--cream-2);padding:2px 8px;border-radius:6px;letter-spacing:.06em">CHEWAWA10</span>', h_p1:'Made in Mexico', h_p2:'GMP-certified plant (SENASICA)',
   note1:'One message and one primary button above the fold: people spend 57% of viewing time above the fold and 74% in the first two screenfuls. The “one ingredient” promise is what Pedigree cannot copy: Dentastix lists 30+ ingredients and 8% protein, and Mars covers premium with other brands (Royal Canin, Eukanuba, Orijen/Acana), not with Pedigree. <span class="src">Sources: <a href="https://www.nngroup.com/articles/scrolling-and-attention/" target="_blank" rel="noopener">NN/g, Scrolling and Attention</a> · Dentastix label (PetSmart) · <a href="https://www.pedigree.com/about-us" target="_blank" rel="noopener">pedigree.com/about-us</a>.</span>',
   t1:'Human-grade ingredients<small>No corn, soy, wheat or sugar</small>', t2:'No preservatives or colorants<small>Slow-dehydrated, not baked</small>', t3:'Made in Mexico<small>Small batches, local production</small>', t4:'“Devour it or money back” guarantee<small>30 days, no questions</small>',
-  note2:'The trust strip answers the four doubts that stall a purchase (what’s in it, is it safe, where is it from, what if they hate it). The free-shipping threshold is not decoration: in Mexico shipping cost is the #1 abandonment driver (74%) and free shipping motivates 84% of buyers; average cart abandonment is 70.22%. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO, Estudio de Venta Online 2025</a> · <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute</a>.</span>',
-  p_eye:'Our treats', p_h2:'Five treats. Five ingredients. Zero fine print.', p_sub:'Buy once or get them monthly at 15% off. Cancel anytime.', m_once:'One time', m_sub:'Monthly', p_note:'Prices in MXN, VAT included. <span class="demo-tag">online price list · Sep 2026</span>',
+  note2:'The trust strip answers the four doubts that stall a purchase (what’s in it, is it safe, where is it from, what if they hate it). That is why shipping is quoted and shown in the cart before paying (Skydropx; Sep 23 decision: the customer pays shipping by ZIP): in Mexico shipping cost is the #1 abandonment driver (74%) and last-step surprises kill the sale; average cart abandonment is 70.22%. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO, Estudio de Venta Online 2025</a> · <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute</a>.</span>',
+  p_eye:'Our treats', p_h2:'Five treats. Five ingredients. Zero fine print.', p_sub:'Buy once or get them monthly at 15% off. Cancel anytime.', m_once:'One time', m_sub:'Monthly', p_note:'Prices in MXN, VAT included.',
   note3:'Price, weight, a concrete benefit and “Add” on every card without leaving the page. 42% of users try to gauge real product size from photos, so pieces and grams stay visible. The price per 100 g / per piece was removed on Sep 10 after user feedback (“not common in Mexico and it can scare people off”); the single-Dentastix comparison (MXN 8.50–11.50) stays in the label table. The “Monthly −15%” toggle is the engine of pet e-commerce: Autoship was 83.3% of Chewy’s 2025 sales (US$10.5B). <span class="src">Sources: <a href="https://baymard.com/learn/ux-statistics" target="_blank" rel="noopener">Baymard UX statistics</a> · <a href="https://www.scorpion.com.mx/proveedores/pedigree.html" target="_blank" rel="noopener">Tienda Scorpion (mayoreo Pedigree)</a> · <a href="https://investor.chewy.com/news-and-events/news/news-details/2026/Chewy-Announces-Fiscal-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx" target="_blank" rel="noopener">Chewy FY2025 results</a>.</span>',
-  b_ship:'Free shipping included', b_eye:'Best seller · Sampler Pack', b_h2:'All 5 treats. <em>One pack.</em> Find out which one is their favorite.', b_p:'The perfect start: one bag of each treat, a portion guide by dog size, and free shipping anywhere in Mexico.',
-  b_l1:'Chicken feet + Beef sticks + Chicken breast strips + Beef jerky + Beef lung', b_l2:'Printed “how much do I give?” guide by your dog’s weight', b_l3:'30-day guarantee: if they don’t devour it, money back', b_save:'Save 18%', b_cta:'Add Sampler Pack',
-  note4:'A hero bundle with a struck-through anchor price raises average order value and removes the “which one do I buy?” doubt: at HiSmile over 80% of orders are bundles and carts are 4x larger. It crosses the free-shipping threshold by design. <span class="src">Source: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span>',
+  b_ship:'One bag of each treat', b_eye:'Best seller · Sampler Pack', b_h2:'All 5 treats. <em>One pack.</em> Find out which one is their favorite.', b_p:'The perfect start: one bag of each treat, a portion guide by dog size, and a better price than buying the bags separately.',
+  b_l1:'Chicken feet + Beef sticks + Chicken breast strips + Beef jerky + Beef lung', b_l2:'“How much do I give?” guide by your dog’s weight', b_l3:'30-day guarantee: if they don’t devour it, money back', b_save:'Save 18%', b_cta:'Add Sampler Pack',
+  note4:'A hero bundle with a struck-through anchor price raises average order value and removes the “which one do I buy?” doubt: at HiSmile over 80% of orders are bundles and carts are 4x larger. <span class="src">Source: <a href="https://www.shopify.com/blog/bundling-for-retail" target="_blank" rel="noopener">Shopify, Product bundling</a>.</span>',
   w_eye:'Why Chewawa', w_h2:'Read the label of the treat you give today. Then read ours.', w_sub:'Nothing invented: we compare our label with the best-selling dental treat at the supermarket.',
   c_h0:'<span class="sr-only">Feature</span>', c_h2:'Leading supermarket dental treat*', c_r1:'Ingredients', c_r1a:'beef esophagus', c_r1b:'rice flour, wheat starch, glycerin, gelatin…', c_r2:'First ingredient', c_r2a:'Meat', c_r2b:'Rice flour', c_r3:'Crude protein (min.)', c_r4:'Artificial colorants', c_r4b:'Blue 2, Yellow 5', c_r5:'Preservatives', c_r5b:'potassium sorbate', c_r6:'Grains / sugar / soy', no_:'No', yes_:'Yes', no_2:'No', yes_2:'Yes', no_3:'No', yes_3:'Yes',
   c_foot:'*Data from the Pedigree® Dentastix™ Large (Fresh) label as published by PetSmart, 2026. Chewawa: guaranteed analysis from the 2025 catalog. Brands belong to their owners.',
   note5:'Label-to-label comparison is a natural brand’s strongest argument against a mass brand, and it is verifiable: Pedigree dry gets 1 star, “Strongly Not Recommended”, on Dog Food Advisor (corn first, BHA, dyes; US formulas, verify the Mexican label before quoting). Blue Buffalo built a “read the label” brand that General Mills bought for US$8B. Caveat: Blue Buffalo paid US$32M when its own label failed; every Chewawa claim must be provable per batch. <span class="src">Sources: <a href="https://www.dogfoodadvisor.com/dog-food-reviews/pedigree-dog-food-dry/" target="_blank" rel="noopener">Dog Food Advisor</a> · <a href="https://investors.generalmills.com/press-releases/press-release-details/2018/General-Mills-Accelerates-Portfolio-Reshaping-With-Acquisition-of-Blue-Buffalo/default.aspx" target="_blank" rel="noopener">General Mills, 2018</a> · <a href="https://www.dvm360.com/view/blue-buffalo-makes-true-blue-promise-settle-32-million" target="_blank" rel="noopener">dvm360</a>.</span>',
-  r_eye:'Reviews', r_h2:'What the humans (and the tails) say', r_sub:'Sample reviews to show the layout. To be replaced with real, purchase-verified reviews.',
+  r_eye:'Reviews', r_h2:'What the humans (and the tails) say', r_sub:'Real reviews from customers, verified by purchase.',
   demo2:'sample', demo3:'sample', demo4:'sample', r1:'“[Real review from a verified customer — chicken feet]”', r1w:'Customer name <small>City · Dog breed · Verified purchase</small>', r2:'“[Real review from a verified customer — Sampler Pack]”', r2w:'Customer name <small>City · Dog breed · Verified purchase</small>', r3:'“[Real review from a vet or groomer]”', r3w:'Name · Clinic <small>City · Chewawa partner</small>',
   fm_eye:'Hall of Fame', fm_h3:'The dogs who are already family', fm_sub:'Real dogs with their real humans. Send us a photo of your dog and we will put it on the wall.', fm_human:'Human', fm_join_h:'Does your dog belong here?', fm_join_p:'Send us their photo on WhatsApp with their name and yours.',
   note6:'Social proof next to the price: a product with 5 reviews is 270% more likely to be bought than one with none, and a “verified buyer” badge lifts purchase odds 15%. Only real, purchase-verified reviews, never invented, which is why these are marked as samples. <span class="src">Source: <a href="https://spiegel.medill.northwestern.edu/how-online-reviews-influence-sales/" target="_blank" rel="noopener">Spiegel Research Center, Northwestern</a>.</span>',
   s_eye:'How much do I give?', s_h2:'Pick your dog’s size', s_sub:'We tell you the ideal treat and the maximum daily portion, from each product’s feeding guide.',
   note7:'“Select your dog” is the first interaction on pedigree.com.mx, and the best pet DTC brands (The Farmer’s Dog) put a needs selector right after the hero. Personalizing by size reduces choice paralysis and uses the real portions from the Chewawa 2025 catalog feeding guide. <span class="src">Sources: pedigree.com.mx (observed Sep 2026) · <a href="https://www.thefarmersdog.com/" target="_blank" rel="noopener">thefarmersdog.com</a> · Chewawa 2025 catalog.</span>',
   pr_eye:'From the ranch to the bag', pr_h2:'Three steps. No shortcuts.', pr1h:'Human-grade meat', pr1p:'Beef and chicken from Mexican suppliers that meet human-consumption standards. No by-products, no “meals”.', pr2h:'Slow dehydration', pr2p:'Low temperature for hours, not fast baking. That keeps protein and flavor without preservatives.', pr3h:'Analysis per batch', pr3p:'Every batch carries its guaranteed analysis on the bag. What you see in the table below is what’s inside.',
-  bb_eye:'Pet shops, vets and groomers', bb_h2:'Sell Chewawa in your business', bb_p:'Healthy margins, display included, restocking over WhatsApp. No absurd minimums: start with one case.', bb_f1:'bags per case', bb_f2:'bags per pallet', bb_f3:'order response', bb_i1:'Business name', bb_i2:'City', bb_i3:'WhatsApp', bb_o1:'Pet shop', bb_o2:'Veterinary clinic', bb_o3:'Groomer', bb_o4:'Distributor', bb_cta:'Get wholesale prices', bb_small:'We reply on WhatsApp within 48 h.',
+  bb_eye:'Pet shops, vets and groomers', bb_h2:'Sell Chewawa in your business', bb_p:'Distributor pricing, restocking over WhatsApp and product made in our own plant in Querétaro. Ask us for the price list.', bb_f1:'large bags · minimum order', bb_f2:'medium or small bags · minimum order', bb_f3:'deposit on first orders', bb_i1:'Business name', bb_i2:'City', bb_i3:'WhatsApp', bb_o1:'Pet shop', bb_o2:'Veterinary clinic', bb_o3:'Groomer', bb_o4:'Distributor', bb_cta:'Get wholesale prices', bb_small:'We reply on WhatsApp within 48 h.',
   note8:'Pedigree does not win because of its website: it wins on distribution. Mars runs 796 direct-delivery routes and 25 distribution centers in Mexico, and the corner store is the first place 34% of households buy dog food (23% the supermarket). A challenger needs a B2B lane from day one: this form turns the site into a point-of-sale recruiter. Case and pallet data come from the catalog. <span class="src">Sources: <a href="https://www.prweb.com/releases/mars-petcare-mexico-enters-exclusive-partnership-with-ivy-mobility-for-route-to-market-operations-301933406.html" target="_blank" rel="noopener">Mars Petcare México / Ivy Mobility, 2023</a> · <a href="https://www.kantar.com/latin-america/inspiracion/consumidor/2025/ocho-de-cada-diez-mexicanos-compran-alimento-para-perro" target="_blank" rel="noopener">Kantar, 2025</a>.</span>',
-  f_eye:'FAQ', f_h2:'What people ask before buying', q1:'Is it safe for puppies and senior dogs?', a1:'Yes, from 4 months. For puppies and seniors we recommend starting with chicken breast strips (softer) and always supervising while they chew. Ask your vet if your dog has a condition.', q2:'How long does a bag last?', a2:'Sealed, 12 months. Once opened, close it well and use within 30 days. No refrigeration needed: no moisture, no preservatives.', q3:'How do I pay and when does it arrive?', a3:'Credit or debit card, Mercado Pago, OXXO Pay and bank transfer. Orders from $299 get 3 interest-free payments with participating cards. We ship within 24 h; delivery in 2–5 business days anywhere in Mexico.', q4:'Can I cancel the subscription?', a4:'Anytime, in one click from your portal, no phone calls. PROFECO requires it and we like it that way.', q5:'What if my dog doesn’t like it?', a5:'Money back within the first 30 days. Just send us a WhatsApp with your order number.', q6:'Do you have a sanitary registration?', a6:'Yes. Our plant holds an Aviso de Funcionamiento (operating notice), an annual verification report (Dictamen de Verificación Anual — we comply with the applicable NOMs) and a Good Manufacturing Practices (BPM) certificate, issued by SENASICA. Every batch includes a guaranteed analysis and labeling that follows NOM-012-SAG/ZOO-2020. Want to see the documents? Message us on WhatsApp and we will send them.',
+  f_eye:'FAQ', f_h2:'What people ask before buying', q1:'Is it safe for puppies and senior dogs?', a1:'Yes, from 4 months. For puppies and seniors we recommend starting with chicken breast strips (softer) and always supervising while they chew. Ask your vet if your dog has a condition.', q2:'How long does a bag last?', a2:'Sealed, 12 months. Once opened, close it well and use within 30 days. No refrigeration needed: no moisture, no preservatives.', q3:'How do I pay and when does it arrive?', a3:'Credit or debit card (Visa, Mastercard, American Express), securely processed by Stripe. Shipping is quoted with your ZIP code in the cart and you pick the carrier before paying. We ship from Monterrey; delivery time depends on the carrier you choose, usually 2–5 business days.', q4:'Can I cancel the subscription?', a4:'Anytime: send us a WhatsApp and we cancel it the same day, no calls, no questions.', q5:'What if my dog doesn’t like it?', a5:'Money back within the first 30 days. Just send us a WhatsApp with your order number.', q6:'Do you have a sanitary registration?', a6:'Yes. Our plant holds an Aviso de Funcionamiento (operating notice), an annual verification report (Dictamen de Verificación Anual — we comply with the applicable NOMs) and a Good Manufacturing Practices (BPM) certificate, issued by SENASICA. Every batch includes a guaranteed analysis and labeling that follows NOM-012-SAG/ZOO-2020. Want to see the documents? Message us on WhatsApp and we will send them.',
   nl_eye:'Chewawa Club', nl_h2:'10% off your first order', nl_p:'Plus treat-training tips and new-flavor alerts. One email a month, zero spam.', nl_i:'Your email', nl_cta:'Get my 10%', nl_small:'By subscribing you accept our privacy notice.',
   note9:'69% of e-commerce traffic in Mexico is mobile and ~29% of digital buyers already buy pet products online. 72.4% of consumers are more likely to buy from a brand that offers messaging, and 92% of Mexican internet users use WhatsApp, hence the floating button. Speed: 0.1 s faster on mobile = +8.4% retail conversion, which is why the site is one file with no frameworks. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://whatsappbusiness.com/resources/resource-library/state-of-business-messaging/" target="_blank" rel="noopener">State of Business Messaging</a> · <a href="https://web.dev/case-studies/milliseconds-make-millions" target="_blank" rel="noopener">Google/Deloitte, Milliseconds Make Millions</a>.</span>',
   note10:'Payment and checkout: 75% of Mexican online shoppers pay with debit, 49% with credit and 26% in cash at OXXO-type stores; interest-free installments motivate 70%. Guest checkout: 18–24% abandon when forced to create an account, and the average checkout asks for 11.3 fields when 8 are enough. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://baymard.com/blog/checkout-flow-average-form-fields" target="_blank" rel="noopener">Baymard, checkout flow</a>.</span>',
   note11:'This block is the current chewawa.dog hero with the same words (“Take one treat at a time!”, “special treats!”) and new elements: condensed type, hand-drawn SVG doodles that draw themselves on scroll, a new top-down photo and a real bag from the catalog. It sits after the Pack as a brand-voice breather before the comparison. The purple was deepened to #7245A0 so the cream text meets WCAG AA contrast (6.2:1); the original lavender gave 2.4:1. The slogan stays in English in both languages because it is a visual brand mark, not copy. <span class="src">Sources: <a href="https://chewawa.dog" target="_blank" rel="noopener">chewawa.dog</a> (hero) · <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">WCAG 2.2, 1.4.3 Contrast (Minimum)</a>.</span>',
   note12:'Changes of Sep 10 from user and cofounder feedback: “Pack Probador” became “Pack Descubre” (“probador” sounded odd); the per-100 g / per-piece price was removed from the cards; the Hall of Fame shows real dogs with their human’s name (table <code>hall_of_fame</code>, approved rows only; photos in the public <code>fama</code> bucket); and every product can now have several sizes (table <code>product_variants</code>): with two or more, size chips appear on the card, the price follows the chip and the cart stores <code>product@size</code>. Today each product has a single size loaded; once the three catalog sizes are entered, the chips appear without a deploy. <span class="src">Source: DM from fsalimentos24 (Sep 8) and the pulmón bag photo (#marketing-y-sitio, Sep 7).</span>', note13:'Changes of Sep 23: real prices from the “Chewawa ONLINE prices · September 2026” list (suggested retail, VAT included; the distributor price is not shown). Every product now has its three bags —small, medium and large— and the card opens on the medium ($112.50–$125); the .50 cents are shown and charged as-is. The Sampler Pack also comes in three sizes (5 small, medium or large bags) at a proposed price ≈10% under the sum of the bags, editable in the <code>bundles</code> table. “Sticks de res” became “Palitos de res”, as on the list. Shipping is quoted live with <b>Skydropx</b>: the customer types their ZIP in the cart, the server computes the weight from the catalog, fetches rates and stores the quote; at checkout Stripe charges the chosen rate reading the amount from the server, never from the browser. Until Skydropx credentials exist, the standard rate applies. <span class="src">Source: “Precios para canal ONLINE” PDF (Sep 23) · <a href="https://pro.skydropx.com/es-MX/api-docs" target="_blank" rel="noopener">Skydropx PRO API</a>.</span>',
   ce_eye:'Sanitary backing', ce1:'Aviso de Funcionamiento', ce1s:'operating notice filed with SENASICA', ce2:'Annual verification report', ce2s:'Dictamen de Verificación Anual · compliance with the applicable NOMs', ce3:'Good Manufacturing Practices certificate', ce3s:'BPM · issued by SENASICA', ce_p:'Documents available on request via WhatsApp. Labeling follows NOM-012-SAG/ZOO-2020.',
-  ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_ig:'Instagram · TikTok · Facebook', ft_city:'Monterrey, N.L., Mexico',
-  ft_legal:'© 2026 Chewawa! Dog Treats · Privacy notice · Terms & conditions · Return policy', ft_demo:'Demo site — not the official store.',
-  mc_t:'From $62.50', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 5 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Prices include VAT (IVA) · Guest checkout, no account needed',
+  ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_city:'Monterrey, N.L., Mexico',
+  ft_legal:'© 2026 Chewawa! Dog Treats · <a href="aviso-privacidad.html">Privacy notice</a> · <a href="terminos.html">Terms & conditions</a> · <a href="terminos.html#devoluciones">Returns</a>',
+  mc_t:'From $62.50', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 5 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_total:'Estimated total', sq_hint:'Without a quote, standard shipping applies at checkout', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Prices include VAT (IVA) · Guest checkout, no account needed',
   /* dynamic */
   add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
   reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (5 bags)',
   ship_need:'Add $', ship_need2:' more for free shipping', ship_ok:'You’ve got free shipping 🎉', empty:'Your cart is empty. The treats are waiting.',
-  sq_l:'Get a Skydropx shipping quote', sq_btn:'Quote', cd_ship:'Shipping', sq_wait:'Getting rates…', sq_bad:'Enter a 5-digit ZIP code (Mexico).', sq_off:'Quotes need a connection; shipping is calculated at checkout.', sq_soon:'Live quotes coming soon · standard shipping applies at checkout.', sq_none:'No rates for that ZIP right now · standard shipping applies at checkout.', sq_free:'Free', sq_tbd:'Calculated at checkout',
+  sq_l:'Get a Skydropx shipping quote', sq_btn:'Quote', cd_ship:'Shipping', sq_wait:'Getting rates…', sq_bad:'Enter a 5-digit ZIP code (Mexico).', sq_off:'Quotes need a connection; shipping is calculated at checkout.', sq_soon:'Live quotes coming soon · standard shipping applies at checkout.', sq_none:'No rates for that ZIP right now · standard shipping applies at checkout.', sq_free:'Free', sq_tbd:'Quote it above',
   toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_checkout_off:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl).', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', toast_offline:'Preview without backend: on the live site this is saved to Supabase.', sending:'Sending…', cd_redirect:'Taking you to secure payment…', pay_ok:'Thank you! Payment received. You’ll get a confirmation email shortly.', pay_cancel:'Payment cancelled — your cart is still here.',
   src_live:'live catalog · Supabase', src_local:'built-in catalog',
   an_protein:'Crude protein (min.)', an_fat:'Crude fat (min.)', an_1ing:'1 ingredient',
@@ -1015,7 +1023,7 @@ Object.assign(ES, {
   add:'Agregar', added:'Agregado ✓', msi:'3 meses sin intereses', each_month:'/ mes', once:'una vez', sub:'cada mes −15 %',
   reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Descubre (5 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
-  sq_wait:'Buscando tarifas…', sq_bad:'Escribe un código postal de 5 dígitos.', sq_off:'Para cotizar necesitas conexión; el envío se calcula al pagar.', sq_soon:'Cotización en línea muy pronto · al pagar aplica el envío estándar.', sq_none:'Sin tarifas para ese C.P. por ahora · al pagar aplica el envío estándar.', sq_free:'Gratis', sq_tbd:'Se calcula al pagar',
+  sq_wait:'Buscando tarifas…', sq_bad:'Escribe un código postal de 5 dígitos.', sq_off:'Para cotizar necesitas conexión; el envío se calcula al pagar.', sq_soon:'Cotización en línea muy pronto · al pagar aplica el envío estándar.', sq_none:'Sin tarifas para ese C.P. por ahora · al pagar aplica el envío estándar.', sq_free:'Gratis', sq_tbd:'Cotízalo arriba',
   toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_checkout_off:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl).', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', toast_offline:'Vista previa sin backend: en el sitio real esto se guarda en Supabase.', sending:'Enviando…', cd_redirect:'Te llevamos al pago seguro…', pay_ok:'¡Gracias! Pago recibido. En un momento te llega el correo de confirmación.', pay_cancel:'Pago cancelado — tu carrito sigue aquí.',
   src_live:'catálogo en vivo · Supabase', src_local:'catálogo integrado',
   c_us:'Chewawa', c_them:'Premio del súper',
@@ -1158,7 +1166,7 @@ function lineInfo(id){
   if (id === 'bundle' || id.startsWith('bundle@')) {          // "bundle" (carritos viejos) = tamaño por defecto; "bundle@s|m|l" = tamaño elegido
     const b = CONFIG.bundles.find(x => x.key === (id.split('@')[1] || CONFIG.bundleKey));
     if (!b) { delete cart[id]; persist(); return { name:'—', price:0, img:'', sub:'' }; }
-    return { name: (lang==='es' ? b.name : b.nameEn) || T('bundle_n'), price: b.price, img: (PRODUCTS[0]||{}).img || 'img-bag-patas.webp', sub: lang==='es'?'Envío gratis':'Free shipping' };
+    return { name: (lang==='es' ? b.name : b.nameEn) || T('bundle_n'), price: b.price, img: (PRODUCTS[0]||{}).img || 'img-bag-patas.webp', sub: lang==='es'?'Una bolsa de cada premio':'One bag of each treat' };
   }
   const isSub = id.endsWith('-sub'); const base = id.replace(/-sub$/, ''); const [pid, vkey] = base.split('@');
   const p = PRODUCTS.find(x => x.id === pid);
@@ -1183,11 +1191,12 @@ function renderCart(){
   lastSubtotal = subtotal;
   document.getElementById('cartN').textContent = count;
   document.getElementById('subtotal').textContent = mxn(subtotal);
-  const free = hasBundle || subtotal >= CONFIG.freeShipFrom;
-  document.getElementById('shipMsg').textContent = free ? T('ship_ok') : T('ship_need') + mxn(CONFIG.freeShipFrom - subtotal).slice(1) + T('ship_need2');
-  document.getElementById('shipFill').style.width = (free ? 100 : Math.min(100, subtotal / CONFIG.freeShipFrom * 100)) + '%';
-  // envío: gratis (pack o umbral), tarifa Skydropx elegida, o "se calcula al pagar"
+  // envío: el cliente paga la tarifa cotizada (Skydropx). Envío gratis solo si el negocio lo activa: site_config.free_ship_from > 0 o bundles.free_shipping
+  const free = (CONFIG.freeShipFrom > 0 && subtotal >= CONFIG.freeShipFrom) || (hasBundle && CONFIG.bundleFreeShip);
   const sa = document.getElementById('shipAmt'); if (sa) sa.textContent = !keys.length ? '—' : free ? T('sq_free') : (SHIP ? mxn(SHIP.amount) : T('sq_tbd'));
+  const shipAmt = free ? 0 : (SHIP ? SHIP.amount : CONFIG.shippingMxn);
+  const ct = document.getElementById('cartTotal'); if (ct) ct.textContent = keys.length ? mxn(subtotal + shipAmt) : '$0';
+  const hint = document.getElementById('shipHint'); if (hint) { hint.hidden = !!SHIP; hint.textContent = T('sq_hint').replace(/\.$/, '') + ' (' + mxn(CONFIG.shippingMxn) + ').'; }
   const q = document.getElementById('shipQ'); if (q) q.hidden = free || !keys.length;
   if (RATES && !quoting && !free && keys.length && RATES.sig !== JSON.stringify(cart)) { clearTimeout(requoteT); requoteT = setTimeout(() => quoteShipping(RATES.cp), 500); }   // cambió el peso del carrito → recotiza
   else if (RATES && (free || !keys.length)) { SHIP = null; }
@@ -1289,7 +1298,7 @@ const sbH = () => ({ apikey: SB.key, Authorization: 'Bearer ' + SB.key, 'Content
 async function sbGet(path){ const r = await fetch(SB.url + '/rest/v1/' + path, { headers: sbH() }); if (!r.ok) throw new Error('supabase ' + r.status); return r.json(); }
 async function sbPost(table, row, wantRow){ if (!sbOn) return null; try { return await fetch(SB.url + '/rest/v1/' + table, { method:'POST', headers: { ...sbH(), Prefer: wantRow ? 'return=representation' : 'return=minimal' }, body: JSON.stringify(row) }); } catch(e) { return null; } }
 let dataSource = 'local';
-function setSource(s){ dataSource = s; const el = document.getElementById('dataSrc'); if (el) el.textContent = T(s === 'live' ? 'src_live' : 'src_local'); }
+function setSource(s){ dataSource = s; }
 const rowToProduct = (r, old) => ({
   id: r.id, name: r.name_es, en: r.name_en, sub: r.sub_brand || '', code: r.code, qty: r.qty_es, qtyEn: r.qty_en,
   grams: r.grams, pieces: r.pieces || undefined, price: +r.price_mxn, color: r.color || '#E9A93B', tint: r.tint || '#FBEFD3',
@@ -1299,8 +1308,6 @@ const rowToProduct = (r, old) => ({
   unit: r.unit_es || '', unitEn: r.unit_en || '', portions: r.portions || (old && old.portions) || [[1,2],[2,3],[3,4],[4,5]]
 });
 function applyConfigText(){
-  const ship = '$' + CONFIG.freeShipFrom.toLocaleString('es-MX');
-  ['ann1'].forEach(k => { ES[k] = ES[k].replace(/\$[\d,]+/, ship); EN[k] = EN[k].replace(/\$[\d,]+/, ship); });
   if (CONFIG.firstOrderCode) ['h_offer'].forEach(k => { ES[k] = ES[k].replace('CHEWAWA10', CONFIG.firstOrderCode); EN[k] = EN[k].replace('CHEWAWA10', CONFIG.firstOrderCode); });
 }
 async function loadFromSupabase(){
@@ -1330,8 +1337,9 @@ async function loadFromSupabase(){
     if (c.shipping_mxn != null) CONFIG.shippingMxn = +c.shipping_mxn;
     if (bundles.length) {   // una fila por tamaño (size_key s|m|l); filas sin size_key (esquema viejo) se toman como pack único "m"
       const seen = {}; const list = [];
-      bundles.forEach(r => { const key = String(r.size_key || 'm'); if (seen[key]) return; seen[key] = 1; list.push({ key, id: r.id, price: +r.price_mxn, name: r.name_es, nameEn: r.name_en, ids: Array.isArray(r.product_ids) ? r.product_ids : null }); });
+      bundles.forEach(r => { const key = String(r.size_key || 'm'); if (seen[key]) return; seen[key] = 1; list.push({ key, id: r.id, price: +r.price_mxn, name: r.name_es, nameEn: r.name_en, ids: Array.isArray(r.product_ids) ? r.product_ids : null, freeShip: r.free_shipping === true }); });
       CONFIG.bundles = list; if (!list.some(b => b.key === CONFIG.bundleKey)) CONFIG.bundleKey = (list.find(b => b.key === 'm') || list[0]).key;
+      CONFIG.bundleFreeShip = list.some(b => b.freeShip);
     }
     applyConfigText();
     setLang(lang); setSource('live');
@@ -1376,6 +1384,7 @@ async function loadReviews(){
     const rows = await sbGet('reviews?select=author,city,breed,rating,body,verified&approved=is.true&order=created_at.desc&limit=6');
     if (!rows.length) return;
     const esc = s => String(s ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+    document.getElementById('reviewsHead').hidden = false; document.getElementById('reviewsGrid').hidden = false;
     document.querySelector('.reviews').innerHTML = rows.map(r => `
       <div class="review rv in"><div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div><p>“${esc(r.body)}”</p><div class="who">${esc(r.author)} <small>${[r.city, r.breed, r.verified ? (lang==='es'?'Compra verificada':'Verified purchase') : null].filter(Boolean).map(esc).join(' · ')}</small></div></div>`).join('');
     const sub = document.querySelector('[data-i="r_sub"]'); if (sub) sub.textContent = lang === 'es' ? 'Reseñas reales de clientes, verificadas por compra.' : 'Real reviews from customers, verified by purchase.';
