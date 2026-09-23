@@ -319,3 +319,17 @@ select p.id, p.name_es, p.qty_es, p.price_mxn as default_mxn, count(v.*) as size
 from public.products p left join public.product_variants v on v.product_id = p.id and v.active group by p.id, p.name_es, p.qty_es, p.price_mxn, p.sort order by p.sort;
 select id, size_key, name_es, price_mxn, active from public.bundles order by sort;
 select key, value from public.site_config where key in ('ship_origin','ship_packaging_g','shipping_mxn','free_ship_from');
+
+-- ---------- 23-sep-2026 (b) · sitio listo para publicar ----------
+-- Envío: el cliente paga la tarifa cotizada (Skydropx) según su C.P. Sin umbral de envío gratis ni envío gratis en el pack.
+--        Para reactivarlo algún día: free_ship_from = 599 (por ejemplo) o bundles.free_shipping = true; el sitio y `checkout` lo leen.
+update public.site_config set value = '0', updated_at = now() where key = 'free_ship_from';
+update public.bundles set free_shipping = false, updated_at = now();
+-- Origen de los envíos: Monterrey (C.P. 64000 mientras el equipo confirma el exacto)
+insert into public.site_config (key, value) values ('ship_origin', '{"postal_code":"64000","area_level1":"Nuevo León","area_level2":"Monterrey"}')
+on conflict (key) do update set value = excluded.value, updated_at = now();
+-- Los precios ya son los reales de la lista sep-2026
+insert into public.site_config (key, value) values ('prices_are_placeholders', 'false')
+on conflict (key) do update set value = excluded.value, updated_at = now();
+select key, value from public.site_config where key in ('free_ship_from','ship_origin','shipping_mxn','prices_are_placeholders');
+select id, size_key, price_mxn, free_shipping from public.bundles where active order by sort;
