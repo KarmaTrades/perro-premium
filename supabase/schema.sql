@@ -251,3 +251,71 @@ on conflict do nothing;
 -- 5) Patitas de pollo: la bolsa real (foto 7-sep) dice "Patitas de Pollo" y "Contenido Neto 10 patas" (el catálogo 2025 decía 18 pz)
 update public.products set name_es = 'Patitas de pollo', qty_es = '10 patas', qty_en = '10 feet', pieces = 10, updated_at = now() where id = 'patas';
 update public.product_variants set label_es = '10 patas', label_en = '10 feet', pieces = 10 where product_id = 'patas' and key = 'std';
+
+-- ---------- 23-sep-2026 · lista "Precios de Productos Chewawa ONLINE · septiembre 2026", Pack Descubre en 3 tamaños, Skydropx ----------
+-- Precios = "Precio sugerido al Público" (MXN, IVA incluido). Los precios a distribuidor NO se cargan (son B2B, no van al sitio).
+-- 1) "Sticks de res" → "Palitos de res" (nombre de la lista de precios; el id 'sticks' no cambia para no romper carritos)
+update public.products set name_es = 'Palitos de res', unit_es = 'palitos', updated_at = now() where id = 'sticks';
+
+-- 2) Presentaciones reales: chica (s) · mediana (m, la que abre la tarjeta) · grande (l). Reemplaza la semilla 'std' del 10-sep.
+--    Gramos de las bolsas por pieza (patitas, palitos chicos) son aproximados: solo sirven para cotizar el envío.
+delete from public.product_variants where key = 'std';
+insert into public.product_variants (product_id, key, sort, label_es, label_en, grams, pieces, price_mxn, code, is_default) values
+('patas',   's', 1, '4 piezas',  '4 pieces',  60,  4,    62.50,  null,     false),
+('patas',   'm', 2, '10 piezas', '10 pieces', 150, 10,   112.50, 'PT0022', true),
+('patas',   'l', 3, '18 piezas', '18 pieces', 270, 18,   225,    null,     false),
+('sticks',  's', 1, '4 palitos', '4 sticks',  40,  4,    62.50,  null,     false),
+('sticks',  'm', 2, '80 g',      '80 g',      80,  null, 112.50, null,     true),
+('sticks',  'l', 3, '96 g',      '96 g',      96,  null, 150,    'PT0042', false),
+('pechuga', 's', 1, '50 g',      '50 g',      50,  null, 67.50,  null,     false),
+('pechuga', 'm', 2, '100 g',     '100 g',     100, null, 125,    null,     true),
+('pechuga', 'l', 3, '255 g',     '255 g',     255, null, 300,    'PT0021', false),
+('jerky',   's', 1, '50 g',      '50 g',      50,  null, 62.50,  null,     false),
+('jerky',   'm', 2, '100 g',     '100 g',     100, null, 112.50, null,     true),
+('jerky',   'l', 3, '255 g',     '255 g',     255, null, 300,    'PT0041', false),
+('pulmon',  's', 1, '34 g',      '34 g',      34,  null, 62.50,  null,     false),
+('pulmon',  'm', 2, '84 g',      '84 g',      84,  null, 112.50, 'PT00XX', true),
+('pulmon',  'l', 3, '170 g',     '170 g',     170, null, 225,    null,     false)
+on conflict (product_id, key) do update set sort = excluded.sort, label_es = excluded.label_es, label_en = excluded.label_en, grams = excluded.grams,
+  pieces = excluded.pieces, price_mxn = excluded.price_mxn, code = excluded.code, is_default = excluded.is_default, active = true;
+
+-- 3) products refleja la presentación por defecto (mediana): precio/etiqueta base de la tarjeta y de la Edge Function
+update public.products p set qty_es = v.label_es, qty_en = v.label_en, grams = v.grams, pieces = v.pieces, price_mxn = v.price_mxn, updated_at = now()
+from public.product_variants v where v.product_id = p.id and v.is_default;
+
+-- 4) Pack Descubre en 3 tamaños: una bolsa de cada premio, todas del mismo tamaño. PROPUESTA de precio ≈ 10 % bajo la suma
+--    de las 5 bolsas (chica 317.50 → 289 · mediana 575 → 519 · grande 1,200 → 1,079). Se edita aquí; el sitio y Stripe lo leen.
+alter table public.bundles add column if not exists size_key text, add column if not exists sort int not null default 1;
+update public.bundles set active = false, updated_at = now() where id = 'pack-probador';
+insert into public.bundles (id, name_es, name_en, price_mxn, product_ids, free_shipping, size_key, sort) values
+('pack-descubre-s', 'Pack Descubre · 5 bolsas chicas',   'Sampler Pack · 5 small bags',  289,  array['patas','sticks','pechuga','jerky','pulmon'], true, 's', 1),
+('pack-descubre-m', 'Pack Descubre · 5 bolsas medianas', 'Sampler Pack · 5 medium bags', 519,  array['patas','sticks','pechuga','jerky','pulmon'], true, 'm', 2),
+('pack-descubre-l', 'Pack Descubre · 5 bolsas grandes',  'Sampler Pack · 5 large bags',  1079, array['patas','sticks','pechuga','jerky','pulmon'], true, 'l', 3)
+on conflict (id) do update set name_es = excluded.name_es, name_en = excluded.name_en, price_mxn = excluded.price_mxn, product_ids = excluded.product_ids,
+  free_shipping = excluded.free_shipping, size_key = excluded.size_key, sort = excluded.sort, active = true, updated_at = now();
+
+-- 5) Skydropx: cotizaciones que guarda la Edge Function `shipping-quote` (service role) y que `checkout` valida al cobrar.
+--    Sin políticas públicas: el navegador solo recibe un quote_id. Origen del envío y empaque en site_config.
+create table if not exists public.shipping_quotes (
+  id uuid primary key default gen_random_uuid(),
+  cp text not null,                          -- C.P. destino
+  weight_g int not null,                     -- peso calculado del carrito + empaque
+  quotation_id text,                         -- id de la cotización en Skydropx
+  rates jsonb not null,                      -- [{rate_id, carrier, service, days, amount, currency}]
+  sandbox boolean not null default true,
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null            -- Skydropx: tarifas válidas 24 h
+);
+alter table public.shipping_quotes enable row level security;   -- sin políticas: solo service role
+create index if not exists shipping_quotes_created_idx on public.shipping_quotes (created_at);
+insert into public.site_config (key, value) values
+('ship_origin', '{"postal_code":"76000","area_level1":"Querétaro","area_level2":"Querétaro"}'),   -- PLACEHOLDER: C.P. real de salida (planta Querétaro o bodega Monterrey)
+('ship_packaging_g', '80')                                                                           -- gramos de caja/relleno que se suman al peso
+on conflict (key) do nothing;                                                                        -- no pisar si el equipo ya lo editó
+-- Secretos que faltan (Supabase → Edge Functions → Secrets, los pone Wero): SKYDROPX_CLIENT_ID, SKYDROPX_CLIENT_SECRET, SKYDROPX_ENV=sandbox
+
+-- Verificación
+select p.id, p.name_es, p.qty_es, p.price_mxn as default_mxn, count(v.*) as sizes, string_agg(v.key || '=' || v.price_mxn, ' ' order by v.sort) as prices
+from public.products p left join public.product_variants v on v.product_id = p.id and v.active group by p.id, p.name_es, p.qty_es, p.price_mxn, p.sort order by p.sort;
+select id, size_key, name_es, price_mxn, active from public.bundles order by sort;
+select key, value from public.site_config where key in ('ship_origin','ship_packaging_g','shipping_mxn','free_ship_from');
