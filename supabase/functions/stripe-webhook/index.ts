@@ -15,6 +15,7 @@ function firstKey(json: string | undefined): string {
 }
 const money = (a: number | null | undefined, c: string | null | undefined) => `${((a ?? 0) / 100).toFixed(2)} ${(c ?? "").toUpperCase()}`;
 
+const esc = (t: string) => t.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c] as string));   // Telegram parse_mode HTML
 async function tg(text: string) {
   if (!BOT || !CHAT) return;
   await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`, {
@@ -85,7 +86,10 @@ Deno.serve(async (req) => {
     if (event.type === "checkout.session.completed") {
       const modo = o.mode === "subscription" ? "suscripción mensual" : "compra única";
       const ship = o.shipping_details?.address ?? o.collected_information?.shipping_details?.address;
-      await tg(`🐶 <b>¡Nuevo pedido Chewawa!</b> (${modo}${o.livemode ? "" : " · PRUEBA"})\nCliente: ${o.customer_details?.name ?? "?"} (${o.customer_details?.email ?? "?"})\nTel: ${o.customer_details?.phone ?? "?"}\nTotal: ${money(o.amount_total, o.currency)}\nEnvío: ${ship ? `${ship.city ?? ""}, ${ship.state ?? ""} ${ship.postal_code ?? ""}` : "?"}\nArtículos: ${o.metadata?.items ?? "?"}\nSesión: ${o.id}`);
+      // Cotización Skydropx: la función `checkout` guarda en metadata la tarifa cobrada y el C.P. cotizado; si el cliente puso otro C.P. en Stripe, se avisa para revisar antes de comprar la guía
+      const quoteCp = typeof o.metadata?.quote_cp === "string" ? o.metadata.quote_cp : "";
+      const cpWarn = quoteCp && ship?.postal_code && quoteCp !== String(ship.postal_code) ? `\n⚠️ C.P. cotizado ${quoteCp} ≠ C.P. de entrega ${ship.postal_code}: revisar el costo de envío antes de generar la guía` : "";
+      await tg(`🐶 <b>¡Nuevo pedido Chewawa!</b> (${modo}${o.livemode ? "" : " · PRUEBA"})\nCliente: ${o.customer_details?.name ?? "?"} (${o.customer_details?.email ?? "?"})\nTel: ${o.customer_details?.phone ?? "?"}\nTotal: ${money(o.amount_total, o.currency)}\nEnvío: ${ship ? `${ship.city ?? ""}, ${ship.state ?? ""} ${ship.postal_code ?? ""}` : "?"}${o.metadata?.shipping ? ` · ${esc(String(o.metadata.shipping))}` : ""}${cpWarn}\nArtículos: ${o.metadata?.items ?? "?"}\nSesión: ${o.id}`);
     } else if (event.type === "invoice.paid") {
       await tg(`💰 <b>Pago de suscripción recibido</b>\nCliente: ${o.customer_email ?? "?"}\nMonto: ${money(o.amount_paid, o.currency)}\nFactura: ${o.number ?? o.id}`);
     } else if (event.type === "invoice.payment_failed") {
