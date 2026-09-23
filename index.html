@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chewawa! — Premios naturales de un solo ingrediente para perros · México</title>
-<meta name="description" content="Premios para perro 100% naturales, de un solo ingrediente y grado humano, hechos en México. Patas de pollo, sticks de res, tiras de pechuga y jerky. Envío a todo México.">
+<meta name="description" content="Premios para perro 100% naturales, de un solo ingrediente y grado humano, hechos en México. Patitas de pollo, palitos de res, tiras de pechuga, jerky y pulmón. Envío a todo México.">
 <meta property="og:title" content="Chewawa! Premios naturales de un solo ingrediente">
 <meta property="og:description" content="Sin granos, sin conservadores, sin colorantes. Solo carne. Hecho en México.">
 <meta property="og:image" content="img-bag-patas.webp">
@@ -137,6 +137,10 @@ section{padding:88px 0}
 .sizes-c{display:flex;gap:5px;flex-wrap:wrap}
 .sizes-c .chip{border:1.5px solid var(--line);border-radius:999px;padding:4px 8px;font-size:.72rem;font-weight:800;color:var(--brown-2);background:var(--paper);min-height:32px;line-height:1;letter-spacing:0}
 .sizes-c .chip.on{background:var(--brown);border-color:var(--brown);color:var(--cream)}
+/* chips del Pack Descubre sobre el fondo marino */
+.b-sizes{margin:0 0 14px;gap:8px}
+.b-sizes .chip{background:transparent;border-color:rgba(246,240,228,.45);color:var(--cream);padding:8px 14px;font-size:.82rem;min-height:38px}
+.b-sizes .chip.on{background:var(--yellow);border-color:var(--yellow);color:var(--brown)}
 .card .price{display:flex;align-items:baseline;gap:10px;margin-top:auto;padding-top:8px}
 .card .price b{font-family:var(--display);font-size:1.6rem;color:var(--brown)}
 .card .price s{color:var(--mute);font-size:.95rem}
@@ -354,6 +358,20 @@ footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(246,240
 .ship-bar{padding:14px 22px;background:var(--cream);font-size:.88rem;font-weight:700}
 .ship-bar .bar{height:8px;background:var(--cream-2);border-radius:999px;margin-top:8px;overflow:hidden}
 .ship-bar .bar i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .4s var(--ease)}
+/* cotización de envío (Skydropx) */
+.ship-q{padding:12px 22px 4px;border-bottom:1px solid var(--line)}
+.ship-q label{display:block;font-size:.8rem;font-weight:800;color:var(--brown-2);margin-bottom:6px}
+.ship-q .row{display:flex;gap:8px}
+.ship-q input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;font:inherit;font-weight:700;background:var(--paper);color:var(--ink)}
+.ship-q input:focus{outline:2px solid var(--brown);outline-offset:1px}
+.ship-q .sq-msg{font-size:.8rem;font-weight:700;color:var(--mute);margin:8px 0 6px}
+.ship-q .rate{display:flex;align-items:center;gap:10px;padding:8px 10px;margin:6px 0;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-size:.82rem}
+.ship-q .rate.on{border-color:var(--brown);background:var(--cream)}
+.ship-q .rate input{accent-color:var(--brown);margin:0}
+.ship-q .rate span{flex:1;min-width:0}
+.ship-q .rate small{display:block;color:var(--mute);font-weight:700}
+.ship-q .rate .amt{font-family:var(--display);font-weight:600;color:var(--brown)}
+.drawer footer .ship-line{display:flex;justify-content:space-between;font-size:.88rem;font-weight:800;color:var(--brown-2);margin-top:-4px}
 .drawer .items{flex:1;overflow:auto;padding:12px 22px}
 .item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .item img{height:64px;width:64px;object-fit:contain}
@@ -515,7 +533,7 @@ body.notes .note{display:block}
     <div>
       <span class="eyebrow" data-i="h_eye">100% natural · 1 solo ingrediente · Hecho en México</span>
       <h1 data-i="h_h1">Premios con <em>un</em> ingrediente. Nada más.</h1>
-      <p class="lead" data-i="h_sub">Patas de pollo, sticks de res, pechuga, jerky y pulmón, deshidratados lento con ingredientes grado humano. Sin granos, sin conservadores, sin colorantes. Lo que dice la bolsa es lo único que hay adentro.</p>
+      <p class="lead" data-i="h_sub">Patitas de pollo, palitos de res, pechuga, jerky y pulmón, deshidratados lento con ingredientes grado humano. Sin granos, sin conservadores, sin colorantes. Lo que dice la bolsa es lo único que hay adentro.</p>
       <div class="ctas">
         <a class="btn btn-cta" href="#premios" data-i="h_cta1">Ver premios</a>
         <a class="btn btn-ghost" href="#pack" data-i="h_cta2">Armar Pack Descubre</a>
@@ -562,7 +580,7 @@ body.notes .note{display:block}
     </div>
     <div class="grid" id="grid"></div>
     <div class="swipe-hint" data-i="swipe">Desliza para ver los 5 →</div>
-    <p style="margin-top:22px;font-size:.85rem;color:var(--mute);font-weight:700" data-i="p_note">Precios en MXN con IVA. <span class="demo-tag">demo · precios de referencia</span></p>
+    <p style="margin-top:22px;font-size:.85rem;color:var(--mute);font-weight:700" data-i="p_note">Precios en MXN con IVA incluido. <span class="demo-tag">lista online · sep 2026</span></p>
   </div>
 </section>
 
@@ -578,20 +596,21 @@ body.notes .note{display:block}
         <h2 style="margin-top:10px" data-i="b_h2">Los 5 premios. <em>Un solo paquete.</em> Descubre cuál es su favorito.</h2>
         <p style="margin-top:12px" data-i="b_p">Perfecto para empezar: una bolsa de cada premio, guía de porciones por tamaño y envío gratis a todo México.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l1">Patas de pollo + Sticks de res + Tiras de pechuga + Jerky de res + Pulmón de res</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l1">Patitas de pollo 10 piezas + Palitos de res 80 g + Tiras de pechuga 100 g + Jerky de res 100 g + Pulmón de res 84 g</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l2">Guía impresa “¿cuánto le doy?” según el peso de tu perro</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7L9 18l-5-5"/></svg><span data-i="b_l3">Garantía 30 días: si no lo devora, te devolvemos tu dinero</span></li>
         </ul>
+        <div class="sizes-c b-sizes" id="bundleSizes" role="group" aria-label="Tamaño del pack"></div>
         <div class="pricebox">
-          <b id="bundlePrice">$1,099</b>
-          <s id="bundleWas">$1,345</s>
-          <span class="pill" id="bundleSave" data-i="b_save">Ahorras 18 %</span>
+          <b id="bundlePrice">$519</b>
+          <s id="bundleWas">$575</s>
+          <span class="pill" id="bundleSave" data-i="b_save">Ahorras 10 %</span>
         </div>
         <button class="btn btn-cta" style="margin-top:22px" id="addBundle" data-i="b_cta">Agregar Pack Descubre</button>
       </div>
       <div class="bags" id="bundleBags">
         <img src="img-bag-patas.webp" alt="Patitas de pollo" width="810" height="1080">
-        <img src="img-bag-sticks.webp" alt="Sticks de res" width="690" height="1080">
+        <img src="img-bag-sticks.webp" alt="Palitos de res" width="690" height="1080">
         <img src="img-bag-pechuga.webp" alt="Tiras de pechuga" width="729" height="1080">
         <img src="img-bag-jerky.webp" alt="Jerky de res" width="729" height="1080">
         <img src="img-bag-pulmon.webp" alt="Pulmón de res" width="759" height="1080">
@@ -636,7 +655,7 @@ body.notes .note{display:block}
     </div>
     <div class="compare rv">
       <table>
-        <thead><tr><th data-i="c_h0"><span class="sr-only">Característica</span></th><th class="us">Chewawa! Sticks de res</th><th data-i="c_h2">Premio dental líder del súper*</th></tr></thead>
+        <thead><tr><th data-i="c_h0"><span class="sr-only">Característica</span></th><th class="us">Chewawa! Palitos de res</th><th data-i="c_h2">Premio dental líder del súper*</th></tr></thead>
         <tbody>
           <tr><td data-i="c_r1">Ingredientes</td><td class="us"><span class="ok">1</span> — <span data-i="c_r1a">esófago de res</span></td><td class="them"><span class="no">30+</span> — <span data-i="c_r1b">harina de arroz, almidón de trigo, glicerina, gelatina…</span></td></tr>
           <tr><td data-i="c_r2">Primer ingrediente</td><td class="us" data-i="c_r2a">Carne</td><td class="them" data-i="c_r2b">Harina de arroz</td></tr>
@@ -679,6 +698,7 @@ body.notes .note{display:block}
 <div class="note"><div><b>6</b><span data-i="note6">Prueba social junto al precio: un producto con 5 reseñas tiene 270 % más probabilidad de compra que uno sin reseñas, y el sello “compra verificada” sube la probabilidad 15 %. Solo reseñas reales y verificadas por compra, nunca inventadas; por eso aquí van marcadas como ejemplo. <span class="src">Fuente: <a href="https://spiegel.medill.northwestern.edu/how-online-reviews-influence-sales/" target="_blank" rel="noopener">Spiegel Research Center, Northwestern</a>.</span></span></div></div>
 
 <div class="note" style="margin-top:18px"><div><b>12</b><span data-i="note12">Cambios del 10-sep por feedback de usuarios y cofundadores: “Pack Probador” pasó a “Pack Descubre” (“probador” sonaba raro); se quitó el precio por 100 g / por pieza de las tarjetas; el Salón de la Fama muestra perros reales con el nombre de su humano (tabla <code>hall_of_fame</code>, solo lo aprobado; fotos en el bucket público <code>fama</code>); y cada producto ya puede tener varias presentaciones (tabla <code>product_variants</code>): con dos o más aparecen chips de tamaño en la tarjeta, el precio cambia con el chip y el carrito guarda <code>producto@tamaño</code>. Hoy cada producto tiene una sola presentación cargada; al capturar las tres del catálogo, los chips aparecen sin publicar nada. <span class="src">Fuente: DM de fsalimentos24 (8-sep) y foto de la bolsa de pulmón (#marketing-y-sitio, 7-sep).</span></span></div></div>
+<div class="note" style="margin-top:18px"><div><b>13</b><span data-i="note13">Cambios del 23-sep: precios reales de la lista “Precios de Productos Chewawa ONLINE · septiembre 2026” (precio sugerido al público, IVA incluido; el precio a distribuidor no se muestra). Cada producto tiene sus tres bolsas —chica, mediana y grande— y la tarjeta abre en la mediana ($112.50–$125); los $.50 se muestran y se cobran tal cual. El Pack Descubre también viene en tres tamaños (5 bolsas chicas, medianas o grandes) con precio propuesto ≈10 % bajo la suma de las bolsas, editable en la tabla <code>bundles</code>. “Sticks de res” pasó a “Palitos de res”, como en la lista. El envío se cotiza en vivo con <b>Skydropx</b>: el cliente escribe su C.P. en el carrito, el servidor calcula el peso desde el catálogo, pide tarifas y guarda la cotización; al pagar, Stripe cobra la tarifa elegida leyendo el monto del servidor, nunca del navegador. Mientras no haya credenciales de Skydropx aplica la tarifa estándar. <span class="src">Fuente: PDF “Precios para canal ONLINE” (23-sep) · <a href="https://pro.skydropx.com/es-MX/api-docs" target="_blank" rel="noopener">Skydropx PRO API</a>.</span></span></div></div>
 
 <!-- ===== Size selector ===== -->
 <section id="tamano" style="background:var(--paper)">
@@ -812,7 +832,7 @@ body.notes .note{display:block}
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-1 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.5.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 15 3.7 13.5 3.7 12 3.7 7.4 7.4 3.7 12 3.7s8.3 3.7 8.3 8.3-3.7 8.2-8.3 8.2z"/></svg>
 </a>
 </aside>
-<div class="mcta" id="mcta"><span style="font-family:var(--display);font-weight:600;color:var(--brown)" data-i="mc_t">Desde $199</span><a class="btn btn-cta btn-sm" href="#premios" data-i="mc_cta">Ver premios</a></div>
+<div class="mcta" id="mcta"><span style="font-family:var(--display);font-weight:600;color:var(--brown)" data-i="mc_t">Desde $62.50</span><a class="btn btn-cta btn-sm" href="#premios" data-i="mc_cta">Ver premios</a></div>
 
 <button class="notes-switch" id="notesBtn" aria-pressed="false"><i></i><span data-i="notes_lbl">Notas de diseño</span></button>
 
@@ -835,12 +855,20 @@ body.notes .note{display:block}
 <aside class="drawer" id="drawer" aria-label="Carrito">
   <header><h3 data-i="cd_h">Tu carrito</h3><button class="x" id="closeCart" aria-label="Cerrar">×</button></header>
   <div class="ship-bar"><span id="shipMsg"></span><div class="bar"><i id="shipFill" style="width:0%"></i></div></div>
+  <div class="ship-q" id="shipQ" hidden>
+    <form id="cpForm" novalidate>
+      <label for="cpInput" data-i="sq_l">Cotiza tu envío con Skydropx</label>
+      <div class="row"><input id="cpInput" name="cp" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="C.P. (5 dígitos)" aria-label="Código postal"><button type="submit" class="btn btn-cta btn-sm" data-i="sq_btn">Cotizar</button></div>
+    </form>
+    <div id="shipRates" aria-live="polite"></div>
+  </div>
   <div class="items" id="items"></div>
   <footer>
     <div class="tot"><span data-i="cd_sub">Subtotal</span><span id="subtotal">$0</span></div>
+    <div class="ship-line"><span data-i="cd_ship">Envío</span><span id="shipAmt">—</span></div>
     <button class="btn btn-cta" id="checkout" data-i="cd_cta">Pagar ahora</button>
     <div class="paylist"><span>VISA</span><span>MC</span><span>AMEX</span><span>MERCADO PAGO</span><span>OXXO</span><span>3 MSI</span></div>
-    <small data-i="cd_small">Pago seguro con Stripe · Tarjeta · Compra como invitado, sin crear cuenta</small>
+    <small data-i="cd_small">Pago seguro con Stripe · Precios con IVA incluido · Compra como invitado, sin crear cuenta</small>
   </footer>
 </aside>
 <div id="toast" role="status"></div>
@@ -853,7 +881,15 @@ const CONFIG = {
   currency: 'MXN',
   freeShipFrom: 599,               // umbral de envío gratis (MXN)
   subDiscount: 0.15,               // descuento suscripción
-  bundle: { price: 1099 },         // PLACEHOLDER — precio Pack Descubre (5 bolsas)
+  /* Pack Descubre en 3 tamaños (una bolsa de cada premio, todas del mismo tamaño). Los precios son PROPUESTA
+     (≈10 % bajo la suma de las 5 bolsas de la lista sep-2026) y se editan en la tabla `bundles` (size_key s|m|l). */
+  bundleKey: 'm',
+  bundles: [
+    { key:'s', name:'Pack Descubre · 5 bolsas chicas',   nameEn:'Sampler Pack · 5 small bags',  price:289 },
+    { key:'m', name:'Pack Descubre · 5 bolsas medianas', nameEn:'Sampler Pack · 5 medium bags', price:519 },
+    { key:'l', name:'Pack Descubre · 5 bolsas grandes',  nameEn:'Sampler Pack · 5 large bags',  price:1079 },
+  ],
+  shippingMxn: 99,                 // envío estándar bajo el umbral (se lee de site_config.shipping_mxn); Skydropx cotiza en vivo si está configurado
   msiFrom: 299,                    // desde cuánto ofrecer 3 MSI
   whatsapp: '525661118591',
   payments: 'stripe',              // 'stripe' → Edge Function `checkout` crea la sesión de Stripe Checkout (sandbox mientras site_config.stripe_mode = test)
@@ -868,31 +904,48 @@ const CONFIG = {
   newsletterEndpoint: ''           // opcional: Klaviyo / Mailchimp además de Supabase
 };
 
-/* PLACEHOLDER: precios de referencia (MXN, IVA incl.) basados en anaquel MX.
+/* Precios: lista "Precios de Productos Chewawa ONLINE · septiembre 2026" (precio sugerido al público, MXN, IVA incl.).
+   Tres presentaciones por producto (s = chica, m = mediana, l = grande); la tarjeta abre en la mediana.
+   Los gramos de las bolsas por pieza (patitas, palitos chicos) son aproximados y solo sirven para cotizar el envío.
    Análisis garantizado y guía de porciones: catálogo Chewawa 2025. */
 const PRODUCTS = [
-  { id:'patas',   name:'Patitas de pollo', en:'Chicken Feet', sub:"Heaven's Crunchies", code:'PT0022', qty:'10 patas', qtyEn:'10 feet', grams:150, pieces:10, price:199,
+  { id:'patas',   name:'Patitas de pollo', en:'Chicken Feet', sub:"Heaven's Crunchies", code:'PT0022', qty:'10 piezas', qtyEn:'10 pieces', grams:150, pieces:10, price:112.50,
+    variants:[ { key:'s', label:'4 piezas',  labelEn:'4 pieces',  grams:60,  pieces:4,  price:62.50 },
+               { key:'m', label:'10 piezas', labelEn:'10 pieces', grams:150, pieces:10, price:112.50, code:'PT0022', def:true },
+               { key:'l', label:'18 piezas', labelEn:'18 pieces', grams:270, pieces:18, price:225 } ],
     color:'#E9A93B', tint:'#FBEFD3', img:'img-bag-patas.webp', w:810, h:1080, tag:'Más vendido', tagEn:'Best seller', hot:true,
     desc:'Crujientes y con glucosamina natural para las articulaciones. Ideal para razas medianas y grandes.',
     descEn:'Crunchy, with natural glucosamine for joints. Ideal for medium and large breeds.',
     ingr:'Patas de pollo', ingrEn:'Chicken feet', protein:58, fat:3, fiber:1, moisture:12, unit:'piezas', unitEn:'pieces', portions:[[1,2],[2,3],[3,4],[4,5]] },
-  { id:'sticks',  name:'Sticks de res', en:'Beef Sticks', sub:'Healthy Crave', code:'PT0042', qty:'96 g', qtyEn:'96 g', grams:96, price:199,
+  { id:'sticks',  name:'Palitos de res', en:'Beef Sticks', sub:'Healthy Crave', code:'PT0042', qty:'80 g', qtyEn:'80 g', grams:80, price:112.50,
+    variants:[ { key:'s', label:'4 palitos', labelEn:'4 sticks', grams:40, pieces:4, price:62.50 },
+               { key:'m', label:'80 g', labelEn:'80 g', grams:80, price:112.50, def:true },
+               { key:'l', label:'96 g', labelEn:'96 g', grams:96, price:150, code:'PT0042' } ],
     color:'#7BAF2C', tint:'#E8F1D6', img:'img-bag-sticks.webp', w:690, h:1080, tag:'Dental', tagEn:'Dental',
     desc:'Esófago de res deshidratado. Masticable largo que ayuda a limpiar los dientes sin harinas ni glicerina.',
     descEn:'Dehydrated beef esophagus. A long chew that helps clean teeth — no flours, no glycerin.',
-    ingr:'Esófago de res', ingrEn:'Beef esophagus', protein:54, fat:6, fiber:1, moisture:12, unit:'sticks', unitEn:'sticks', portions:[[1,2],[2,3],[3,4],[4,5]] },
-  { id:'pechuga', name:'Tiras de pechuga de pollo', en:'Chicken Breast Strips', sub:'Nutri Luxe', code:'PT0021', qty:'255 g', qtyEn:'255 g', grams:255, price:349,
+    ingr:'Esófago de res', ingrEn:'Beef esophagus', protein:54, fat:6, fiber:1, moisture:12, unit:'palitos', unitEn:'sticks', portions:[[1,2],[2,3],[3,4],[4,5]] },
+  { id:'pechuga', name:'Tiras de pechuga de pollo', en:'Chicken Breast Strips', sub:'Nutri Luxe', code:'PT0021', qty:'100 g', qtyEn:'100 g', grams:100, price:125,
+    variants:[ { key:'s', label:'50 g', labelEn:'50 g', grams:50, price:67.50 },
+               { key:'m', label:'100 g', labelEn:'100 g', grams:100, price:125, def:true },
+               { key:'l', label:'255 g', labelEn:'255 g', grams:255, price:300, code:'PT0021' } ],
     color:'#D8463E', tint:'#F8DAD8', img:'img-bag-pechuga.webp', w:729, h:1080, tag:'Entrenamiento', tagEn:'Training',
     desc:'65 % de proteína y textura suave. El premio que sí quieren ganarse en el entrenamiento. Apto para cachorros.',
     descEn:'65% protein and a soft texture. The reward they actually work for. Puppy-friendly.',
     ingr:'Pechuga de pollo', ingrEn:'Chicken breast', protein:65, fat:3, fiber:1, moisture:12, unit:'tiras', unitEn:'strips', portions:[[1,2],[2,3],[3,4],[4,5]] },
-  { id:'jerky',   name:'Jerky de res', en:'Beef Jerky', sub:'Vital Feast', code:'PT0041', qty:'255 g', qtyEn:'255 g', grams:255, price:349,
+  { id:'jerky',   name:'Jerky de res', en:'Beef Jerky', sub:'Vital Feast', code:'PT0041', qty:'100 g', qtyEn:'100 g', grams:100, price:112.50,
+    variants:[ { key:'s', label:'50 g', labelEn:'50 g', grams:50, price:62.50 },
+               { key:'m', label:'100 g', labelEn:'100 g', grams:100, price:112.50, def:true },
+               { key:'l', label:'255 g', labelEn:'255 g', grams:255, price:300, code:'PT0041' } ],
     color:'#35A9BC', tint:'#D6EEF2', img:'img-bag-jerky.webp', w:729, h:1080, tag:'Alta proteína', tagEn:'High protein',
     desc:'Carne de res 100 %, deshidratada lento. Para perros exigentes y perros grandes con hambre de verdad.',
     descEn:'100% beef, slow-dehydrated. For picky eaters and big dogs with real appetite.',
     ingr:'Carne de res', ingrEn:'Beef', protein:55, fat:8, fiber:1, moisture:12, unit:'tiras', unitEn:'strips', portions:[[1,2],[2,3],[3,4],[4,5]] },
-  /* 5.º SKU pedido por los cofundadores (nota de voz 3-sep-2026). No está en el catálogo 2025: precio, gramos y análisis son PLACEHOLDER. */
-  { id:'pulmon',  name:'Pulmón de res', en:'Beef Lung', sub:'Soft Bliss', code:'PT00XX', qty:'84 g', qtyEn:'84 g', grams:84, price:249,
+  /* 5.º SKU pedido por los cofundadores (nota de voz 3-sep-2026). No está en el catálogo 2025: el análisis garantizado sigue siendo PLACEHOLDER; precios y gramos son de la lista sep-2026. */
+  { id:'pulmon',  name:'Pulmón de res', en:'Beef Lung', sub:'Soft Bliss', code:'PT00XX', qty:'84 g', qtyEn:'84 g', grams:84, price:112.50,
+    variants:[ { key:'s', label:'34 g', labelEn:'34 g', grams:34, price:62.50 },
+               { key:'m', label:'84 g', labelEn:'84 g', grams:84, price:112.50, code:'PT00XX', def:true },
+               { key:'l', label:'170 g', labelEn:'170 g', grams:170, price:225 } ],
     color:'#7B4FA3', tint:'#EBE1F4', img:'img-bag-pulmon.webp', w:759, h:1080, tag:'Nuevo', tagEn:'New',
     desc:'Pulmón de res deshidratado: ligero, aireado y fácil de partir. Bajo en calorías y grasa, rico en vitaminas B y minerales.',
     descEn:'Dehydrated beef lung: light, airy and easy to break. Low in calories and fat, rich in B vitamins and minerals.',
@@ -919,7 +972,7 @@ const EN = {
   note1:'One message and one primary button above the fold: people spend 57% of viewing time above the fold and 74% in the first two screenfuls. The “one ingredient” promise is what Pedigree cannot copy: Dentastix lists 30+ ingredients and 8% protein, and Mars covers premium with other brands (Royal Canin, Eukanuba, Orijen/Acana), not with Pedigree. <span class="src">Sources: <a href="https://www.nngroup.com/articles/scrolling-and-attention/" target="_blank" rel="noopener">NN/g, Scrolling and Attention</a> · Dentastix label (PetSmart) · <a href="https://www.pedigree.com/about-us" target="_blank" rel="noopener">pedigree.com/about-us</a>.</span>',
   t1:'Human-grade ingredients<small>No corn, soy, wheat or sugar</small>', t2:'No preservatives or colorants<small>Slow-dehydrated, not baked</small>', t3:'Made in Mexico<small>Small batches, local production</small>', t4:'“Devour it or money back” guarantee<small>30 days, no questions</small>',
   note2:'The trust strip answers the four doubts that stall a purchase (what’s in it, is it safe, where is it from, what if they hate it). The free-shipping threshold is not decoration: in Mexico shipping cost is the #1 abandonment driver (74%) and free shipping motivates 84% of buyers; average cart abandonment is 70.22%. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO, Estudio de Venta Online 2025</a> · <a href="https://baymard.com/lists/cart-abandonment-rate" target="_blank" rel="noopener">Baymard Institute</a>.</span>',
-  p_eye:'Our treats', p_h2:'Five treats. Five ingredients. Zero fine print.', p_sub:'Buy once or get them monthly at 15% off. Cancel anytime.', m_once:'One time', m_sub:'Monthly', p_note:'Prices in MXN incl. VAT. <span class="demo-tag">demo · reference prices</span>',
+  p_eye:'Our treats', p_h2:'Five treats. Five ingredients. Zero fine print.', p_sub:'Buy once or get them monthly at 15% off. Cancel anytime.', m_once:'One time', m_sub:'Monthly', p_note:'Prices in MXN, VAT included. <span class="demo-tag">online price list · Sep 2026</span>',
   note3:'Price, weight, a concrete benefit and “Add” on every card without leaving the page. 42% of users try to gauge real product size from photos, so pieces and grams stay visible. The price per 100 g / per piece was removed on Sep 10 after user feedback (“not common in Mexico and it can scare people off”); the single-Dentastix comparison (MXN 8.50–11.50) stays in the label table. The “Monthly −15%” toggle is the engine of pet e-commerce: Autoship was 83.3% of Chewy’s 2025 sales (US$10.5B). <span class="src">Sources: <a href="https://baymard.com/learn/ux-statistics" target="_blank" rel="noopener">Baymard UX statistics</a> · <a href="https://www.scorpion.com.mx/proveedores/pedigree.html" target="_blank" rel="noopener">Tienda Scorpion (mayoreo Pedigree)</a> · <a href="https://investor.chewy.com/news-and-events/news/news-details/2026/Chewy-Announces-Fiscal-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx" target="_blank" rel="noopener">Chewy FY2025 results</a>.</span>',
   b_ship:'Free shipping included', b_eye:'Best seller · Sampler Pack', b_h2:'All 5 treats. <em>One pack.</em> Find out which one is their favorite.', b_p:'The perfect start: one bag of each treat, a portion guide by dog size, and free shipping anywhere in Mexico.',
   b_l1:'Chicken feet + Beef sticks + Chicken breast strips + Beef jerky + Beef lung', b_l2:'Printed “how much do I give?” guide by your dog’s weight', b_l3:'30-day guarantee: if they don’t devour it, money back', b_save:'Save 18%', b_cta:'Add Sampler Pack',
@@ -942,15 +995,16 @@ const EN = {
   note9:'69% of e-commerce traffic in Mexico is mobile and ~29% of digital buyers already buy pet products online. 72.4% of consumers are more likely to buy from a brand that offers messaging, and 92% of Mexican internet users use WhatsApp, hence the floating button. Speed: 0.1 s faster on mobile = +8.4% retail conversion, which is why the site is one file with no frameworks. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://whatsappbusiness.com/resources/resource-library/state-of-business-messaging/" target="_blank" rel="noopener">State of Business Messaging</a> · <a href="https://web.dev/case-studies/milliseconds-make-millions" target="_blank" rel="noopener">Google/Deloitte, Milliseconds Make Millions</a>.</span>',
   note10:'Payment and checkout: 75% of Mexican online shoppers pay with debit, 49% with credit and 26% in cash at OXXO-type stores; interest-free installments motivate 70%. Guest checkout: 18–24% abandon when forced to create an account, and the average checkout asks for 11.3 fields when 8 are enough. <span class="src">Sources: <a href="https://8982035.fs1.hubspotusercontent-na1.net/hubfs/8982035/AMVO_Estudio%20de%20Venta%20Online%202025_P%C3%BAblica_V2.pdf" target="_blank" rel="noopener">AMVO 2025</a> · <a href="https://baymard.com/blog/checkout-flow-average-form-fields" target="_blank" rel="noopener">Baymard, checkout flow</a>.</span>',
   note11:'This block is the current chewawa.dog hero with the same words (“Take one treat at a time!”, “special treats!”) and new elements: condensed type, hand-drawn SVG doodles that draw themselves on scroll, a new top-down photo and a real bag from the catalog. It sits after the Pack as a brand-voice breather before the comparison. The purple was deepened to #7245A0 so the cream text meets WCAG AA contrast (6.2:1); the original lavender gave 2.4:1. The slogan stays in English in both languages because it is a visual brand mark, not copy. <span class="src">Sources: <a href="https://chewawa.dog" target="_blank" rel="noopener">chewawa.dog</a> (hero) · <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener">WCAG 2.2, 1.4.3 Contrast (Minimum)</a>.</span>',
-  note12:'Changes of Sep 10 from user and cofounder feedback: “Pack Probador” became “Pack Descubre” (“probador” sounded odd); the per-100 g / per-piece price was removed from the cards; the Hall of Fame shows real dogs with their human’s name (table <code>hall_of_fame</code>, approved rows only; photos in the public <code>fama</code> bucket); and every product can now have several sizes (table <code>product_variants</code>): with two or more, size chips appear on the card, the price follows the chip and the cart stores <code>product@size</code>. Today each product has a single size loaded; once the three catalog sizes are entered, the chips appear without a deploy. <span class="src">Source: DM from fsalimentos24 (Sep 8) and the pulmón bag photo (#marketing-y-sitio, Sep 7).</span>',
+  note12:'Changes of Sep 10 from user and cofounder feedback: “Pack Probador” became “Pack Descubre” (“probador” sounded odd); the per-100 g / per-piece price was removed from the cards; the Hall of Fame shows real dogs with their human’s name (table <code>hall_of_fame</code>, approved rows only; photos in the public <code>fama</code> bucket); and every product can now have several sizes (table <code>product_variants</code>): with two or more, size chips appear on the card, the price follows the chip and the cart stores <code>product@size</code>. Today each product has a single size loaded; once the three catalog sizes are entered, the chips appear without a deploy. <span class="src">Source: DM from fsalimentos24 (Sep 8) and the pulmón bag photo (#marketing-y-sitio, Sep 7).</span>', note13:'Changes of Sep 23: real prices from the “Chewawa ONLINE prices · September 2026” list (suggested retail, VAT included; the distributor price is not shown). Every product now has its three bags —small, medium and large— and the card opens on the medium ($112.50–$125); the .50 cents are shown and charged as-is. The Sampler Pack also comes in three sizes (5 small, medium or large bags) at a proposed price ≈10% under the sum of the bags, editable in the <code>bundles</code> table. “Sticks de res” became “Palitos de res”, as on the list. Shipping is quoted live with <b>Skydropx</b>: the customer types their ZIP in the cart, the server computes the weight from the catalog, fetches rates and stores the quote; at checkout Stripe charges the chosen rate reading the amount from the server, never from the browser. Until Skydropx credentials exist, the standard rate applies. <span class="src">Source: “Precios para canal ONLINE” PDF (Sep 23) · <a href="https://pro.skydropx.com/es-MX/api-docs" target="_blank" rel="noopener">Skydropx PRO API</a>.</span>',
   ce_eye:'Sanitary backing', ce1:'Aviso de Funcionamiento', ce1s:'operating notice filed with SENASICA', ce2:'Annual verification report', ce2s:'Dictamen de Verificación Anual · compliance with the applicable NOMs', ce3:'Good Manufacturing Practices certificate', ce3s:'BPM · issued by SENASICA', ce_p:'Documents available on request via WhatsApp. Labeling follows NOM-012-SAG/ZOO-2020.',
   ft_p:'Single-ingredient treats, made in Mexico. Treat your pet right.', ft_h1:'Shop', ft_l1:'All treats', ft_l2:'Sampler Pack', ft_l3:'Monthly subscription', ft_l4:'Wholesale & distributors', ft_h2:'Help', ft_l5:'FAQ', ft_l6:'Shipping & returns', ft_l7:'Portion guide', ft_l8:'Invoicing', ft_h3:'Contact', ft_ig:'Instagram · TikTok · Facebook', ft_city:'Monterrey, N.L., Mexico',
   ft_legal:'© 2026 Chewawa! Dog Treats · Privacy notice · Terms & conditions · Return policy', ft_demo:'Demo site — not the official store.',
-  mc_t:'From $199', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 5 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Card · Guest checkout, no account needed',
+  mc_t:'From $62.50', mn1:'Treats', mn2:'Sampler Pack', mn3:'Why Chewawa', mn4:'How much?', mn5:'Wholesale', mn6:'FAQ', mn_wa:'Message us on WhatsApp', swipe:'Swipe to see all 5 →', c_us:'Chewawa', c_them:'Supermarket treat', mc_cta:'Shop treats', notes_lbl:'Design notes', cd_h:'Your cart', cd_sub:'Subtotal', cd_cta:'Checkout', cd_small:'Secure payment by Stripe · Prices include VAT (IVA) · Guest checkout, no account needed',
   /* dynamic */
   add:'Add', added:'Added ✓', msi:'3 interest-free payments', each_month:'/ month', once:'one time', sub:'monthly −15%',
   reco_t:'Recommended for a', reco_p:'Maximum daily portion (feeding guide):', reco_cta:'Add', bundle_n:'Sampler Pack (5 bags)',
   ship_need:'Add $', ship_need2:' more for free shipping', ship_ok:'You’ve got free shipping 🎉', empty:'Your cart is empty. The treats are waiting.',
+  sq_l:'Get a Skydropx shipping quote', sq_btn:'Quote', cd_ship:'Shipping', sq_wait:'Getting rates…', sq_bad:'Enter a 5-digit ZIP code (Mexico).', sq_off:'Quotes need a connection; shipping is calculated at checkout.', sq_soon:'Live quotes coming soon · standard shipping applies at checkout.', sq_none:'No rates for that ZIP right now · standard shipping applies at checkout.', sq_free:'Free', sq_tbd:'Calculated at checkout',
   toast_added:'Added to cart', toast_checkout:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl). Your cart was recorded.', toast_checkout_off:'Demo: payment isn’t connected yet (CONFIG.checkoutUrl).', toast_b2b:'Request received. We’ll message you on WhatsApp within 48 h.', toast_nl:'Done! Use CHEWAWA10 on your first order.', toast_nl_dup:'That email is already in the Chewawa Club 🐾', toast_err:'Couldn’t send. Message us on WhatsApp.', toast_offline:'Preview without backend: on the live site this is saved to Supabase.', sending:'Sending…', cd_redirect:'Taking you to secure payment…', pay_ok:'Thank you! Payment received. You’ll get a confirmation email shortly.', pay_cancel:'Payment cancelled — your cart is still here.',
   src_live:'live catalog · Supabase', src_local:'built-in catalog',
   an_protein:'Crude protein (min.)', an_fat:'Crude fat (min.)', an_1ing:'1 ingredient',
@@ -961,6 +1015,7 @@ Object.assign(ES, {
   add:'Agregar', added:'Agregado ✓', msi:'3 meses sin intereses', each_month:'/ mes', once:'una vez', sub:'cada mes −15 %',
   reco_t:'Recomendado para perro', reco_p:'Porción diaria máxima (guía de alimentación):', reco_cta:'Agregar', bundle_n:'Pack Descubre (5 bolsas)',
   ship_need:'Te faltan $', ship_need2:' para envío gratis', ship_ok:'¡Ya tienes envío gratis! 🎉', empty:'Tu carrito está vacío. Los premios te esperan.',
+  sq_wait:'Buscando tarifas…', sq_bad:'Escribe un código postal de 5 dígitos.', sq_off:'Para cotizar necesitas conexión; el envío se calcula al pagar.', sq_soon:'Cotización en línea muy pronto · al pagar aplica el envío estándar.', sq_none:'Sin tarifas para ese C.P. por ahora · al pagar aplica el envío estándar.', sq_free:'Gratis', sq_tbd:'Se calcula al pagar',
   toast_added:'Agregado al carrito', toast_checkout:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl). Tu carrito quedó registrado.', toast_checkout_off:'Demo: el pago aún no está conectado (CONFIG.checkoutUrl).', toast_b2b:'Solicitud recibida. Te escribimos por WhatsApp en menos de 48 h.', toast_nl:'¡Listo! Usa CHEWAWA10 en tu primer pedido.', toast_nl_dup:'Ese correo ya está en el Club Chewawa 🐾', toast_err:'No se pudo enviar. Escríbenos por WhatsApp.', toast_offline:'Vista previa sin backend: en el sitio real esto se guarda en Supabase.', sending:'Enviando…', cd_redirect:'Te llevamos al pago seguro…', pay_ok:'¡Gracias! Pago recibido. En un momento te llega el correo de confirmación.', pay_cancel:'Pago cancelado — tu carrito sigue aquí.',
   src_live:'catálogo en vivo · Supabase', src_local:'catálogo integrado',
   c_us:'Chewawa', c_them:'Premio del súper',
@@ -981,7 +1036,9 @@ function setLang(l){
 document.getElementById('langBtn').onclick = () => setLang(lang === 'es' ? 'en' : 'es');
 
 /* ===================== helpers ===================== */
-const mxn = n => '$' + Math.round(n).toLocaleString('es-MX');
+/* Dinero: centavos exactos ($112.50 se muestra y se cobra como 112.50; los enteros van sin decimales) */
+const cents = n => Math.round((+n || 0) * 100) / 100;
+const mxn = n => { const r = cents(n); return '$' + r.toLocaleString('es-MX', Number.isInteger(r) ? {} : { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
 /* Color de acento "tinta": oscurece el color del SKU hasta que el texto cumpla WCAG AA (≥4.6:1) sobre papel */
 const inkCache = {};
 function inkFor(hex){
@@ -1005,7 +1062,7 @@ const SEL = {};                                                        // tamañ
 const variantsOf = p => (p.variants && p.variants.length) ? p.variants : [{ key: 'std', label: p.qty, labelEn: p.qtyEn, grams: p.grams, pieces: p.pieces, price: p.price, code: p.code, def: true }];
 const curVar = p => { const vs = variantsOf(p); return vs.find(v => v.key === SEL[p.id]) || vs.find(v => v.def) || vs[0]; };
 const basePrice = p => curVar(p).price;
-const subPrice = p => Math.round(basePrice(p) * (1 - CONFIG.subDiscount));   // pesos enteros: lo que se muestra es lo que cobra Stripe
+const subPrice = p => cents(basePrice(p) * (1 - CONFIG.subDiscount));        // redondeo a centavos: lo que se muestra es lo que cobra Stripe (misma fórmula en la Edge Function)
 const priceOf = p => mode === 'sub' ? subPrice(p) : basePrice(p);
 const cartKey = p => { const v = curVar(p); return v.def ? p.id : `${p.id}@${v.key}`; };
 
@@ -1034,28 +1091,37 @@ document.getElementById('modeSub').onclick  = () => { mode='sub';  document.getE
 
 /* ===================== bundle ===================== */
 const NUM_ES = ['', 'Un', 'Dos', 'Tres', 'Cuatro', 'Cinco', 'Seis', 'Siete', 'Ocho'], NUM_EN = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
-function bundleItems(){ const ids = CONFIG.bundle.ids || PRODUCTS.map(p => p.id); return ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean); }
+const curBundle = key => CONFIG.bundles.find(b => b.key === (key || CONFIG.bundleKey)) || CONFIG.bundles[0];
+/* bolsa de cada producto para el tamaño del pack (si un producto no tiene ese tamaño, su presentación por defecto) */
+const bundleVar = (p, key) => variantsOf(p).find(v => v.key === key) || variantsOf(p).find(v => v.def) || variantsOf(p)[0];
+function bundleItems(){ const ids = curBundle().ids || PRODUCTS.map(p => p.id); return ids.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean); }
 function renderBundle(){
-  const items = bundleItems(), n = items.length, nAll = PRODUCTS.length;
-  const was = items.reduce((s,p)=>s+p.price,0), pct = Math.max(0, Math.round((1-CONFIG.bundle.price/was)*100));
+  const B = curBundle(), items = bundleItems(), n = items.length, nAll = PRODUCTS.length;
+  const was = items.reduce((s,p)=>s+bundleVar(p, B.key).price,0), pct = Math.max(0, Math.round((1-B.price/was)*100));
   // Copy that counts the catalog, so it stays right when a product is added or removed in Supabase
   ES.p_h2 = `${NUM_ES[nAll] || nAll} premios. ${NUM_ES[nAll] || nAll} ingredientes. Cero letras chiquitas.`;
   EN.p_h2 = `${NUM_EN[nAll] || nAll} treats. ${NUM_EN[nAll] || nAll} ingredients. Zero fine print.`;
   ES.swipe = `Desliza para ver los ${nAll} →`; EN.swipe = `Swipe to see all ${nAll} →`;
   ES.b_h2 = `Los ${n} premios. <em>Un solo paquete.</em> Descubre cuál es su favorito.`;
   EN.b_h2 = `All ${n} treats. <em>One pack.</em> Find out which one is their favorite.`;
-  ES.b_l1 = items.map(p => p.name).join(' + '); EN.b_l1 = items.map(p => p.en).join(' + ');
-  ES.bundle_n = CONFIG.bundle.name || `Pack Descubre (${n} bolsas)`; EN.bundle_n = CONFIG.bundle.nameEn || `Sampler Pack (${n} bags)`;
+  ES.b_l1 = items.map(p => `${p.name} ${bundleVar(p, B.key).label}`).join(' + '); EN.b_l1 = items.map(p => `${p.en} ${bundleVar(p, B.key).labelEn}`).join(' + ');
+  ES.bundle_n = B.name || `Pack Descubre (${n} bolsas)`; EN.bundle_n = B.nameEn || `Sampler Pack (${n} bags)`;
   ES.b_save = 'Ahorras ' + pct + ' %'; EN.b_save = 'Save ' + pct + '%';
+  const minP = Math.min(...PRODUCTS.flatMap(p => variantsOf(p).map(v => v.price)));   // "Desde $62.50" en la barra móvil sigue al catálogo
+  ES.mc_t = 'Desde ' + mxn(minP); EN.mc_t = 'From ' + mxn(minP);
   const D = lang === 'es' ? ES : EN;
-  ['p_h2','swipe','b_h2','b_l1','b_save'].forEach(k => { const el = document.querySelector(`[data-i="${k}"]`); if (el) el.innerHTML = D[k]; });
+  ['p_h2','swipe','b_h2','b_l1','b_save','mc_t'].forEach(k => { const el = document.querySelector(`[data-i="${k}"]`); if (el) el.innerHTML = D[k]; });
   document.getElementById('bundleWas').textContent = mxn(was);
-  document.getElementById('bundlePrice').textContent = mxn(CONFIG.bundle.price);
+  document.getElementById('bundlePrice').textContent = mxn(B.price);
+  const sz = document.getElementById('bundleSizes');
+  const SIZE_N = { s: ['Chico', 'Small'], m: ['Mediano', 'Medium'], l: ['Grande', 'Large'] };
+  sz.innerHTML = CONFIG.bundles.length > 1 ? CONFIG.bundles.map(b => `<button type="button" class="chip${b.key===B.key?' on':''}" data-bkey="${b.key}" aria-pressed="${b.key===B.key}">${(SIZE_N[b.key]||[b.key,b.key])[lang==='es'?0:1]} · ${mxn(b.price)}</button>`).join('') : '';
+  sz.querySelectorAll('[data-bkey]').forEach(b => b.onclick = () => { CONFIG.bundleKey = b.dataset.bkey; renderBundle(); });
   const bags = document.getElementById('bundleBags');
   bags.innerHTML = items.map(p => `<img src="${p.img}" alt="${pname(p)}" width="${p.w}" height="${p.h}">`).join('');
   bags.style.gridTemplateColumns = `repeat(${n},1fr)`;
 }
-document.getElementById('addBundle').onclick = () => addToCart('bundle');
+document.getElementById('addBundle').onclick = () => addToCart('bundle@' + curBundle().key);
 
 /* ===================== sizes ===================== */
 let size = 1;
@@ -1086,36 +1152,80 @@ function renderAnalysis(){
 /* ===================== cart ===================== */
 let cart = {}, lastSubtotal = 0;
 try { cart = JSON.parse(localStorage.getItem('chewawa_cart') || '{}') || {}; } catch(e) { cart = {}; }
+if (cart.bundle) { cart['bundle@m'] = (cart['bundle@m'] || 0) + cart.bundle; delete cart.bundle; }   // carritos guardados antes de los 3 tamaños → pack mediano
 function persist(){ try { localStorage.setItem('chewawa_cart', JSON.stringify(cart)); } catch(e) {} }
 function lineInfo(id){
-  if (id === 'bundle') return { name: (lang==='es' ? CONFIG.bundle.name : CONFIG.bundle.nameEn) || T('bundle_n'), price: CONFIG.bundle.price, img: (PRODUCTS[0]||{}).img || 'img-bag-patas.webp', sub: lang==='es'?'Envío gratis':'Free shipping' };
+  if (id === 'bundle' || id.startsWith('bundle@')) {          // "bundle" (carritos viejos) = tamaño por defecto; "bundle@s|m|l" = tamaño elegido
+    const b = CONFIG.bundles.find(x => x.key === (id.split('@')[1] || CONFIG.bundleKey));
+    if (!b) { delete cart[id]; persist(); return { name:'—', price:0, img:'', sub:'' }; }
+    return { name: (lang==='es' ? b.name : b.nameEn) || T('bundle_n'), price: b.price, img: (PRODUCTS[0]||{}).img || 'img-bag-patas.webp', sub: lang==='es'?'Envío gratis':'Free shipping' };
+  }
   const isSub = id.endsWith('-sub'); const base = id.replace(/-sub$/, ''); const [pid, vkey] = base.split('@');
   const p = PRODUCTS.find(x => x.id === pid);
   if (!p) { delete cart[id]; persist(); return { name:'—', price:0, img:'', sub:'' }; }
   const v = vkey ? variantsOf(p).find(x => x.key === vkey) : (variantsOf(p).find(x => x.def) || variantsOf(p)[0]);
   if (!v) { delete cart[id]; persist(); return { name:'—', price:0, img:'', sub:'' }; }
-  const price = isSub ? Math.round(v.price * (1 - CONFIG.subDiscount)) : v.price;
+  const price = isSub ? cents(v.price * (1 - CONFIG.subDiscount)) : v.price;
   return { name: pname(p), price, img: p.img, sub: (lang==='es'?v.label:v.labelEn) + ' · ' + (isSub ? T('sub') : T('once')) };
 }
 function addToCart(id){
-  const key = (id !== 'bundle' && mode === 'sub') ? id + '-sub' : id;
+  const key = (!id.startsWith('bundle') && mode === 'sub') ? id + '-sub' : id;
   cart[key] = (cart[key] || 0) + 1; persist(); renderCart(); toast(T('toast_added')); openCart();
 }
 function renderCart(){
   const items = document.getElementById('items');
   const keys = Object.keys(cart).filter(k => cart[k] > 0);
   let subtotal = 0, count = 0, hasBundle = false;
-  items.innerHTML = keys.length ? keys.map(k => { const li = lineInfo(k); subtotal += li.price*cart[k]; count += cart[k]; if (k==='bundle') hasBundle = true; return `
-    <div class="item"><img src="${li.img}" alt=""><div><b>${li.name}</b><small>${li.sub}</small><div class="qty"><button data-q="${k}" data-d="-1">−</button><span>${cart[k]}</span><button data-q="${k}" data-d="1">+</button></div></div><span class="p">${mxn(li.price*cart[k])}</span></div>`; }).join('')
+  items.innerHTML = keys.length ? keys.map(k => { const li = lineInfo(k); subtotal += li.price*cart[k]; count += cart[k]; if (k.startsWith('bundle')) hasBundle = true; return `
+    <div class="item"><img src="${escH(li.img)}" alt=""><div><b>${escH(li.name)}</b><small>${escH(li.sub)}</small><div class="qty"><button data-q="${escH(k)}" data-d="-1">−</button><span>${cart[k]}</span><button data-q="${escH(k)}" data-d="1">+</button></div></div><span class="p">${mxn(li.price*cart[k])}</span></div>`; }).join('')
     : `<div class="empty">${T('empty')}</div>`;
   items.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { cart[b.dataset.q] += +b.dataset.d; if (cart[b.dataset.q] <= 0) delete cart[b.dataset.q]; persist(); renderCart(); });
   lastSubtotal = subtotal;
   document.getElementById('cartN').textContent = count;
   document.getElementById('subtotal').textContent = mxn(subtotal);
   const free = hasBundle || subtotal >= CONFIG.freeShipFrom;
-  document.getElementById('shipMsg').textContent = free ? T('ship_ok') : T('ship_need') + Math.round(CONFIG.freeShipFrom - subtotal).toLocaleString('es-MX') + T('ship_need2');
+  document.getElementById('shipMsg').textContent = free ? T('ship_ok') : T('ship_need') + mxn(CONFIG.freeShipFrom - subtotal).slice(1) + T('ship_need2');
   document.getElementById('shipFill').style.width = (free ? 100 : Math.min(100, subtotal / CONFIG.freeShipFrom * 100)) + '%';
+  // envío: gratis (pack o umbral), tarifa Skydropx elegida, o "se calcula al pagar"
+  const sa = document.getElementById('shipAmt'); if (sa) sa.textContent = !keys.length ? '—' : free ? T('sq_free') : (SHIP ? mxn(SHIP.amount) : T('sq_tbd'));
+  const q = document.getElementById('shipQ'); if (q) q.hidden = free || !keys.length;
+  if (RATES && !quoting && !free && keys.length && RATES.sig !== JSON.stringify(cart)) { clearTimeout(requoteT); requoteT = setTimeout(() => quoteShipping(RATES.cp), 500); }   // cambió el peso del carrito → recotiza
+  else if (RATES && (free || !keys.length)) { SHIP = null; }
 }
+
+/* ===================== envío: cotización en vivo (Edge Function `shipping-quote` → Skydropx) =====================
+   El sitio solo manda C.P. + carrito; el peso y la tarifa se calculan en el servidor y la cotización se guarda con id.
+   Al pagar viaja { quote_id, rate_id }: la Edge Function `checkout` lee el monto de la base, nunca del navegador. */
+let SHIP = null, RATES = null, quoting = false, requoteT = 0;
+const escH = s => String(s ?? '').replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+function renderRates(st){
+  const box = document.getElementById('shipRates'); if (!box) return;
+  if (st.loading) { box.innerHTML = `<p class="sq-msg">${T('sq_wait')}</p>`; return; }
+  if (st.error) { box.innerHTML = `<p class="sq-msg">${escH(st.error)}</p>`; return; }
+  if (!RATES) { box.innerHTML = ''; return; }
+  const days = r => !r.days ? '' : lang === 'es' ? `${r.days} día${r.days > 1 ? 's' : ''} hábil${r.days > 1 ? 'es' : ''}` : `${r.days} business day${r.days > 1 ? 's' : ''}`;
+  box.innerHTML = RATES.rates.map(r => `<label class="rate${SHIP && SHIP.rate_id === r.rate_id ? ' on' : ''}"><input type="radio" name="rate" value="${escH(r.rate_id)}"${SHIP && SHIP.rate_id === r.rate_id ? ' checked' : ''}><span><b>${escH(r.carrier)}</b> · ${escH(r.service)}<small>${days(r)}</small></span><b class="amt">${mxn(r.amount)}</b></label>`).join('');
+  box.querySelectorAll('input[name=rate]').forEach(i => i.onchange = () => { const r = RATES.rates.find(x => x.rate_id === i.value); if (r) { SHIP = { cp: RATES.cp, quote_id: RATES.quote_id, ...r }; renderRates({}); renderCart(); } });
+}
+async function quoteShipping(cp){
+  cp = String(cp || '').trim();
+  if (!/^\d{5}$/.test(cp)) { renderRates({ error: T('sq_bad') }); return; }
+  if (!sbOn) { renderRates({ error: T('sq_off') }); return; }
+  try { localStorage.setItem('chewawa_cp', cp); } catch(e) {}
+  quoting = true; renderRates({ loading: true });
+  const sig = JSON.stringify(cart);   // firma del carrito cotizado, tomada ANTES de la llamada: si cambia mientras tanto, se recotiza
+  try {
+    const r = await fetch(SB.url + '/functions/v1/shipping-quote', { method: 'POST', headers: sbH(), body: JSON.stringify({ cp, items: JSON.parse(sig), lang }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.quote_id || !Array.isArray(j.rates) || !j.rates.length) { RATES = null; SHIP = null; renderRates({ error: T(j.error === 'not_configured' ? 'sq_soon' : 'sq_none') }); return; }   // sin quote_id el servidor no podría validar el monto → tarifa estándar
+    RATES = { cp, quote_id: j.quote_id, rates: j.rates, sig };
+    SHIP = { cp, quote_id: j.quote_id, ...j.rates[0] };
+    renderRates({});
+  } catch(e) { RATES = null; SHIP = null; renderRates({ error: T('sq_none') }); }
+  finally { quoting = false; renderCart(); }
+}
+document.getElementById('cpForm').onsubmit = e => { e.preventDefault(); quoteShipping(document.getElementById('cpInput').value); };
+try { const c = localStorage.getItem('chewawa_cp'); if (c) document.getElementById('cpInput').value = c; } catch(e) {}
 const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay');
 function openCart(){ drawer.classList.add('open'); overlay.classList.add('open'); }
 function closeCart(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
@@ -1133,7 +1243,8 @@ document.getElementById('checkout').onclick = async () => {
   // 2) Pago: Stripe Checkout (Edge Function `checkout`, precios reales desde Supabase) o un checkout externo.
   if (CONFIG.payments === 'stripe' && sbOn) {
     try {
-      const r = await fetch(SB.url + '/functions/v1/checkout', { method:'POST', headers: sbH(), body: JSON.stringify({ items: cart, lang, intent_id: intentId, return_path: location.pathname }) });
+      const shipping = SHIP && RATES && RATES.sig === JSON.stringify(cart) ? { quote_id: SHIP.quote_id, rate_id: SHIP.rate_id } : null;   // solo ids: el monto lo valida el servidor
+      const r = await fetch(SB.url + '/functions/v1/checkout', { method:'POST', headers: sbH(), body: JSON.stringify({ items: cart, lang, intent_id: intentId, return_path: location.pathname, shipping }) });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.url) { location.href = j.url; return; }
       toast((lang === 'es' ? 'No se pudo iniciar el pago: ' : 'Could not start checkout: ') + (j.error || r.status), 6000);
@@ -1197,7 +1308,7 @@ async function loadFromSupabase(){
   try {
     const [prods, bundles, cfg] = await Promise.all([
       sbGet('products?select=*&active=is.true&order=sort'),
-      sbGet('bundles?select=*&active=is.true&order=updated_at.desc&limit=1'),
+      sbGet('bundles?select=*&active=is.true&order=sort,updated_at.desc'),
       sbGet('site_config?select=key,value')
     ]);
     if (!prods.length) return;
@@ -1216,7 +1327,12 @@ async function loadFromSupabase(){
       const byP = {}; vs.forEach(v => (byP[v.product_id] = byP[v.product_id] || []).push({ key: v.key, label: v.label_es, labelEn: v.label_en, grams: v.grams, pieces: v.pieces || undefined, price: +v.price_mxn, code: v.code, def: !!v.is_default }));
       PRODUCTS.forEach(p => { if (byP[p.id]) { p.variants = byP[p.id]; if (!p.variants.some(v => v.def)) p.variants[0].def = true; const d = p.variants.find(v => v.def); p.price = d.price; p.qty = d.label; p.qtyEn = d.labelEn; p.grams = d.grams; p.pieces = d.pieces; } });
     } catch(e) {}
-    if (bundles[0]) Object.assign(CONFIG.bundle, { id: bundles[0].id, price: +bundles[0].price_mxn, name: bundles[0].name_es, nameEn: bundles[0].name_en, ids: Array.isArray(bundles[0].product_ids) ? bundles[0].product_ids : null });
+    if (c.shipping_mxn != null) CONFIG.shippingMxn = +c.shipping_mxn;
+    if (bundles.length) {   // una fila por tamaño (size_key s|m|l); filas sin size_key (esquema viejo) se toman como pack único "m"
+      const seen = {}; const list = [];
+      bundles.forEach(r => { const key = String(r.size_key || 'm'); if (seen[key]) return; seen[key] = 1; list.push({ key, id: r.id, price: +r.price_mxn, name: r.name_es, nameEn: r.name_en, ids: Array.isArray(r.product_ids) ? r.product_ids : null }); });
+      CONFIG.bundles = list; if (!list.some(b => b.key === CONFIG.bundleKey)) CONFIG.bundleKey = (list.find(b => b.key === 'm') || list[0]).key;
+    }
     applyConfigText();
     setLang(lang); setSource('live');
   } catch(e) { setSource('local'); }

@@ -18,11 +18,12 @@ Al cargar, el sitio lee de Supabase y, si no responde (sin internet o en la vist
 
 | Tabla | Qué guarda | Quién puede qué (con la llave pública) |
 |---|---|---|
-| `products` | Los 4 SKUs: nombres ES/EN, precio, gramos/piezas, color, imagen, análisis garantizado, porciones por talla | leer (solo `active = true`) |
-| `bundles` | Pack Descubre: precio y qué productos incluye | leer (solo activos) |
-| `product_variants` | Presentaciones (tamaños) por producto: etiqueta, gramos/piezas, precio, código; `is_default` = la que muestra la tarjeta. Con 2+ filas activas aparecen los chips de tamaño en la tarjeta y el carrito usa la llave `producto@key`. | leer (solo activas) |
+| `products` | Los 5 SKUs: nombres ES/EN, precio y presentación por defecto (la mediana), color, imagen, análisis garantizado, porciones por talla | leer (solo `active = true`) |
+| `bundles` | Pack Descubre en 3 tamaños (`size_key` s/m/l): precio y qué productos incluye; el carrito usa `bundle@m` | leer (solo activos) |
+| `product_variants` | Las 15 presentaciones (chica/mediana/grande × 5 productos) con los precios de la lista **ONLINE sep-2026**: etiqueta, gramos/piezas, precio, código; `is_default` = la que muestra la tarjeta. El carrito usa la llave `producto@key`. | leer (solo activas) |
+| `shipping_quotes` | Cotizaciones de envío que guarda la Edge Function `shipping-quote` (Skydropx): C.P., peso, tarifas, vencimiento | **nadie** desde el sitio (solo service role) |
 | `hall_of_fame` | Salón de la Fama: nombre del perro, humano, ciudad, foto (URL del bucket público `fama` o archivo del sitio) y `approved` | leer (solo aprobados) |
-| `site_config` | `free_ship_from`, `sub_discount`, `msi_from`, `whatsapp`, `first_order_code`, `first_order_discount`, `checkout_url`, `prices_are_placeholders` | leer |
+| `site_config` | `free_ship_from`, `sub_discount`, `msi_from`, `whatsapp`, `first_order_code`, `first_order_discount`, `checkout_url`, `shipping_mxn`, `ship_origin`, `ship_packaging_g` | leer |
 | `reviews` | Reseñas reales; el sitio reemplaza las tarjetas de ejemplo cuando hay reseñas con `approved = true` | leer (solo aprobadas) |
 | `b2b_leads` | Formulario de mayoreo (negocio, ciudad, WhatsApp, tipo) | **solo insertar** — nadie puede leerlas desde el sitio |
 | `newsletter_signups` | Club Chewawa (correo único, sin distinguir mayúsculas) | **solo insertar** |
@@ -44,7 +45,7 @@ Flujo: **Pagar ahora** → el sitio guarda el intento en `checkout_intents` → 
 | Función `checkout` | Supabase → Edge Functions (Verify JWT: OFF; valida sola su entrada) | desplegada y probada |
 | Función `stripe-webhook` | Supabase → Edge Functions; endpoint registrado en Stripe Workbench → Webhooks (3 eventos) | desplegada y probada con `stripe trigger` |
 | Código **CHEWAWA10** | Stripe → cupón 10 % (una vez) + código de promoción, solo primera compra | creado en sandbox |
-| Envío | `site_config.shipping_mxn` (99, **PLACEHOLDER**) bajo el umbral `free_ship_from`; gratis con Pack Descubre o desde $599 | inline en la función |
+| Envío | Cotización en vivo con **Skydropx** (Edge Function `shipping-quote`, `supabase/functions/shipping-quote/index.ts`): el cliente escribe su C.P. en el carrito, la función calcula el peso desde el catálogo, pide tarifas a Skydropx (sandbox) y las guarda en `shipping_quotes`; al pagar, `checkout` cobra la tarifa elegida leyendo el monto de esa tabla. Sin credenciales o sin cotización: `site_config.shipping_mxn` (99, **PLACEHOLDER**). Gratis con Pack Descubre o desde `free_ship_from` | función escrita y probada con mocks; **faltan los secretos** `SKYDROPX_CLIENT_ID`, `SKYDROPX_CLIENT_SECRET`, `SKYDROPX_ENV=sandbox` (Skydropx PRO → Conexiones → API) y el C.P. real de origen en `site_config.ship_origin` |
 | Tarjetas de prueba | 4242 4242 4242 4242, cualquier fecha futura y CVC | sandbox |
 
 Para **pasar a cobros reales** (cuando Wero lo decida): 1) en Stripe, salir del sandbox y crear el endpoint de webhook live apuntando a `https://scifvxtcqmuyxrsowgeo.supabase.co/functions/v1/stripe-webhook`; 2) en Supabase → Secrets, reemplazar `STRIPE_SECRET_KEY` y `STRIPE_WEBHOOK_SECRET` por los valores live; 3) crear el cupón/código CHEWAWA10 en live; 4) `site_config.stripe_mode` = `"live"` (mientras diga `"test"`, la función se niega a usar una llave que no sea de prueba). Para **apagar pagos** sin tocar código: `site_config.payments` = `"none"`.
@@ -55,13 +56,14 @@ Todo lo que hay que cambiar vive en el bloque `CONFIG` al inicio del `<script>` 
 
 | Clave | Qué es | Estado |
 |---|---|---|
-| `products.price_mxn` (Supabase) | Precio por bolsa (MXN, IVA incl.) | **PLACEHOLDER** — referencia de anaquel MX: patas de pollo deshidratadas ~MXN 1,400–1,600/kg (Bregos), Dentastix MXN 407–567/kg y MXN 8.50–11.50 la pieza suelta (Walmart/Scorpion) |
-| `bundles.price_mxn` (Supabase) | Precio del Pack Descubre (5 bolsas) | **PLACEHOLDER** 1,099 |
+| `product_variants.price_mxn` / `products.price_mxn` | Precio por bolsa (MXN, IVA incl.) | **Reales** (23-sep): lista “Precios de Productos Chewawa ONLINE · septiembre 2026”, columna *precio sugerido al público*. Chica $62.50 (pechuga $67.50) · mediana $112.50 (pechuga $125) · grande $225 / $300 / $150 (palitos). Los precios a distribuidor no se cargan. |
+| `bundles.price_mxn` (Supabase) | Pack Descubre chico / mediano / grande | **PROPUESTA** 289 / 519 / 1,079 (≈10 % bajo la suma de las 5 bolsas: 317.50 / 575 / 1,200); se edita en la tabla |
 | `site_config.free_ship_from` | Umbral de envío gratis | 599 |
 | `site_config.sub_discount` | Descuento suscripción | 0.15 |
 | `site_config.payments` | `"stripe"` (Checkout vía Edge Function) o `"none"` | stripe (sandbox) |
 | `site_config.stripe_mode` | `"test"` / `"live"` | **test** |
-| `site_config.shipping_mxn` | Costo de envío bajo el umbral de envío gratis | 99 **PLACEHOLDER** |
+| `site_config.shipping_mxn` | Envío estándar cuando no hay cotización Skydropx | 99 **PLACEHOLDER** |
+| `site_config.ship_origin` | C.P. (y estado/ciudad) desde donde salen los pedidos, para cotizar | 76000 Querétaro **PLACEHOLDER** (¿planta Querétaro o bodega Monterrey?) |
 | `site_config.whatsapp` | Número con lada (52…) | 525661118591 (del sitio actual) |
 | `CONFIG.b2bEndpoint` / `newsletterEndpoint` | Webhooks opcionales (CRM, Klaviyo) además de Supabase | vacíos |
 
